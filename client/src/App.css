@@ -1,1 +1,29 @@
 /* body{background-image: linear-gradient(to left top, #ffffff, #ffffff, #f0f1f7, #ccd0e0, #bdc3d8);} */
+.boxShadow{
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+   
+    /* box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;} */
+}
+
+.colorBlue{
+    background-color: #19A7CE;
+
+}
+
+.nav-pills {
+    --bs-nav-pills-border-radius: 0.375rem;
+    --bs-nav-pills-link-active-color: #fff;
+    --bs-nav-pills-link-active-bg:  #19A7CE;
+}
+
+.loginButton{
+    background-color: #02c0d5;
+    color: #fff;
+}
+
+.loginButton:hover
+{
+        background-color: #00e5ff;
+        color: #fff;
+}
+    

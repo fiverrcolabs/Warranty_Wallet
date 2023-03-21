@@ -34,32 +34,32 @@ function App() {
         <h1 className='mx-5 mb-5'>Warranty Wallet ($)</h1>
 
         <MDBCol col='10' md='6'>
-          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" className='img-fluid' alt="Sample image" />
+          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" className='img-fluid ' alt="Sample image" />
         </MDBCol>
 
-        <MDBCol col='10' md='6'>
+        <MDBCol col='10' md='6' >
 
-          <MDBContainer className="p-0 my-5 d-flex flex-column w-75 h-75">
+          <MDBContainer className="p-0 my-5 d-flex flex-column w-75 rounded-bottom boxShadow">
 
             <MDBTabs pills justify className='mb-0 d-flex flex-row justify-content-between'>
               <MDBTabsItem>
-                <MDBTabsLink className='rounded-0 border border-primary ' onClick={() => handleJustifyClick('tab1')} active={justifyActive === 'tab1'}>
+                <MDBTabsLink className='rounded-0  colorBlue' onClick={() => handleJustifyClick('tab1')} active={justifyActive === 'tab1'}>
                   customer
                 </MDBTabsLink>
               </MDBTabsItem>
               <MDBTabsItem>
-                <MDBTabsLink className='rounded-0 border border-primary' onClick={() => handleJustifyClick('tab2')} active={justifyActive === 'tab2'}>
+                <MDBTabsLink className='rounded-0  colorBlue' onClick={() => handleJustifyClick('tab2')} active={justifyActive === 'tab2'}>
                   retailer
                 </MDBTabsLink>
               </MDBTabsItem>
               <MDBTabsItem>
-                <MDBTabsLink className='rounded-0 border border-primary' onClick={() => handleJustifyClick('tab3')} active={justifyActive === 'tab3'}>
+                <MDBTabsLink className='rounded-0   colorBlue' onClick={() => handleJustifyClick('tab3')} active={justifyActive === 'tab3'}>
                   seller
                 </MDBTabsLink>
               </MDBTabsItem>
             </MDBTabs>
 
-            <MDBTabsContent className='bg-primary bg-gradient text-white rounded-bottom'>
+            <MDBTabsContent className='bg-gradient text-white rounded-bottom colorBlue '>
 
               <MDBTabsPane className='p-3 pt-5' show={justifyActive === 'tab1'}>
 
@@ -71,7 +71,7 @@ function App() {
                                  
                                 </div> */}
 
-                <MDBBtn className="mb-4 w-100">Sign in</MDBBtn>
+                <button className=" btn mb-4 w-100 loginButton">Sign in</button>
                 <p className="text-center">Not a member? <a href="#!" className='text-white' >Register</a></p>
 
               </MDBTabsPane>
@@ -85,7 +85,7 @@ function App() {
                                  
                                 </div> */}
 
-                <MDBBtn className="mb-4 w-100">Sign in</MDBBtn>
+                <button className=" btn mb-4 w-100 loginButton">Sign in</button>
                 <p className="text-center">Not a member? <a href="#!" className='text-white' >Register</a></p>
 
 
@@ -97,7 +97,7 @@ function App() {
                 <MDBInput wrapperClass='mb-4' label='Password' id='form2' type='password' />
 
 
-                <MDBBtn className="mb-4 w-100">Sign in</MDBBtn>
+                <button className=" btn mb-4 w-100 loginButton">Sign in</button>
                 <p className="text-center">Not a member? <a href="#!" className='text-white' >Register</a></p>
 
 
