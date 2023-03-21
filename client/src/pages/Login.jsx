@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 // import { MDBContainer, MDBCol, MDBRow, MDBBtn, MDBIcon, MDBInput, MDBCheckbox } from 'mdb-react-ui-kit';
+import loginImage from '../assets/loginpic.png';
+import logo from '../assets/Logog_03.png';
 import {
   MDBContainer,
   MDBTabs,
@@ -11,7 +13,7 @@ import {
   MDBIcon,
   MDBInput,
   MDBCheckbox,
-  MDBCol, MDBRow
+  MDBCol, MDBRow 
 }
   from 'mdb-react-ui-kit';
 
@@ -30,11 +32,23 @@ function App() {
   return (
     <MDBContainer fluid className="p-3 my-5 width:100%">
 
-      <MDBRow >
-        <h1 className='mx-5 mb-5'>Warranty Wallet ($)</h1>
+      <MDBRow className='mx-3 mb-5' >
+        <img src={logo} className='imageLogo' alt="Sample image" />
+        <h1 className='topic h1'>Warranty Wallet ($)</h1>
+
+
+      </MDBRow>
+
+      <MDBRow className='mx-3'>
+
 
         <MDBCol col='10' md='6'>
-          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" className='img-fluid ' alt="Sample image" />
+          <div>
+            <img src={loginImage} className='img-fluid imageLogin' alt="Sample image" />
+            <h3 className='text-center mt-3' >All your warranties in one place</h3>
+
+          </div>
+
         </MDBCol>
 
         <MDBCol col='10' md='6' >
@@ -61,29 +75,24 @@ function App() {
 
             <MDBTabsContent className='bg-gradient text-white rounded-bottom colorBlue '>
 
-              <MDBTabsPane className='p-3 pt-5' show={justifyActive === 'tab1'}>
+              <MDBTabsPane className='p-5 pt-5' show={justifyActive === 'tab1'}>
 
 
-                <MDBInput wrapperClass='mb-4' label='Email address' id='form1' type='email' />
-                <MDBInput wrapperClass='mb-4' label='Password' id='form2' type='password' />
-
-                {/* <div className="d-flex justify-content-between mx-4 mb-4">
-                                 
-                                </div> */}
+                <MDBInput wrapperClass='mb-4' label='Email address' id='form1' type='email' size="lg" />
+                <MDBInput wrapperClass='mb-4' label='Password' id='form2' type='password' size="lg" />
+            
 
                 <button className=" btn mb-4 w-100 loginButton">Sign in</button>
                 <p className="text-center">Not a member? <a href="#!" className='text-white' >Register</a></p>
 
               </MDBTabsPane>
 
-              <MDBTabsPane className='p-3 pt-5' show={justifyActive === 'tab2'}>
+              <MDBTabsPane className='p-5 pt-5' show={justifyActive === 'tab2'}>
 
-                <MDBInput wrapperClass='mb-4' label='Email address' id='form1' type='email' />
-                <MDBInput wrapperClass='mb-4' label='Password' id='form2' type='password' />
+                <MDBInput wrapperClass='mb-4' label='Email address' id='form1' type='email' size="lg" />
+                <MDBInput wrapperClass='mb-4' label='Password' id='form2' type='password' size="lg" />
 
-                {/* <div className="d-flex justify-content-between mx-4 mb-4">
-                                 
-                                </div> */}
+   
 
                 <button className=" btn mb-4 w-100 loginButton">Sign in</button>
                 <p className="text-center">Not a member? <a href="#!" className='text-white' >Register</a></p>
@@ -91,11 +100,10 @@ function App() {
 
               </MDBTabsPane>
 
-              <MDBTabsPane className='p-3 pt-5' show={justifyActive === 'tab3'}>
+              <MDBTabsPane className='p-5 pt-5' show={justifyActive === 'tab3'}>
 
-                <MDBInput wrapperClass='mb-4' label='Email address' id='form1' type='email' />
-                <MDBInput wrapperClass='mb-4' label='Password' id='form2' type='password' />
-
+                <MDBInput wrapperClass='mb-4' label='Email address' id='form1' type='email' size="lg" />
+                <MDBInput wrapperClass='mb-4' label='Password' id='form2' type='password' size="lg" />
 
                 <button className=" btn mb-4 w-100 loginButton">Sign in</button>
                 <p className="text-center">Not a member? <a href="#!" className='text-white' >Register</a></p>
