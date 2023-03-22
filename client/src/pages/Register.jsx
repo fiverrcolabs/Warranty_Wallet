@@ -15,7 +15,7 @@ import {
 }
   from 'mdb-react-ui-kit';
 
-function App() {
+function Signup() {
 
   const [justifyActive, setJustifyActive] = useState('tab1');;
 
@@ -118,4 +118,4 @@ function App() {
   );
 }
 
-export default App;
+export default Signup;
