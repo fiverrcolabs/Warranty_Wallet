@@ -14,7 +14,7 @@ export default function App() {
     <img src="https://mdbcdn.b-cdn.net/img/new/standard/nature/184.webp" className="card-img-top" alt="Fissure in Sandstone"/>
     <div className="card-body">
         
-        <a className='h5' href="#!" >Name of the product</a>
+        <a className='h5 cardName' href="#!"  >Name of the product</a>
     </div>
 </div>
   );

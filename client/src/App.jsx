@@ -6,6 +6,7 @@ import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import Claims from './pages/Claims'
 import Products from './pages/Products'
+import AddProduct from './pages/product/AddProduct'
 import Retailers from './pages/Retailers'
 // import ForgetPasswordPage from './components/pages/ForgetPasswordPage'
 import Navbar from './components/Navbar'
@@ -17,19 +18,25 @@ export default function App() {
     return (
         <Router>
 
+            <Navbar />
+
             <Routes>
 
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/claims" element={<Claims />} />
+
                 <Route path="/products" element={<Products />} />
+                <Route path="/products/addproduct" element={<AddProduct />} />
+
+
                 <Route path="/retailers" element={<Retailers />} />
 
 
             </Routes>
 
-            <Navbar />
+
 
 
         </Router>
