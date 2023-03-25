@@ -1,50 +1,97 @@
-import { StatusCodes } from "http-status-codes"
-import User from "../models/User.js"
-import { BadRequestError, UnAuthenticatedError } from "../errors/index.js"
+import { StatusCodes } from 'http-status-codes'
+import mongoose from 'mongoose'
+import User from '../models/User.js'
+import Manufacturer from '../models/Manufacturer.js'
+import Retailer from '../models/Retailer.js'
+import { BadRequestError, UnAuthenticatedError } from '../errors/index.js'
+import Subscription from '../models/Subscription.js'
 
 const register = async (req, res, next) => {
-    const { email, password, role } = req.body
-    if (!email || !password) {
-        throw new BadRequestError('please provide all values')
+  const { email, password, role } = req.body
+  if (!email || !password) {
+    throw new BadRequestError('please provide all values')
+  }
+
+  const userAlreadyExists = await User.findOne({ email })
+
+  if (userAlreadyExists) {
+    throw new BadRequestError(`${email} already in use`)
+  }
+
+  const session = await mongoose.startSession()
+  session.startTransaction()
+  try {
+    const users = await User.create([{ email, password, role }], { session })
+    const user = users[0]
+
+    if (role === 'MANUFACTURER') {
+      const { company, website, subscription } = req.body
+      const subscriptionObject = await Subscription.findOne({ type: subscription })
+
+      const manufacturers = await Manufacturer.create(
+        [
+          {
+            userId: user._id,
+            company,
+            website,
+            subscription: subscriptionObject._id,
+          },
+        ],
+        { session }
+      )
+    } else if (role === 'Retailer') {
+      const { company, website, subscription } = req.body
+      const subscriptionObject = await Subscription.findOne({ type: subscription })
+      const retailer = await Retailer.create(
+        [
+          {
+            userId: user._id,
+            company,
+            website,
+            subscription: subscriptionObject._id,
+          },
+        ],
+        { session }
+      )
     }
 
-    const userAlreadyExists = await User.findOne({ email })
-
-    if (userAlreadyExists) {
-        throw new BadRequestError(`${email} already in use`)
-    }
-
-    const user = await User.create({ email, password, role })
     const token = user.createJWT()
 
-    res.status(StatusCodes.CREATED).json({ user: {
+    await session.commitTransaction()
+
+    res.status(StatusCodes.CREATED).json({
+      user: {
         email: user.email,
-    }, token })
+        role: user.role,
+      },
+      token,
+    })
+  } catch (error) {
+    await session.abortTransaction()
+    next(error)
+  }
 }
 
 const login = async (req, res) => {
-    const { email, password } = req.body
-    if (!email || !password) {
-        throw new BadRequestError('please provide all values')
-    }
+  const { email, password } = req.body
+  if (!email || !password) {
+    throw new BadRequestError('please provide all values')
+  }
 
-    const user = await User.findOne({ email }).select('+password') 
-    if (!user) {
-        throw new UnAuthenticatedError('Invalid Credentials')
-    }
-    const isPasswordCorrect = await user.comparePassword(password)
-    if (!isPasswordCorrect) {
-        throw new UnAuthenticatedError('Invalid Credentials')
-    }
-    
-    const token = user.createJWT()
+  const user = await User.findOne({ email }).select('+password')
+  if (!user) {
+    throw new UnAuthenticatedError('Invalid Credentials')
+  }
+  const isPasswordCorrect = await user.comparePassword(password)
+  if (!isPasswordCorrect) {
+    throw new UnAuthenticatedError('Invalid Credentials')
+  }
 
-    user.password = undefined
-    user.role = undefined
-    res.status(StatusCodes.OK).json({ user, token })
+  const token = user.createJWT()
+
+  user.password = undefined
+  user.role = undefined
+  res.status(StatusCodes.OK).json({ user, token })
 }
 
-export {
-    register,
-    login
-}
+export { register, login }
