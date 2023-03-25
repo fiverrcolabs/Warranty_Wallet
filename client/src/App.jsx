@@ -8,10 +8,13 @@ import Claims from './pages/Claims'
 import Products from './pages/Products'
 import AddProduct from './pages/product/AddProduct'
 import QRPage from './pages/product/QRPage'
-
 import Retailers from './pages/Retailers'
-// import ForgetPasswordPage from './components/pages/ForgetPasswordPage'
+
 import Navbar from './components/Navbar'
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import 'bootstrap/dist/css/bootstrap.css';
 
 import './App.css'
@@ -21,6 +24,7 @@ export default function App() {
         <Router>
 
             <Navbar />
+            <ToastContainer />
 
             <Routes>
 

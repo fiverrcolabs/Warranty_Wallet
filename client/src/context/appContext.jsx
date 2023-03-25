@@ -1,5 +1,6 @@
 import React, { useReducer, useContext } from 'react'
 import axios from 'axios'
+import { toast } from 'react-toastify';
 
 import reducer from './reducer'
 
@@ -58,35 +59,39 @@ const AppProvider = ({ children }) => {
     // let delayres = await delay(5000);
     // console.log('b');
 
-    dispatch({ type: 'LOGIN_USER_BEGIN' })
+    console.log("login user function")
 
-    try {
-      const { data } = await axios.post('/api/v1/auth/login', currentUser)
-      const { user, token } = data
-      dispatch({
-        type: 'LOGIN_USER_SUCCESS',
-        payload: {
-          user,
-          token,
-        },
-      })
-      // local storage
-      addUserToLocalStorage({
+    dispatch({
+      type: 'LOGIN_USER_BEGIN'
+    })
+
+    const { data } = await axios.post('/api/v1/auth/login', currentUser)
+      .catch(function (error) {
+        console.log(error.message);
+        toast.error(error.message);
+        dispatch({
+          type: 'LOGIN_USER_ERROR'
+        })
+      });
+    await console.log(data)
+
+    const { user, token } = data
+    dispatch({
+      type: 'LOGIN_USER_SUCCESS',
+      payload: {
         user,
         token,
-      })
+      },
+    })
+    toast.success("LOGIN SUCCESS");
+    // local storage
+    addUserToLocalStorage({
+      user,
+      token,
+    })
 
-     
-    } catch (error) {
-      dispatch({
-        type: 'LOGIN_USER_ERROR',
-        payload: {
-          msg: error.response.data.msg,
-        },
-      })
-    }
 
-    clearAlert()
+    // clearAlert()
   }
 
   const logoutUser = () => {
@@ -103,8 +108,8 @@ const AppProvider = ({ children }) => {
         ...state,
         displayAlert,
         loginUser,
-        logoutUser
-       
+        logoutUser,
+
       }}
     >
       {children}
