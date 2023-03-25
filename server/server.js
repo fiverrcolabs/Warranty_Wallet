@@ -4,6 +4,9 @@ const app = express()
 import dotenv from 'dotenv'
 dotenv.config()
 
+import cors from 'cors'
+app.use(cors())
+
 import morgan from 'morgan'
 import 'express-async-errors'
 

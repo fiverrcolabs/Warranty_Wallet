@@ -66,7 +66,7 @@ const AppProvider = ({ children }) => {
     })
 
     try {
-      const { data } = await axios.post('/api/v1/auth/login', currentUser)
+      const { data } = await axios.post('http://localhost:4001/api/v1/auth/login', currentUser)
 
       console.log(data)
 
@@ -87,8 +87,8 @@ const AppProvider = ({ children }) => {
 
     } catch (error) {
 
-      console.log(error.message);
-      toast.error(error.message);
+      console.log(error.response.data.msg);
+      toast.error(error.response.data.msg);
       dispatch({
         type: 'LOGIN_USER_ERROR'
       })
@@ -108,14 +108,14 @@ const AppProvider = ({ children }) => {
     // let delayres = await delay(5000);
     // console.log('b');
 
-    console.log("login user function")
+    console.log("register user function")
 
     dispatch({
       type: 'LOGIN_USER_BEGIN'
     })
 
     try {
-      const { data } = await axios.post('/api/v1/auth/login', registerData)
+      const { data } = await axios.post('http://localhost:4001/api/v1/auth/register', registerData)
 
       console.log(data)
 
@@ -136,8 +136,8 @@ const AppProvider = ({ children }) => {
 
     } catch (error) {
 
-      console.log(error.message);
-      toast.error(error.message);
+      console.log(error.response.data.msg);
+      toast.error(error.response.data.msg);
       dispatch({
         type: 'LOGIN_USER_ERROR'
       })

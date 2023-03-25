@@ -7,7 +7,9 @@ import { BadRequestError, UnAuthenticatedError } from '../errors/index.js'
 import Subscription from '../models/Subscription.js'
 
 const register = async (req, res, next) => {
-  const { email, password, role } = req.body
+  console.log(req.body)
+  const { email, password,role } = req.body
+
   if (!email || !password) {
     throw new BadRequestError('please provide all values')
   }
@@ -25,8 +27,8 @@ const register = async (req, res, next) => {
     const user = users[0]
 
     if (role === 'MANUFACTURER') {
-      const { company, website, subscription } = req.body
-      const subscriptionObject = await Subscription.findOne({ type: subscription })
+      const { company, website } = req.body
+      // const subscriptionObject = await Subscription.findOne({ type: subscription })
 
       const manufacturers = await Manufacturer.create(
         [
@@ -34,21 +36,21 @@ const register = async (req, res, next) => {
             userId: user._id,
             company,
             website,
-            subscription: subscriptionObject._id,
+            // subscription: subscriptionObject._id,
           },
         ],
         { session }
       )
     } else if (role === 'Retailer') {
-      const { company, website, subscription } = req.body
-      const subscriptionObject = await Subscription.findOne({ type: subscription })
+      const { company, website } = req.body
+      // const subscriptionObject = await Subscription.findOne({ type: subscription })
       const retailer = await Retailer.create(
         [
           {
             userId: user._id,
             company,
             website,
-            subscription: subscriptionObject._id,
+            // subscription: subscriptionObject._id,
           },
         ],
         { session }

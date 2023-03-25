@@ -20,8 +20,13 @@ import {
   from 'mdb-react-ui-kit';
 
 function Login() {
+  const USER = {
+    MANUFACTURER: "MANUFACTURER",
+    RETAILER: "RETAILER",
+    CONSUMER: "CONSUMER"
+  }
 
-  const [userType, setJustifyActive] = useState('Manufacturer');
+  const [userType, setJustifyActive] = useState(USER.MANUFACTURER);
   const { login, isLoading } = useAppContext();
 
   const handleJustifyClick = (value) => {
@@ -37,7 +42,7 @@ function Login() {
     e.preventDefault()
     const email = e.target[0].value
     const password = e.target[1].value
-    
+
     console.log(email, password, userType)
 
     if (!email || !password || !userType) {
@@ -45,9 +50,9 @@ function Login() {
       toast.warn('all field required')
       return
     }
-   
-    login({email, password, userType})
-   
+
+    login({ email, password, userType })
+
   }
 
   return (
@@ -78,25 +83,25 @@ function Login() {
 
             <MDBTabs pills justify className='mb-0 d-flex flex-row justify-content-between'>
               <MDBTabsItem>
-                <MDBTabsLink className='rounded-0  colorBlue' onClick={() => handleJustifyClick('Manufacturer')} active={userType === 'Manufacturer'}>
-                Manufacturer
+                <MDBTabsLink className='rounded-0  colorBlue' onClick={() => handleJustifyClick(USER.MANUFACTURER)} active={userType === USER.MANUFACTURER}>
+                  Manufacturer
                 </MDBTabsLink>
               </MDBTabsItem>
               <MDBTabsItem>
-                <MDBTabsLink className='rounded-0  colorBlue' onClick={() => handleJustifyClick('Retailer')} active={userType === 'Retailer'}>
-                Retailer
+                <MDBTabsLink className='rounded-0  colorBlue' onClick={() => handleJustifyClick(USER.RETAILER)} active={userType === USER.RETAILER}>
+                  Retailer
                 </MDBTabsLink>
               </MDBTabsItem>
               <MDBTabsItem>
-                <MDBTabsLink className='rounded-0   colorBlue' onClick={() => handleJustifyClick('Consumer')} active={userType === 'Consumer'}>
-                Consumer
+                <MDBTabsLink className='rounded-0   colorBlue' onClick={() => handleJustifyClick(USER.CONSUMER)} active={userType === USER.CONSUMER}>
+                  Consumer
                 </MDBTabsLink>
               </MDBTabsItem>
             </MDBTabs>
 
             <MDBTabsContent className='bg-gradient text-white rounded-bottom colorBlue '>
 
-              <MDBTabsPane className='p-5 pt-5' show={userType === 'Manufacturer'}>
+              <MDBTabsPane className='p-5 pt-5' show={userType === USER.MANUFACTURER}>
                 <form className='form-login' onSubmit={onSubmit}>
 
 
@@ -105,12 +110,12 @@ function Login() {
 
 
                   <button className={isLoading ? "btn mb-4 w-100 loginButton disabled" : "btn mb-4 w-100 loginButton"} > {isLoading ? "Loading..." : "Sign in"} </button>
-                  <p className="text-center">Not a member? <a href="#!" className='text-white' >Register</a></p>
+                  <p className="text-center">Not a member? <a href={'/register'} className='text-white' >Register</a></p>
                 </form>
 
               </MDBTabsPane>
 
-              <MDBTabsPane className='p-5 pt-5' show={userType === 'Retailer'}>
+              <MDBTabsPane className='p-5 pt-5' show={userType === USER.RETAILER}>
 
                 <form className='form-login' onSubmit={onSubmit}>
 
@@ -120,12 +125,12 @@ function Login() {
 
 
                   <button className={isLoading ? "btn mb-4 w-100 loginButton disabled" : "btn mb-4 w-100 loginButton"} > {isLoading ? "Loading..." : "Sign in"} </button>
-                  <p className="text-center">Not a member? <a href="#!" className='text-white' >Register</a></p>
+                  <p className="text-center">Not a member? <a href={'/register'} className='text-white' >Register</a></p>
                 </form>
 
               </MDBTabsPane>
 
-              <MDBTabsPane className='p-5 pt-5' show={userType === 'Consumer'}>
+              <MDBTabsPane className='p-5 pt-5' show={userType === USER.CONSUMER}>
 
                 <form className='form-login' onSubmit={onSubmit}>
 
@@ -135,7 +140,7 @@ function Login() {
 
 
                   <button className={isLoading ? "btn mb-4 w-100 loginButton disabled" : "btn mb-4 w-100 loginButton"} > {isLoading ? "Loading..." : "Sign in"} </button>
-                  <p className="text-center">Not a member? <a href="#!" className='text-white' >Register</a></p>
+                  <p className="text-center">Not a member? <a href={'/register'} className='text-white' >Register</a></p>
                 </form>
 
               </MDBTabsPane>
