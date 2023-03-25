@@ -21,8 +21,8 @@ import {
 
 function Login() {
 
-  const [userType, setJustifyActive] = useState('customer');
-  const { loginUser, isLoading } = useAppContext();
+  const [userType, setJustifyActive] = useState('Manufacturer');
+  const { login, isLoading } = useAppContext();
 
   const handleJustifyClick = (value) => {
     if (value === userType) {
@@ -46,7 +46,7 @@ function Login() {
       return
     }
    
-    loginUser({email, password, userType})
+    login({email, password, userType})
    
   }
 
@@ -78,25 +78,25 @@ function Login() {
 
             <MDBTabs pills justify className='mb-0 d-flex flex-row justify-content-between'>
               <MDBTabsItem>
-                <MDBTabsLink className='rounded-0  colorBlue' onClick={() => handleJustifyClick('customer')} active={userType === 'customer'}>
-                  customer
+                <MDBTabsLink className='rounded-0  colorBlue' onClick={() => handleJustifyClick('Manufacturer')} active={userType === 'Manufacturer'}>
+                Manufacturer
                 </MDBTabsLink>
               </MDBTabsItem>
               <MDBTabsItem>
-                <MDBTabsLink className='rounded-0  colorBlue' onClick={() => handleJustifyClick('retailer')} active={userType === 'retailer'}>
-                  retailer
+                <MDBTabsLink className='rounded-0  colorBlue' onClick={() => handleJustifyClick('Retailer')} active={userType === 'Retailer'}>
+                Retailer
                 </MDBTabsLink>
               </MDBTabsItem>
               <MDBTabsItem>
-                <MDBTabsLink className='rounded-0   colorBlue' onClick={() => handleJustifyClick('seller')} active={userType === 'seller'}>
-                  seller
+                <MDBTabsLink className='rounded-0   colorBlue' onClick={() => handleJustifyClick('Consumer')} active={userType === 'Consumer'}>
+                Consumer
                 </MDBTabsLink>
               </MDBTabsItem>
             </MDBTabs>
 
             <MDBTabsContent className='bg-gradient text-white rounded-bottom colorBlue '>
 
-              <MDBTabsPane className='p-5 pt-5' show={userType === 'customer'}>
+              <MDBTabsPane className='p-5 pt-5' show={userType === 'Manufacturer'}>
                 <form className='form-login' onSubmit={onSubmit}>
 
 
@@ -110,7 +110,7 @@ function Login() {
 
               </MDBTabsPane>
 
-              <MDBTabsPane className='p-5 pt-5' show={userType === 'retailer'}>
+              <MDBTabsPane className='p-5 pt-5' show={userType === 'Retailer'}>
 
                 <form className='form-login' onSubmit={onSubmit}>
 
@@ -125,7 +125,7 @@ function Login() {
 
               </MDBTabsPane>
 
-              <MDBTabsPane className='p-5 pt-5' show={userType === 'seller'}>
+              <MDBTabsPane className='p-5 pt-5' show={userType === 'Consumer'}>
 
                 <form className='form-login' onSubmit={onSubmit}>
 

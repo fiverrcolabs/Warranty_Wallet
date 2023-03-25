@@ -19,7 +19,7 @@ function Navbar() {
     }
   }
 
-  if (location.pathname === "/login") return null;
+  if (location.pathname === "/login" || location.pathname === "/register") return null;
 
   return (
 

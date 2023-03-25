@@ -52,7 +52,7 @@ const AppProvider = ({ children }) => {
     return new Promise(resolve => setTimeout(resolve, delayInms));
   }
 
-  const loginUser = async (currentUser) => {
+  const login = async (currentUser) => {
 
     // console.log('a');
     // console.log('waiting...')
@@ -65,34 +65,88 @@ const AppProvider = ({ children }) => {
       type: 'LOGIN_USER_BEGIN'
     })
 
-    const { data } = await axios.post('/api/v1/auth/login', currentUser)
-      .catch(function (error) {
-        console.log(error.message);
-        toast.error(error.message);
-        dispatch({
-          type: 'LOGIN_USER_ERROR'
-        })
-      });
-    await console.log(data)
+    try {
+      const { data } = await axios.post('/api/v1/auth/login', currentUser)
 
-    const { user, token } = data
-    dispatch({
-      type: 'LOGIN_USER_SUCCESS',
-      payload: {
+      console.log(data)
+
+      const { user, token } = data
+      dispatch({
+        type: 'LOGIN_USER_SUCCESS',
+        payload: {
+          user,
+          token,
+        },
+      })
+      toast.success("LOGIN SUCCESS");
+      // local storage
+      addUserToLocalStorage({
         user,
         token,
-      },
-    })
-    toast.success("LOGIN SUCCESS");
-    // local storage
-    addUserToLocalStorage({
-      user,
-      token,
-    })
+      })
+
+    } catch (error) {
+
+      console.log(error.message);
+      toast.error(error.message);
+      dispatch({
+        type: 'LOGIN_USER_ERROR'
+      })
+
+    }
+
+
 
 
     // clearAlert()
   }
+
+  const register = async (registerData) => {
+
+    // console.log('a');
+    // console.log('waiting...')
+    // let delayres = await delay(5000);
+    // console.log('b');
+
+    console.log("login user function")
+
+    dispatch({
+      type: 'LOGIN_USER_BEGIN'
+    })
+
+    try {
+      const { data } = await axios.post('/api/v1/auth/login', registerData)
+
+      console.log(data)
+
+      const { user, token } = data
+      dispatch({
+        type: 'LOGIN_USER_SUCCESS',
+        payload: {
+          user,
+          token,
+        },
+      })
+      toast.success("LOGIN SUCCESS");
+      // local storage
+      addUserToLocalStorage({
+        user,
+        token,
+      })
+
+    } catch (error) {
+
+      console.log(error.message);
+      toast.error(error.message);
+      dispatch({
+        type: 'LOGIN_USER_ERROR'
+      })
+
+    }
+
+    // clearAlert()
+  }
+
 
   const logoutUser = () => {
     dispatch({ type: 'LOGOUT_USER' })
@@ -107,7 +161,8 @@ const AppProvider = ({ children }) => {
       value={{
         ...state,
         displayAlert,
-        loginUser,
+        login,
+        register,
         logoutUser,
 
       }}
