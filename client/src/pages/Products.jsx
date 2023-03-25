@@ -1,8 +1,11 @@
 import Product from '../components/Product';
 import { GrAddCircle } from "react-icons/gr";
+import { useNavigate } from 'react-router-dom';
+
 
 
 function Products() {
+  var navigate=useNavigate();
 
   return (
     <div className=" mainContainer container">
@@ -17,7 +20,7 @@ function Products() {
 
           <div className='col topBar'>
             <div className='topBarIcon'>
-              <GrAddCircle size={40} />
+              <GrAddCircle onClick={() => navigate('/products/addproduct')} className='clickable cursor-pointer' size={40} />
             </div>
 
           </div>

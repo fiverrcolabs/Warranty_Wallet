@@ -185,6 +185,14 @@ textarea {
     margin-left: 80%;
 }
 
+.clickable{
+    cursor: pointer;
+}
+
+
+
+
+/* ------------------------------------------ */
 
 @media (max-width: 1000px) {
 
