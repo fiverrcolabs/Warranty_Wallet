@@ -7,6 +7,8 @@ import Dashboard from './pages/Dashboard'
 import Claims from './pages/Claims'
 import Products from './pages/Products'
 import AddProduct from './pages/product/AddProduct'
+import QRPage from './pages/product/QRPage'
+
 import Retailers from './pages/Retailers'
 // import ForgetPasswordPage from './components/pages/ForgetPasswordPage'
 import Navbar from './components/Navbar'
@@ -29,6 +31,7 @@ export default function App() {
 
                 <Route path="/products" element={<Products />} />
                 <Route path="/products/addproduct" element={<AddProduct />} />
+                <Route path="/products/qr" element={<QRPage />} />
 
 
                 <Route path="/retailers" element={<Retailers />} />
