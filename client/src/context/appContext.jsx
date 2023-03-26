@@ -1,6 +1,6 @@
 import React, { useReducer, useContext } from 'react'
 import axios from 'axios'
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify'
 
 import reducer from './reducer'
 
@@ -14,7 +14,6 @@ const initialState = {
   alertType: '',
   user: user ? JSON.parse(user) : null,
   token: token,
-
 }
 
 const AppContext = React.createContext()
@@ -22,10 +21,12 @@ const AppContext = React.createContext()
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
 
-
+  // axios
+  const axiosFetch = axios.create({
+    baseURL: import.meta.env.VITE_SERVER_URL
+  })
 
   // ----------------login-------------
-
 
   const displayAlert = () => {
     dispatch({ type: 'SHOW_ALERT' })
@@ -49,24 +50,26 @@ const AppProvider = ({ children }) => {
   }
 
   const delay = (delayInms) => {
-    return new Promise(resolve => setTimeout(resolve, delayInms));
+    return new Promise((resolve) => setTimeout(resolve, delayInms))
   }
 
   const login = async (currentUser) => {
-
     // console.log('a');
     // console.log('waiting...')
     // let delayres = await delay(5000);
     // console.log('b');
 
-    console.log("login user function")
+    console.log('login user function')
 
     dispatch({
-      type: 'LOGIN_USER_BEGIN'
+      type: 'LOGIN_USER_BEGIN',
     })
 
     try {
-      const { data } = await axios.post('http://localhost:4001/api/v1/auth/login', currentUser)
+      const { data } = await axios.post(
+        'http://localhost:4001/api/v1/auth/login',
+        currentUser
+      )
 
       console.log(data)
 
@@ -78,44 +81,40 @@ const AppProvider = ({ children }) => {
           token,
         },
       })
-      toast.success("LOGIN SUCCESS");
+      toast.success('LOGIN SUCCESS')
       // local storage
       addUserToLocalStorage({
         user,
         token,
       })
-
     } catch (error) {
-
-      console.log(error.response.data.msg);
-      toast.error(error.response.data.msg);
+      console.log(error.response.data.msg)
+      toast.error(error.response.data.msg)
       dispatch({
-        type: 'LOGIN_USER_ERROR'
+        type: 'LOGIN_USER_ERROR',
       })
-
     }
-
-
-
 
     // clearAlert()
   }
 
   const register = async (registerData) => {
-
     // console.log('a');
     // console.log('waiting...')
     // let delayres = await delay(5000);
     // console.log('b');
 
-    console.log("register user function")
+    console.log('register user function')
 
     dispatch({
-      type: 'LOGIN_USER_BEGIN'
+      type: 'LOGIN_USER_BEGIN',
     })
 
     try {
-      const { data } = await axios.post('http://localhost:4001/api/v1/auth/register', registerData)
+      const { data } = await axios.post(
+        'http://localhost:4001/api/v1/auth/register',
+        registerData
+      )
 
       console.log(data)
 
@@ -127,34 +126,27 @@ const AppProvider = ({ children }) => {
           token,
         },
       })
-      toast.success("LOGIN SUCCESS");
+      toast.success('LOGIN SUCCESS')
       // local storage
       addUserToLocalStorage({
         user,
         token,
       })
-
     } catch (error) {
-
-      console.log(error.response.data.msg);
-      toast.error(error.response.data.msg);
+      console.log(error.response.data.msg)
+      toast.error(error.response.data.msg)
       dispatch({
-        type: 'LOGIN_USER_ERROR'
+        type: 'LOGIN_USER_ERROR',
       })
-
     }
 
     // clearAlert()
   }
 
-
   const logoutUser = () => {
     dispatch({ type: 'LOGOUT_USER' })
     removeUserToLocalStorage()
   }
-
-
-
 
   return (
     <AppContext.Provider
@@ -164,7 +156,7 @@ const AppProvider = ({ children }) => {
         login,
         register,
         logoutUser,
-
+        axiosFetch
       }}
     >
       {children}

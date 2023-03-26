@@ -1,28 +1,35 @@
 import { StatusCodes } from 'http-status-codes'
 import qrcode from 'qrcode'
-import QRCode from '../models/QRCode.js'
+import Item from '../models/Item.js'
 import { BadRequestError } from '../errors/index.js'
 
-const generateQRCode = async (req, res) => {
-  const { productId } = req.body
+const generateQRCodes = async (req, res) => {
+  const { productId, noOfQRCodes } = req.body
 
-  // TODO: verify valid product
-
-  if (!productId) {
-    throw new BadRequestError('invalid product id')
+  if (
+    !productId ||
+    !noOfQRCodes ||
+    !Number.isInteger(noOfQRCodes) ||
+    noOfQRCodes < 1
+  ) {
+    throw new BadRequestError('please provide all values')
   }
 
-  const qrCodeAlreadyExists = await QRCode.findOne({ productId })
+  const items = []
 
-  if (qrCodeAlreadyExists) {
-    throw new BadRequestError(`${productId} already has a QR code`)
+  for (let index = 0; index < noOfQRCodes; index++) {
+    let item = await Item.create({ productId })
+
+    const codeBase64 = await qrcode.toDataURL(
+      `${process.env.productPathforQRCode}/${item._id}`
+    )
+    
+    item.qr = codeBase64
+    item = await item.save()
+    items.push(item)
   }
 
-  const codeBase64 = await qrcode.toDataURL(`${process.env.productPathforQRCode}/${productId}`)
-
-  const qrCode = await QRCode.create({ productId, code: codeBase64 })
-
-  res.status(StatusCodes.OK).json({ qrCode: qrCode.code })
+  res.status(StatusCodes.OK).json(items)
 }
 
-export { generateQRCode }
+export { generateQRCodes }

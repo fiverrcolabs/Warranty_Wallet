@@ -10,7 +10,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please provide website'],
   },
-  subscription: { type: mongoose.Schema.Types.ObjectId, ref: 'Subscription', required: [true, 'No subscription found'] },
+  // subscription: { type: mongoose.Schema.Types.ObjectId, ref: 'Subscription', required: [true, 'No subscription found'] },
 })
 
 export default mongoose.model('Retailer', UserSchema)
