@@ -5,10 +5,13 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import Claims from './pages/Claims'
+
 import Products from './pages/Products'
 import AddProduct from './pages/product/AddProduct'
 import QRPage from './pages/product/QRPage'
-import Retailers from './pages/Retailers'
+
+import Connections from './pages/Connections'
+import Requests from './pages/connection/Requests'
 
 import Navbar from './components/Navbar'
 
@@ -38,7 +41,8 @@ export default function App() {
                 <Route path="/products/qr" element={<QRPage />} />
 
 
-                <Route path="/retailers" element={<Retailers />} />
+                <Route path="/connections" element={<Connections />} />
+                <Route path="/connections/requests" element={<Requests />} />
 
 
             </Routes>

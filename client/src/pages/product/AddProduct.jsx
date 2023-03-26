@@ -1,8 +1,13 @@
+
 import { useState } from 'react'
 import Product from '../../components/Product'
 import { useAppContext } from '../../context/appContext'
+import { MdOutlineCancel } from "react-icons/md";
+import { useNavigate } from 'react-router-dom';
+
 
 function AddProduct() {
+  const navigate=useNavigate();
   const { axiosFetch } = useAppContext()
   const [image, setImage] = useState(null)
   const [formData, setFormData] = useState({
@@ -47,7 +52,25 @@ function AddProduct() {
     <form onSubmit={handleSubmit}>
       <div className=' mainContainer container'>
         <div className='secondPageProducts container'>
-          <h1 className='px-3'>Add product</h1>
+           <div className='row'>
+
+          <div className='col-8' >
+            <h1 className='px-3'>Add Products</h1>
+          </div>
+
+
+
+          <div className='col topBar'>
+            <div className='topBarIcon'>
+              <MdOutlineCancel onClick={() => navigate('/products')} className='clickable cursor-pointer' size={40} />
+            </div>
+
+          </div>
+
+
+
+
+        </div>
 
           <div className='row p-3 px-3 '>
             <div className='col-6 mx-auto'>
@@ -100,6 +123,7 @@ function AddProduct() {
               aria-label='.form-control-lg example'
             /> */}
             </div>
+
           </div>
 
           <div className='row  p-3 mt-3'>

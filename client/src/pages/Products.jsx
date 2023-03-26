@@ -1,9 +1,12 @@
+
 import { useState, useEffect } from 'react'
 import Product from '../components/Product'
 import { useAppContext } from '../context/appContext'
+import { useNavigate } from 'react-router-dom';
 import { GrAddCircle } from 'react-icons/gr'
 
 function Products() {
+  var navigate=useNavigate();
   const { axiosFetch } = useAppContext()
   const [products, setProducts] = useState([])
 
@@ -15,6 +18,7 @@ function Products() {
     fetchData();
   }, [])
 
+
   return (
     <div className=' mainContainer container'>
       <div className='firstPageProducts container'>
@@ -25,7 +29,7 @@ function Products() {
 
           <div className='col topBar'>
             <div className='topBarIcon'>
-              <GrAddCircle size={40} />
+              <GrAddCircle onClick={() => navigate('/products/addproduct')} className='clickable cursor-pointer' size={40} />
             </div>
           </div>
         </div>

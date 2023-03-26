@@ -173,6 +173,15 @@
     /* width: 900px; */
 }
 
+.friendsContainer{
+    display: grid;
+    /* position: relative; */
+    column-gap: 50px;
+    row-gap: 50px;
+    grid-template-columns: auto auto auto;
+    padding: 20px;
+}
+
 textarea {
     height: 180px;
 }
@@ -185,6 +194,33 @@ textarea {
     margin-left: 80%;
 }
 
+.clickable{
+    cursor: pointer;
+}
+/* ---------friend--------------- */
+.bcontent {
+    margin-top: 10px;
+ 
+}
+
+.card-img{
+        max-width: 100px;
+        object-fit: cover;
+
+}
+@media (max-width: 1000px) {
+
+    .friendsContainer {
+        grid-template-columns: auto;
+        
+    }
+   
+}
+
+
+
+
+/* ------------------------------------------ */
 
 @media (max-width: 1000px) {
 
@@ -194,8 +230,6 @@ textarea {
     }
 
     .mainContainer {
-        /* margin: 300px; */
-        margin-top: 30px;
         max-width: 70%;
         margin-left: 25%;
 
@@ -223,9 +257,9 @@ textarea {
 
 @media (max-width: 600px) {
     .mainContainer {
-        margin-left: 0px;
-        margin: auto;
-        margin-top: 10px;
+        margin-left: auto;
+        margin-right: auto;
+        /* margin: auto; */
         /* text-align: center; */
         margin-bottom: 50px;
         max-width: 90%;
