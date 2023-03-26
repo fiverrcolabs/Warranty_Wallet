@@ -7,6 +7,7 @@ import Dashboard from './pages/Dashboard'
 import Claims from './pages/Claims'
 import Products from './pages/Products'
 import AddProduct from './pages/product/AddProduct'
+import Requests from './pages/friend/Requests'
 import QRPage from './pages/product/QRPage'
 import Retailers from './pages/Retailers'
 
@@ -39,6 +40,7 @@ export default function App() {
 
 
                 <Route path="/retailers" element={<Retailers />} />
+                <Route path="/retailers/requests" element={<Requests />} />
 
 
             </Routes>

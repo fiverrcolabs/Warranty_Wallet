@@ -1,4 +1,4 @@
-import Friend from '../components/Friend';
+import AddRequest from '../../components/AddRequest';
 import { FaUserFriends } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 
@@ -13,7 +13,7 @@ function Products() {
         <div className='row'>
 
           <div className='col-8' >
-            <h1 className='px-3'>Retailers</h1>
+            <h1 className='px-3'>Requests</h1>
           </div>
 
 
@@ -31,10 +31,10 @@ function Products() {
         </div>
 
         <div className='friendsContainer' >
-          <Friend />
-          <Friend />
-          <Friend />
-          <Friend />
+          <AddRequest />
+          <AddRequest />
+          <AddRequest />
+          <AddRequest />
         </div>
       </div>
 
