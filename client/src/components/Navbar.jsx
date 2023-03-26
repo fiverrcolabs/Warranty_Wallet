@@ -2,10 +2,9 @@ import { useNavigate, useLocation } from 'react-router-dom'
 
 import { RxDashboard } from "react-icons/rx";
 import { MdProductionQuantityLimits } from "react-icons/md";
-import { GiHamburgerMenu } from "react-icons/gi";
-
-
-
+import { GiRibbonMedal } from "react-icons/gi";
+import { RiUserAddLine } from "react-icons/ri";
+import { BiCartAlt } from "react-icons/bi";
 
 
 function Navbar() {
@@ -47,7 +46,7 @@ function Navbar() {
             <li onClick={() => navigate('/products')} className={pathMatchRoute('/products') ? 'navbarListItemActive' : 'navbarListItem'}>
 
               <h4 className='navbarListItemName'>
-                <span className='mx-2'><MdProductionQuantityLimits /></span>
+                <span className='mx-2'><BiCartAlt /></span>
                 Products
               </h4>
             </li>
@@ -71,7 +70,7 @@ function Navbar() {
             }>
 
               <h4 className='navbarListItemName'>
-                <span className='mx-2'><RxDashboard /></span>
+                <span className='mx-2'><RiUserAddLine /></span>
                 {user.type==="MANUFACTURER"? 'Retailers' : 'Not allow'}
               </h4>
             </li>
