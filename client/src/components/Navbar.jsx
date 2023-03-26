@@ -12,6 +12,11 @@ function Navbar() {
   const navigate = useNavigate()
   const location = useLocation()
 
+  const user={
+    email:"test@gmail.com",
+    type:"MANUFACTURER"
+  }
+
   const pathMatchRoute = (route) => {
     // console.log(location.pathname.slice(0,route.length-1))
     if (route === location.pathname || route===location.pathname.slice(0,route.length)) {
@@ -59,15 +64,15 @@ function Navbar() {
               </h4>
             </li>
 
-            <li onClick={() => navigate('/retailers')} className={
-              pathMatchRoute('/retailers')
+            <li onClick={() => navigate('/connections')} className={
+              pathMatchRoute('/connections')
                 ? 'navbarListItemActive'
                 : 'navbarListItem'
             }>
 
               <h4 className='navbarListItemName'>
                 <span className='mx-2'><RxDashboard /></span>
-                Retailers
+                {user.type==="MANUFACTURER"? 'Retailers' : 'Not allow'}
               </h4>
             </li>
 

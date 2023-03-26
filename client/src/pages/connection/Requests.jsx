@@ -1,5 +1,5 @@
-import Friend from '../components/Friend';
-import { FaUserFriends } from "react-icons/fa";
+import AddRequest from '../../components/AddRequest';
+import { MdOutlineCancel } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 
 
@@ -13,14 +13,14 @@ function Products() {
         <div className='row'>
 
           <div className='col-8' >
-            <h1 className='px-3'>Retailers</h1>
+            <h1 className='px-3'>Requests</h1>
           </div>
 
 
 
           <div className='col topBar'>
             <div className='topBarIcon'>
-              <FaUserFriends onClick={() => navigate('/products/addproduct')} className='clickable cursor-pointer' size={40} />
+            <MdOutlineCancel onClick={() => navigate('/connections')} className='clickable cursor-pointer' size={40} />
             </div>
 
           </div>
@@ -31,10 +31,10 @@ function Products() {
         </div>
 
         <div className='friendsContainer' >
-          <Friend />
-          <Friend />
-          <Friend />
-          <Friend />
+          <AddRequest />
+          <AddRequest />
+          <AddRequest />
+          <AddRequest />
         </div>
       </div>
 

@@ -1,4 +1,4 @@
-import AddRequest from '../../components/AddRequest';
+import Friend from '../components/Friend';
 import { FaUserFriends } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 
@@ -13,14 +13,14 @@ function Products() {
         <div className='row'>
 
           <div className='col-8' >
-            <h1 className='px-3'>Requests</h1>
+            <h1 className='px-3'>Retailers</h1>
           </div>
 
 
 
           <div className='col topBar'>
             <div className='topBarIcon'>
-              <FaUserFriends onClick={() => navigate('/products/addproduct')} className='clickable cursor-pointer' size={40} />
+              <FaUserFriends onClick={() => navigate('/connections/requests')} className='clickable cursor-pointer' size={40} />
             </div>
 
           </div>
@@ -31,10 +31,10 @@ function Products() {
         </div>
 
         <div className='friendsContainer' >
-          <AddRequest />
-          <AddRequest />
-          <AddRequest />
-          <AddRequest />
+          <Friend />
+          <Friend />
+          <Friend />
+          <Friend />
         </div>
       </div>
 

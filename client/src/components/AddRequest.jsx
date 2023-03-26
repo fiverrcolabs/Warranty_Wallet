@@ -1,6 +1,7 @@
 import React from 'react';
 import profileImg from '../assets/defaultimg.png';
 import { TbCircleCheckFilled } from "react-icons/tb";
+import { RiCloseCircleFill } from "react-icons/ri";
 
 // RiCloseCircleFill
 
@@ -16,8 +17,9 @@ export default function Friend() {
                     <div class="col-7">
                         <div class="card-body">
                             <h6 class="card-title">Suresh Dasari</h6>
-                            <a href="#" class="btn btn-primary btn-sm">Send request</a>
-                            <TbCircleCheckFilled/>
+                        
+                            <TbCircleCheckFilled size={40} className='clickable cursor-pointer' color={'green'}/>
+                            <RiCloseCircleFill size={40}  className='clickable cursor-pointer' color={'red'}/>
                         </div>
                     </div>
                 </div>
