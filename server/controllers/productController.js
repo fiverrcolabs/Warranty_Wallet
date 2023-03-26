@@ -24,8 +24,7 @@ const addProduct = async (req, res, next) => {
     productName,
     polices,
     warrentyPeriod,
-    imageData,
-    imageType,
+    imageData
   } = req.body
 
   if (!productId || !productName || !warrentyPeriod) {
@@ -44,7 +43,6 @@ const addProduct = async (req, res, next) => {
     polices,
     warrentyPeriod,
     imageData,
-    imageType,
   })
 
   res.status(StatusCodes.CREATED).json(product)

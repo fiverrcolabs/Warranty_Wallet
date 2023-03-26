@@ -29,4 +29,4 @@ UserSchema.pre('save', async function () {
   this.purchaseDate = Date.now()
 })
 
-export default mongoose.model('Item', UserSchema)
+export default mongoose.model('Warrenty', UserSchema)

@@ -1,6 +1,9 @@
 import express from 'express'
 const app = express()
 
+app.use(express.json({ limit: '5mb' }));
+app.use(express.urlencoded({ extended: true, limit: '5mb' }));
+
 import dotenv from 'dotenv'
 dotenv.config()
 

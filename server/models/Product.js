@@ -10,7 +10,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please provide productName'],
   },
-  imageData: { String },
+  imageData: { type: String },
   polices: { type: String },
   warrentyPeriod: {
     type: Number, // in months
