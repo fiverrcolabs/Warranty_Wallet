@@ -4,7 +4,7 @@ import User from '../models/User.js'
 import Manufacturer from '../models/Manufacturer.js'
 import Retailer from '../models/Retailer.js'
 import { BadRequestError, UnAuthenticatedError } from '../errors/index.js'
-import Subscription from '../models/Subscription.js'
+// import Subscription from '../models/Subscription.js'
 
 const register = async (req, res, next) => {
   console.log(req.body)

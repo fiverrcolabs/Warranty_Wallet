@@ -1,8 +1,9 @@
 import express from "express"
 const router = express.Router()
 
-import { generateQRCode } from "../controllers/qrCodeController.js"
+import { generateQRCodes } from "../controllers/qrCodeController.js"
 
-router.route('/qrgen').post(generateQRCode)
+// TODO: role based access
+router.route('/generateQR').post(generateQRCodes)
 
 export default router

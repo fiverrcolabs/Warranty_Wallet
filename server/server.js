@@ -21,6 +21,9 @@ import connectDB from './db/connect.js'
 // routers
 import authRouter from './routes/authRoute.js'
 import qrCodeRouter from './routes/qrCodeRoute.js'
+import productRoute from './routes/productRoute.js'
+import itemRoute from './routes/itemRoute.js'
+import warrentyRoute from './routes/warrentyRoute.js'
 
 // middleware
 import notFoundMiddleware from './middleware/not-found.js'
@@ -39,6 +42,9 @@ app.get('/', (req, res) => {
 
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/qr', qrCodeRouter)
+app.use('/api/v1/product', productRoute)
+app.use('/api/v1/item', itemRoute)
+app.use('/api/v1/warrenty', warrentyRoute)
 
 app.use(notFoundMiddleware)
 app.use(errorHandlerMiddeware)
