@@ -10,7 +10,7 @@ import { GrAddCircle } from 'react-icons/gr'
 
 
 function Products() {
-  var navigate = useNavigate();
+  const navigate = useNavigate();
   const { axiosFetch } = useAppContext()
   const [products, setProducts] = useState([])
   const [isLoading, setIsLoading] = useState(true)

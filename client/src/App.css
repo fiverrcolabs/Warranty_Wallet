@@ -217,6 +217,18 @@ textarea {
         object-fit: cover;
 
 }
+
+/* ------------------ */
+
+.popup{
+    max-width: 500px;
+    box-shadow: rgba(118, 126, 134, 0.2) 0px 8px 24px;
+    border-radius: 15px;
+    margin-top: 100px;
+    padding: 15px;
+}
+
+
 @media (max-width: 1000px) {
 
     .friendsContainer {
@@ -271,7 +283,7 @@ textarea {
         /* margin: auto; */
         /* text-align: center; */
         margin-bottom: 50px;
-        max-width: 90%;
+        max-width: 100%;
 
 
     }

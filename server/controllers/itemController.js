@@ -16,7 +16,7 @@ const queryItemsByProductId = async (req, res) => {
   const { productId } = req.query
 
   if (!productId) {
-    throw new BadRequestError('please provide warrentyId')
+    throw new BadRequestError('please provide productId')
   }
 
   const items = await Item.find({ productId })

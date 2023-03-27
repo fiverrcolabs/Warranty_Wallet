@@ -6,6 +6,10 @@ import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import Claims from './pages/Claims'
 
+import Warranty from './pages/Warranty'
+import QRReader from './pages/QRReader'
+
+
 import Products from './pages/Products'
 import AddProduct from './pages/product/AddProduct'
 import ViewProduct from './pages/product/ViewProduct'
@@ -37,9 +41,14 @@ export default function App() {
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/claims" element={<Claims />} />
 
+                <Route path="/warranty" element={<Warranty />} />
+                <Route path="/qrreader" element={<QRReader />} />
+
+
+
                 <Route path="/products" element={<Products />} />
                 <Route path="/products/addproduct" element={<AddProduct />} />
-                <Route path="/products/qr" element={<QRPage />} />
+                <Route path="/products/:productid/qr" element={<QRPage />} />
                 <Route path="/products/:productid" element={<ViewProduct />} />
 
 

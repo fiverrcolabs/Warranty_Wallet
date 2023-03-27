@@ -12,13 +12,14 @@ function AddProduct() {
     const navigate = useNavigate();
     const { axiosFetch } = useAppContext();
     const { productid } = useParams()
-    const [image, setImage] = useState(null)
+    // const [image, setImage] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
     const [formData, setFormData] = useState({
         productId: '',
         productName: '',
         polices: '',
         warrentyPeriod: 0,
+        imageData:null
     });
 
     useEffect(() => {
@@ -40,14 +41,14 @@ function AddProduct() {
     }, [])
 
 
-    const handleImageChange = (event) => {
-        const file = event.target.files[0]
-        const reader = new FileReader()
-        reader.readAsDataURL(file)
-        reader.onloadend = () => {
-            setImage(reader.result)
-        }
-    }
+    // const handleImageChange = (event) => {
+    //     const file = event.target.files[0]
+    //     const reader = new FileReader()
+    //     reader.readAsDataURL(file)
+    //     reader.onloadend = () => {
+    //         setImage(reader.result)
+    //     }
+    // }
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -57,23 +58,23 @@ function AddProduct() {
         }));
     };
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        try {
-            const createdProduct = await axiosFetch.post('/product/addProduct', {
-                ...formData,
-                imageData: image
-            })
-            console.log(createdProduct);
-            toast.success("Product Created Successfully")
+    // const handleSubmit = async (event) => {
+    //     event.preventDefault();
+    //     try {
+    //         const createdProduct = await axiosFetch.post('/product/addProduct', {
+    //             ...formData,
+    //             imageData: image
+    //         })
+    //         console.log(createdProduct);
+    //         toast.success("Product Created Successfully")
 
-        } catch (error) {
-            console.log(error.response.data.msg)
-            toast.error(error.response.data.msg)
+    //     } catch (error) {
+    //         console.log(error.response.data.msg)
+    //         toast.error(error.response.data.msg)
 
-        }
+    //     }
 
-    };
+    // };
 
     if (isLoading) {
         return (
@@ -103,7 +104,7 @@ function AddProduct() {
                     <div className='col-6 mx-auto'>
                         <div>
                             <div className="mb-4 mt-4 d-flex justify-content-center">
-                                <img src={image ? image : "https://mdbootstrap.com/img/Photos/Others/placeholder.jpg"}
+                                <img src={formData.imageData ? formData.imageData : "https://mdbootstrap.com/img/Photos/Others/placeholder.jpg"}
                                     alt="example placeholder" className='rounded' style={{ width: "280px" }} />
                             </div>
 
@@ -143,7 +144,7 @@ function AddProduct() {
 
                         <div class="input-group mb-3 mt-3">
                             <input disabled type="text" class="form-control form-control-lg border border-info " placeholder="QR count" aria-label="Recipient's username" aria-describedby="basic-addon2" />
-                            <button onClick={() => navigate('/products/qr')} class="btn btn-outline-info clickable" id="basic-addon2">Add QR</button>
+                            <button onClick={() => navigate(`/products/${formData.productId}/qr`)} class="btn btn-outline-info clickable" id="basic-addon2">Add QR</button>
                         </div>
 
                     </div>
@@ -156,7 +157,7 @@ function AddProduct() {
                             htmlFor='exampleFormControlTextarea1'
                             className='form-label'
                         >
-                            Polices
+                            Polices:
                         </label>
                         <textarea
                             disabled
