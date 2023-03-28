@@ -118,6 +118,15 @@ const approveRetailerRequest = async (req, res) => {
   res.status(StatusCodes.OK).json(approveRetailerRequest)
 }
 
+const getManufacturerSentRequests = async (req, res) => {
+  const getManufacturerSentRequests = await Retailer.find(
+    {
+      manufacturerRequests: { $in: [req.user.userId] },
+    },
+  )
+  res.status(StatusCodes.OK).json(getManufacturerSentRequests)
+}
+
 export {
   getRetailerFriends,
   getNonRetailerFriends,
@@ -125,4 +134,5 @@ export {
   sendRetailerRequest,
   removeRetailerRequest,
   approveRetailerRequest,
+  getManufacturerSentRequests
 }
