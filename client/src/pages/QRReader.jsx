@@ -11,7 +11,7 @@ function QRscanner() {
     const [startScan, setStartScan] = useState(false);
 
     const closeCam = async () => {
-        navigate('/products/qr')
+        navigate('/warranty')
         // const stream = await navigator.mediaDevices.getUserMedia({
         //     audio: false,
         //     video: true,
@@ -41,7 +41,7 @@ function QRscanner() {
                 <div className='secondPageProducts container' >
 
                     <div >
-                        <div className='mx-auto' style={{ width: 300 }}>
+                        <div className='mx-auto rounded' style={{ width: 300 }}>
                             <QrReader
                                 onResult={(result, error) => {
                                     if (!!result) {
