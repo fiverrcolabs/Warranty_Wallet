@@ -27,6 +27,7 @@ import qrCodeRouter from './routes/qrCodeRoute.js'
 import productRoute from './routes/productRoute.js'
 import itemRoute from './routes/itemRoute.js'
 import warrentyRoute from './routes/warrentyRoute.js'
+import manufacturerRoute from './routes/manufacturerRoute.js'
 
 // middleware
 import notFoundMiddleware from './middleware/not-found.js'
@@ -45,9 +46,10 @@ app.get('/', (req, res) => {
 
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/qr', qrCodeRouter)
-app.use('/api/v1/product', productRoute)
+app.use('/api/v1/product', authenticateUser, productRoute)
 app.use('/api/v1/item', itemRoute)
 app.use('/api/v1/warrenty', warrentyRoute)
+app.use('/api/v1/manufacturer', authenticateUser, manufacturerRoute)
 
 app.use(notFoundMiddleware)
 app.use(errorHandlerMiddeware)

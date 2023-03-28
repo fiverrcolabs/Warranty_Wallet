@@ -41,7 +41,7 @@ const register = async (req, res, next) => {
         ],
         { session }
       )
-    } else if (role === 'Retailer') {
+    } else if (role === 'RETAILER') {
       const { company, website } = req.body
       // const subscriptionObject = await Subscription.findOne({ type: subscription })
       const retailer = await Retailer.create(

@@ -10,6 +10,14 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please provide website'],
   },
+  manufacturerFriends: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }],
+  manufacturerRequests: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }]
   // subscription: { type: mongoose.Schema.Types.ObjectId, ref: 'Subscription', required: [true, 'No subscription found'] },
 })
 
