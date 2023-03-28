@@ -20,8 +20,19 @@ const AppProvider = ({ children }) => {
 
   // axios
   const axiosFetch = axios.create({
-    baseURL: import.meta.env.VITE_SERVER_URL
+    baseURL: import.meta.env.VITE_SERVER_URL,
   })
+
+  // request
+  axiosFetch.interceptors.request.use(
+    (config) => {
+      config.headers.Authorization = `Bearer ${state.token}`
+      return config
+    },
+    (error) => {
+      return Promise.reject(error)
+    }
+  )
 
   // ----------------login-------------
 
@@ -152,7 +163,7 @@ const AppProvider = ({ children }) => {
         login,
         register,
         logoutUser,
-        axiosFetch
+        axiosFetch,
       }}
     >
       {children}

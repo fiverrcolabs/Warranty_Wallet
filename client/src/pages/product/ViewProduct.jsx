@@ -13,14 +13,16 @@ function AddProduct() {
     const { axiosFetch } = useAppContext();
     const { productid } = useParams()
     // const [image, setImage] = useState(null)
-    const [isLoading, setIsLoading] = useState(true)
+    const [qrCount, setQrCount] = useState(0)
     const [formData, setFormData] = useState({
+        _id: '',
         productId: '',
         productName: '',
         polices: '',
         warrentyPeriod: 0,
         imageData:null
     });
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         async function fetchData() {
@@ -28,6 +30,9 @@ function AddProduct() {
                 const fetchedProducts = await axiosFetch.get(`/product/${productid}`)
                 console.log(fetchedProducts);
                 setFormData(fetchedProducts.data)
+
+                const qrCountForProduct = await axiosFetch.get(`/item/itemCount?productId=${productid}`)
+                setQrCount(qrCountForProduct.data.count)
                 setIsLoading(false)
 
             } catch (error) {
@@ -142,9 +147,9 @@ function AddProduct() {
 
                         />
 
-                        <div class="input-group mb-3 mt-3">
-                            <input disabled type="text" class="form-control form-control-lg border border-info " placeholder="QR count" aria-label="Recipient's username" aria-describedby="basic-addon2" />
-                            <button onClick={() => navigate(`/products/${formData.productId}/qr`)} class="btn btn-outline-info clickable" id="basic-addon2">Add QR</button>
+                        <div className="input-group mb-3 mt-3">
+                            <input disabled type="text" className="form-control form-control-lg border border-info " placeholder={`${qrCount}`} aria-label="Recipient's username" aria-describedby="basic-addon2" />
+                            <button onClick={() => navigate(`/products/${productid}/qr`)} className="btn btn-outline-info clickable" id="basic-addon2">Add QR</button>
                         </div>
 
                     </div>
