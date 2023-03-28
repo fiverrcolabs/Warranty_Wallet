@@ -23,4 +23,16 @@ const queryItemsByProductId = async (req, res) => {
   res.status(StatusCodes.OK).json(items)
 }
 
-export { getItemById, queryItemsByProductId }
+const queryItemsCountByProductId = async (req, res) => {
+  const { productId } = req.query
+
+  if (!productId) {
+    throw new BadRequestError('please provide productId')
+  }
+
+  const count = (await Item.find({ productId })).length
+  console.log(count)
+  res.status(StatusCodes.OK).json({ count })
+}
+
+export { getItemById, queryItemsByProductId, queryItemsCountByProductId }

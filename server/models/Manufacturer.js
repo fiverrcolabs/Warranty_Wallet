@@ -9,7 +9,19 @@ const UserSchema = new mongoose.Schema({
   website: {
     type: String,
     required: [true, 'Please provide website'],
-  }
+  },
+  products: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Product'
+  }],
+  retailerFriends: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }],
+  retailerRequests: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }]
   // subscription: { type: mongoose.Schema.Types.ObjectId, ref: 'Subscription', required: [true, 'No subscription found'] },
 })
 
