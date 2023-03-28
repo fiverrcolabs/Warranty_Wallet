@@ -13,7 +13,7 @@ function Navbar() {
 
   const user = {
     email: "test@gmail.com",
-    type: "MANUFACTURER"
+    role: "MANUFACTURER"
   }
 
   const pathMatchRoute = (route) => {
@@ -43,13 +43,13 @@ function Navbar() {
             </h4>
           </li>
 
-          <li onClick={() => navigate('/products')} className={pathMatchRoute('/products') ? 'navbarListItemActive' : 'navbarListItem'}>
+          {user.role === "MANUFACTURER" && <li onClick={() => navigate('/products')} className={pathMatchRoute('/products') ? 'navbarListItemActive' : 'navbarListItem'}>
 
             <h4 className='navbarListItemName'>
               <span className='mx-2'><BiCartAlt /></span>
               Products
             </h4>
-          </li>
+          </li>}
 
           <li onClick={() => navigate('/claims')} className={
             pathMatchRoute('/claims')
@@ -63,6 +63,7 @@ function Navbar() {
             </h4>
           </li>
 
+
           <li onClick={() => navigate('/connections')} className={
             pathMatchRoute('/connections')
               ? 'navbarListItemActive'
@@ -71,12 +72,12 @@ function Navbar() {
 
             <h4 className='navbarListItemName'>
               <span className='mx-2'><RiUserAddLine /></span>
-              {user.type === "MANUFACTURER" ? 'Retailers' : 'Not allow'}
+              {user.role === "MANUFACTURER" ? 'Retailers' : 'Not allow'}
             </h4>
           </li>
 
 
-          <li onClick={() => navigate('/warranty')} className={
+          {!(user.role === "MANUFACTURER") && <li onClick={() => navigate('/warranty')} className={
             pathMatchRoute('/warranty')
               ? 'navbarListItemActive'
               : 'navbarListItem'
@@ -86,7 +87,7 @@ function Navbar() {
               <span className='mx-2'><GiRibbonMedal /></span>
               Warranty
             </h4>
-          </li>
+          </li>}
 
         </ul>
       </nav>

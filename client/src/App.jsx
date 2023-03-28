@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-
+import ProtectedRoute from './pages/ProtectedRoute'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
@@ -38,22 +38,28 @@ export default function App() {
 
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/claims" element={<Claims />} />
 
-                <Route path="/warranty" element={<Warranty />} />
-                <Route path="/qrreader" element={<QRReader />} />
+                <Route path='/' element={<ProtectedRoute />} >
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/claims" element={<Claims />} />
 
-
-
-                <Route path="/products" element={<Products />} />
-                <Route path="/products/addproduct" element={<AddProduct />} />
-                <Route path="/products/:productid/qr" element={<QRPage />} />
-                <Route path="/products/:productid" element={<ViewProduct />} />
+                    <Route path="/warranty" element={<Warranty />} />
+                    <Route path="/qrreader" element={<QRReader />} />
 
 
-                <Route path="/connections" element={<Connections />} />
-                <Route path="/connections/requests" element={<Requests />} />
+
+                    <Route path="/products" element={<Products />} />
+                    <Route path="/products/addproduct" element={<AddProduct />} />
+                    <Route path="/products/:productid/qr" element={<QRPage />} />
+                    <Route path="/products/:productid" element={<ViewProduct />} />
+
+
+                    <Route path="/connections" element={<Connections />} />
+                    <Route path="/connections/requests" element={<Requests />} />
+
+                </Route>
+
+
 
 
             </Routes>

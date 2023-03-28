@@ -17,6 +17,7 @@ function QRPage() {
   const { axiosFetch } = useAppContext()
   const [products, setProducts] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const [qrCount, setQrCount] = useState(0)
 
   const [show, setShow] = useState(false);
 
@@ -27,20 +28,44 @@ function QRPage() {
 
   useEffect(() => {
     async function fetchData() {
-      // try {
-      //   const fetchedProducts = await axiosFetch.get(`/item/queryItems?productId=${productid}`)
-      //   console.log(fetchData)
-      //   setProducts(fetchedProducts.data)
-      //   setIsLoading(false)
-      // } catch (error) {
-      //   console.log(error.response.data.msg)
-      //   toast.error(error.response.data.msg)
-      // }
-      setProducts([{ _id: "1" }, { _id: "2" }, { _id: "3" }, { _id: "4" }, { _id: "5" }, { _id: "6" }, { _id: "7" }])
+      try {
+        const fetchedProducts = await axiosFetch.get(`/item/queryItems?productId=${productid}`)
+        console.log(fetchedProducts)
+        setProducts(fetchedProducts.data)
+        setIsLoading(false)
+      } catch (error) {
+        console.log(error.response.data.msg)
+        toast.error(error.response.data.msg)
+      }
+      // setProducts([{ _id: "1" }, { _id: "2" }, { _id: "3" }, { _id: "4" }, { _id: "5" }, { _id: "6" }, { _id: "7" }])
 
     }
     fetchData();
   }, [])
+
+  const handleChange = (event) => {
+    if(event.target.value>0){
+      setQrCount(event.target.value)
+    }
+  }
+  const generateQR = async () => {
+    console.log("-----",qrCount, productid)
+    try {
+      const fetchedProducts = await axiosFetch.post(`/qr/generateQR`, {
+        productid,
+        noOfQRCodes:parseInt(qrCount) 
+      })
+      console.log(fetchedProducts)
+      setProducts(fetchedProducts.data)
+
+    } catch (error) {
+      console.log(error.response.data.msg)
+      toast.error(error.response.data.msg)
+    }
+  
+  }
+
+
 
   if (isLoading) {
     return (
@@ -77,17 +102,21 @@ function QRPage() {
             <Modal.Body>
              
               <Form.Label> Enter number of QR codes</Form.Label>
-              <Form.Control
-                type="number"
-                placeholder="100"
-                autoFocus
+           
+                 <input
+                className='form-control form-control-lg border border-info mt-3'
+                type='number'
+                name='productId'
+                placeholder='QR count'
+                aria-label='.form-control-lg example'
+                onChange={handleChange}
               />
 
 
             </Modal.Body>
             <Modal.Footer>
 
-              <Button variant="primary" onClick={handleClose}>
+              <Button  variant="primary" onClick={generateQR}>
                 generate
               </Button>
             </Modal.Footer>

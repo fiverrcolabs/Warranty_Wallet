@@ -1,8 +1,9 @@
-import React, { useReducer, useContext } from 'react'
+import React, { useReducer, useContext  } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 
 import reducer from './reducer'
+
 
 const user = localStorage.getItem('user')
 const token = localStorage.getItem('token')
@@ -17,6 +18,7 @@ const AppContext = React.createContext()
 
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
+
 
   // axios
   const axiosFetch = axios.create({
@@ -95,6 +97,9 @@ const AppProvider = ({ children }) => {
         user,
         token,
       })
+
+     
+
     } catch (error) {
       console.log(error.response.data.msg)
       toast.error(error.response.data.msg)

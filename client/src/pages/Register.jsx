@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import {useEffect, useState } from 'react';
 // import { MDBContainer, MDBCol, MDBRow, MDBBtn, MDBIcon, MDBInput, MDBCheckbox } from 'mdb-react-ui-kit';
 import loginImage from '../assets/loginpic.png';
 import logo from '../assets/Logog_03.png';
@@ -26,9 +26,15 @@ function Register() {
     RETAILER: "RETAILER",
     CONSUMER: "CONSUMER"
   }
-  
+  const navigate=useNavigate()
   const [userType, setJustifyActive] = useState(USER.MANUFACTURER);
-  const { register, isLoading } = useAppContext();
+  const { register, isLoading ,user } = useAppContext();
+
+  useEffect(() => {
+    if (user) {
+        navigate('/dashboard')
+    }
+  }, [user, navigate])
 
  
 
