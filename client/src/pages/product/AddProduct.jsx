@@ -1,13 +1,14 @@
-
 import { useState } from 'react'
-import Product from '../../components/Product'
+import { useNavigate } from 'react-router-dom'
+
 import { useAppContext } from '../../context/appContext'
-import { MdOutlineCancel } from "react-icons/md";
-import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify'
+import { MdOutlineCancel } from "react-icons/md"
+
 
 
 function AddProduct() {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const { axiosFetch } = useAppContext()
   const [image, setImage] = useState(null)
   const [formData, setFormData] = useState({
@@ -36,59 +37,79 @@ function AddProduct() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const createdProduct = await axiosFetch.post('/product/addProduct', {
-      ...formData,
-      imageData: image
-    })
-    // const obj = {
-    //   ...formData,
-    //   imageData: image
-    // }
-    // console.log(obj);
-    console.log(createdProduct);
+    try {
+      const createdProduct = await axiosFetch.post('/product/addProduct', {
+        ...formData,
+        imageData: image
+      })
+      console.log(createdProduct);
+      toast.success("Product Created Successfully")
+
+    } catch (error) {
+      console.log(error.response.data.msg)
+      toast.error(error.response.data.msg)
+
+    }
+
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <div className=' mainContainer container'>
         <div className='secondPageProducts container'>
-           <div className='row'>
+          <div className='row'>
 
-          <div className='col-8' >
-            <h1 className='px-3'>Add Products</h1>
-          </div>
-
-
-
-          <div className='col topBar'>
-            <div className='topBarIcon'>
-              <MdOutlineCancel onClick={() => navigate('/products')} className='clickable cursor-pointer' size={40} />
+            <div className='col-8' >
+              <h1 className='px-3'>Add Products</h1>
+            </div>
+            <div className='col topBar'>
+              <div className='topBarIcon'>
+                <MdOutlineCancel onClick={() => navigate('/products')} className='clickable cursor-pointer' size={40} />
+              </div>
             </div>
 
           </div>
 
-
-
-
-        </div>
-
           <div className='row p-3 px-3 '>
             <div className='col-6 mx-auto'>
+
+              {/* 
               <input
                 type='file'
                 accept='image/*'
                 onChange={handleImageChange}
-              />
-              {image && (
+
+              /> */}
+              {/* {image && (
                 <div>
                   <img
                     src={image}
                     alt='Preview'
-                    style={{ maxWidth: '100%', maxHeight: '500px' }}
+
+                    style={{ maxWidth: '100%', maxHeight: '300px' }}
                   />
                 </div>
-              )}
+              )} */}
+
+              <div>
+                <div className="mb-4 d-flex justify-content-center">
+                  <img src={image ? image : "https://mdbootstrap.com/img/Photos/Others/placeholder.jpg"}
+                    alt="example placeholder" className='rounded' style={{ width: "300px" }} />
+                </div>
+                <div className="d-flex justify-content-center">
+                  <div className="btn btn-info ">
+                    <label className="form-label text-white m-1" htmlFor="customFile1">Choose file</label>
+                    <input onChange={handleImageChange} type="file" className="form-control d-none" id="customFile1" />
+                  </div>
+                </div>
+              </div>
+
+
             </div>
+
+
+
+
 
             <div className='col-md-6 col-sm-12 '>
               <input
@@ -143,8 +164,8 @@ function AddProduct() {
               ></textarea>
             </div>
 
-            <button type="submit" className='btn btn-info btn-lg'>
-              Large button
+            <button type="submit" className='btn btn-info btn-lg  text-white'>
+              Submit
             </button>
           </div>
         </div>

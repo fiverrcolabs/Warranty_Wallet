@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 function Products() {
-  var navigate=useNavigate();
+  var navigate = useNavigate();
 
   return (
     <div className=" mainContainer container">
@@ -15,9 +15,6 @@ function Products() {
           <div className='col-8' >
             <h1 className='px-3'>Retailers</h1>
           </div>
-
-
-
           <div className='col topBar'>
             <div className='topBarIcon'>
               <FaUserFriends onClick={() => navigate('/connections/requests')} className='clickable cursor-pointer' size={40} />

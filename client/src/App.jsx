@@ -1,13 +1,18 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-// import LandingPage from './components/pages/LandingPage'
+
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import Claims from './pages/Claims'
 
+import Warranty from './pages/Warranty'
+import QRReader from './pages/QRReader'
+
+
 import Products from './pages/Products'
 import AddProduct from './pages/product/AddProduct'
+import ViewProduct from './pages/product/ViewProduct'
 import QRPage from './pages/product/QRPage'
 
 import Connections from './pages/Connections'
@@ -15,7 +20,7 @@ import Requests from './pages/connection/Requests'
 
 import Navbar from './components/Navbar'
 
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import 'bootstrap/dist/css/bootstrap.css';
@@ -36,9 +41,15 @@ export default function App() {
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/claims" element={<Claims />} />
 
+                <Route path="/warranty" element={<Warranty />} />
+                <Route path="/qrreader" element={<QRReader />} />
+
+
+
                 <Route path="/products" element={<Products />} />
                 <Route path="/products/addproduct" element={<AddProduct />} />
-                <Route path="/products/qr" element={<QRPage />} />
+                <Route path="/products/:productid/qr" element={<QRPage />} />
+                <Route path="/products/:productid" element={<ViewProduct />} />
 
 
                 <Route path="/connections" element={<Connections />} />

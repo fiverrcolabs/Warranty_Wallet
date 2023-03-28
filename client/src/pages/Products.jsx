@@ -1,22 +1,40 @@
-
 import { useState, useEffect } from 'react'
-import Product from '../components/Product'
-import { useAppContext } from '../context/appContext'
 import { useNavigate } from 'react-router-dom';
+
+import { useAppContext } from '../context/appContext'
+import Loader from '../components/Loader'
+import Product from '../components/Product'
+
+import { toast } from 'react-toastify'
 import { GrAddCircle } from 'react-icons/gr'
 
+
 function Products() {
-  var navigate=useNavigate();
+  const navigate = useNavigate();
   const { axiosFetch } = useAppContext()
   const [products, setProducts] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     async function fetchData() {
-      const fetchedProducts = await axiosFetch.get('/product/allProducts')
-      setProducts(fetchedProducts.data)
+      try {
+        const fetchedProducts = await axiosFetch.get('/product/allProducts')
+        setProducts(fetchedProducts.data)
+        setIsLoading(false)
+      } catch (error) {
+        console.log(error.response.data.msg)
+        toast.error(error.response.data.msg)
+      }
+
     }
     fetchData();
   }, [])
+
+  if (isLoading) {
+    return (
+        <Loader />
+    )
+}
 
 
   return (

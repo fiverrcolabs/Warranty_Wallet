@@ -10,6 +10,12 @@
 
 }
 
+.loader{
+    color: #19A7CE;
+    margin-top: 230px;
+    margin-left: 30%;
+}
+
 
 .navbar {
     position: fixed;
@@ -135,11 +141,19 @@
 .card {
     /* margin: auto ; */
     max-width: 350px;
-    max-height: 350px;
+    max-height: 340px;
     display: flex;
     box-shadow: rgba(118, 126, 134, 0.2) 0px 8px 24px;
 }
+/* .card-img-top{
+    
+    height: 200px;
 
+} */
+.fixCard{
+    width:100%;
+    height: 80%;
+}
 .productContainer {
     display: grid;
     /* position: relative; */
@@ -194,6 +208,7 @@ textarea {
     margin-left: 80%;
 }
 
+
 .clickable{
     cursor: pointer;
 }
@@ -208,6 +223,18 @@ textarea {
         object-fit: cover;
 
 }
+
+/* ------------------ */
+
+.popup{
+    max-width: 500px;
+    box-shadow: rgba(118, 126, 134, 0.2) 0px 8px 24px;
+    border-radius: 15px;
+    margin-top: 100px;
+    padding: 15px;
+}
+
+
 @media (max-width: 1000px) {
 
     .friendsContainer {
@@ -262,22 +289,26 @@ textarea {
         /* margin: auto; */
         /* text-align: center; */
         margin-bottom: 50px;
-        max-width: 90%;
+        max-width: 100%;
 
 
     }
 
     .productContainer {
 
-        display: flex;
+        display: grid;
         /* position: relative; */
         /* column-gap: 50px;
         row-gap: 50px; */
-        /* grid-template-columns: auto; */
+        grid-template-columns: auto;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         padding: 20px;
+    }
+    .fixCard{
+        width:100%;
+        height: 250px;
     }
 
     .QRContainer {

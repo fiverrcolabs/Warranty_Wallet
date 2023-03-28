@@ -14,7 +14,7 @@ const UserSchema = new mongoose.Schema({
   polices: { type: String },
   warrentyPeriod: {
     type: Number, // in months
-    required: [true, 'Please provide website'],
+    required: [true, 'Please provide warranty period'],
     min: 0,
   },
 })

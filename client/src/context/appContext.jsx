@@ -9,9 +9,6 @@ const token = localStorage.getItem('token')
 
 const initialState = {
   isLoading: false,
-  showAlert: false,
-  alertText: '',
-  alertType: '',
   user: user ? JSON.parse(user) : null,
   token: token,
 }
@@ -28,16 +25,16 @@ const AppProvider = ({ children }) => {
 
   // ----------------login-------------
 
-  const displayAlert = () => {
-    dispatch({ type: 'SHOW_ALERT' })
-    clearAlert()
-  }
+  // const displayAlert = () => {
+  //   dispatch({ type: 'SHOW_ALERT' })
+  //   clearAlert()
+  // }
 
-  const clearAlert = () => {
-    setTimeout(() => {
-      dispatch({ type: 'CLEAR_ALERT' })
-    }, 3000)
-  }
+  // const clearAlert = () => {
+  //   setTimeout(() => {
+  //     dispatch({ type: 'CLEAR_ALERT' })
+  //   }, 3000)
+  // }
 
   const addUserToLocalStorage = ({ user, token }) => {
     localStorage.setItem('user', JSON.stringify(user))
@@ -152,7 +149,6 @@ const AppProvider = ({ children }) => {
     <AppContext.Provider
       value={{
         ...state,
-        displayAlert,
         login,
         register,
         logoutUser,
