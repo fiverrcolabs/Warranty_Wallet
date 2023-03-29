@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import { useState ,useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 // import { MDBContainer, MDBCol, MDBRow, MDBBtn, MDBIcon, MDBInput, MDBCheckbox } from 'mdb-react-ui-kit';
 import loginImage from '../assets/loginpic.png';
 import logo from '../assets/Logog_03.png';
@@ -25,9 +27,15 @@ function Login() {
     RETAILER: "RETAILER",
     CONSUMER: "CONSUMER"
   }
-
+  const navigate=useNavigate()
   const [userType, setJustifyActive] = useState(USER.MANUFACTURER);
-  const { login, isLoading } = useAppContext();
+  const { login, isLoading,user } = useAppContext();
+  
+  useEffect(() => {
+    if (user) {
+        navigate('/dashboard')
+    }
+  }, [user, navigate])
 
   const handleJustifyClick = (value) => {
     if (value === userType) {
@@ -54,6 +62,7 @@ function Login() {
     login({ email, password, userType })
 
   }
+
 
   return (
     <MDBContainer fluid className="p-3 my-5 width:100%">

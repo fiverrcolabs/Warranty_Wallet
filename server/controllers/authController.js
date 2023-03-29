@@ -92,7 +92,7 @@ const login = async (req, res) => {
   const token = user.createJWT()
 
   user.password = undefined
-  user.role = undefined
+  // user.role = undefined
   res.status(StatusCodes.OK).json({ user, token })
 }
 
