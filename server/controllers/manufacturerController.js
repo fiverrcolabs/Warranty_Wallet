@@ -11,7 +11,7 @@ const getRetailerFriends = async (req, res) => {
     .select('retailerFriends')
   res.status(StatusCodes.OK).json(retailerFriends)
 }
-
+// populate company
 const getRetailerRequests = async (req, res) => {
   const retailerRequests = await Manufacturer.findOne({
     userId: req.user.userId,
@@ -28,7 +28,7 @@ const getNonRetailerFriends = async (req, res) => {
   const retailerFriendIds = queryManufacturer.retailerFriends
   const retailerFriends = await Retailer.find({
     _id: { $nin: retailerFriendIds },
-  })
+  }).populate('userId')
   res.status(StatusCodes.OK).json(retailerFriends)
 }
 
