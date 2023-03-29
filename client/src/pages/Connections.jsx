@@ -49,7 +49,7 @@ function Products() {
         res = await axiosFetch.get(`/manufacturer/sendRetailerRequest?userId=${event.target.id}`)
       }
       if (user.role===USER.RETAILER){
-        res = await axiosFetch.get(`/retailer/sendRetailerRequest?userId=${event.target.id}`)
+        res = await axiosFetch.get(`/retailer/sendManufacturerRequest?userId=${event.target.id}`)
       }
       console.log(res)
       // toast.error(res)

@@ -53,13 +53,13 @@ const getNonManufacturerFriends = async (req, res) => {
   res.status(StatusCodes.OK).json(manufacturerFriends)
 }
 
-const sendRetailerRequest = async (req, res) => {
+const sendManufacturerRequest = async (req, res) => {
   const { userId } = req.query
   if (!userId) {
     throw new BadRequestError('please provide userId')
   }
 
-  const manufacturerExists = await Retailer.count({ userId })
+  const manufacturerExists = await Manufacturer.count({ userId })
   if (!manufacturerExists) {
     throw new BadRequestError('user not found')
   }
@@ -149,7 +149,7 @@ export {
   getManufacturerFriends,
   getNonManufacturerFriends,
   getManufacturerRequests,
-  sendRetailerRequest,
+  sendManufacturerRequest,
   removeManufacturerRequest,
   approveManufacturerRequest,
   getRetailerSentRequests,
