@@ -9,7 +9,7 @@ import Profile from './pages/Profile'
 
 import Warranty from './pages/Warranty'
 import QRReader from './pages/QRReader'
-
+import QRResult from './pages/afterscan/QrResult'
 
 import Products from './pages/Products'
 import AddProduct from './pages/product/AddProduct'
@@ -46,9 +46,8 @@ export default function App() {
                     <Route path="/claims" element={<Claims />} />
 
                     <Route path="/warranty" element={<Warranty />} />
-                    <Route path="/qrreader" element={<QRReader />} />
-
-
+                    <Route path="/warranty/qrreader" element={<QRReader />} />
+                    <Route path="/warranty/1" element={<QRResult />} />
 
                     <Route path="/products" element={<Products />} />
                     <Route path="/products/addproduct" element={<AddProduct />} />

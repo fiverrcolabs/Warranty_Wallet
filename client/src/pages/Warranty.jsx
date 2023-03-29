@@ -24,7 +24,7 @@ function Claims() {
           </div>
           <div className='col topBar'>
             <div className='topBarIcon'>
-              <BsQrCodeScan onClick={() => navigate('/qrreader')} className='clickable cursor-pointer' size={40} />
+              <BsQrCodeScan onClick={() => navigate('/warranty/qrreader')} className='clickable cursor-pointer' size={40} />
             </div>
 
           </div>
