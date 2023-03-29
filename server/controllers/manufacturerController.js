@@ -1,6 +1,7 @@
 import { StatusCodes } from 'http-status-codes'
 import Manufacturer from '../models/Manufacturer.js'
 import Retailer from '../models/Retailer.js'
+import User from '../models/User.js'
 import { BadRequestError } from '../errors/index.js'
 
 const getRetailerFriends = async (req, res) => {
@@ -11,14 +12,35 @@ const getRetailerFriends = async (req, res) => {
     .select('retailerFriends')
   res.status(StatusCodes.OK).json(retailerFriends)
 }
-// populate company
+
 const getRetailerRequests = async (req, res) => {
-  const retailerRequests = await Manufacturer.findOne({
+  const retailerRequests = (await Manufacturer.findOne({
     userId: req.user.userId,
   })
     .populate('retailerRequests')
-    .select('retailerRequests')
-  res.status(StatusCodes.OK).json(retailerRequests)
+    .select('retailerRequests')).retailerRequests
+  const retailers = await User.aggregate([
+    {
+      $match: {
+        _id: { $in: retailerRequests.map(user => user._id) }
+      }
+    },
+    {
+      $lookup: {
+        from: 'retailers',
+        localField: '_id',
+        foreignField: 'userId',
+        as: 'retailer'
+      }
+    },
+    {
+      $project: {
+        email: 1,
+        retailer: 1
+      }
+    }
+  ])
+  res.status(StatusCodes.OK).json(retailers)
 }
 
 const getNonRetailerFriends = async (req, res) => {
