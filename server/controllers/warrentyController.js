@@ -1,49 +1,59 @@
 import { StatusCodes } from 'http-status-codes'
-import Warrenty from '../models/Warrenty.js'
+import Warranty from '../models/Warranty.js'
 import { BadRequestError } from '../errors/index.js'
 
-const getWarrentyById = async (req, res) => {
-  const warrentyId = req.params.id
-  if (!warrentyId) {
-    throw new BadRequestError('please provide warrentyId')
+const getWarrantyById = async (req, res) => {
+  const warrantyId = req.params.warrentyId
+  if (!warrantyId) {
+    throw new BadRequestError('please provide warrantyId')
   }
 
-  const warrenty = await Warrenty.findOne({ _id: warrentyId })
-  res.status(StatusCodes.OK).json(warrenty)
+  const warranty = await Warranty.findOne({ _id: warrantyId })
+  res.status(StatusCodes.OK).json(warranty)
 }
 
-const queryWarrenty = async (req, res) => {
-  const { itemId, customerId, purchaseDate, status } = req.query
-  const warrenties = await Warrenty.find({
+const queryWarranty = async (req, res) => {
+  const { itemId, customerId, purchaseDate, issuerId } = req.query
+  const warrenties = await Warranty.find({
     itemId,
     customerId,
+    issuerId,
     purchaseDate,
-    status,
   })
   res.status(StatusCodes.OK).json(warrenties)
 }
 
-const getAllWarrenties = async (req, res) => {
-  const warrenties = await Warrenty.find(itemId)
-  res.status(StatusCodes.OK).json(warrenties)
+const getAllWarranties = async (req, res) => {
+  let warranties = []
+  if (req.user.role === 'CONSUMER') {
+    warranties = await Warranty.find({ customerId: req.user.userId }).populate(
+      { path: 'itemId', select: 'productId', populate: {
+        path: 'productId', select: 'productName warrentyPeriod polices'
+      }}
+    )
+  } else {
+    warranties = await Warranty.find({ issuerId: req.user.userId })
+  }
+
+  res.status(StatusCodes.OK).json(warranties)
 }
 
-const createWarrenty = async (req, res) => {
+const createWarranty = async (req, res) => {
   const { itemId, customerId } = req.body
 
   if (!itemId || !customerId) {
     throw new BadRequestError('please provide all values')
   }
 
-  const warrentyExists = await Warrenty.findOne({ itemId })
+  const warrantyExists = await Warranty.findOne({ itemId })
 
-  if (warrentyExists) {
+  if (warrantyExists) {
     throw new BadRequestError(`${itemId} already has a warrenty`)
   }
 
-  const warrenty = await Warrenty.create({ itemId, customerId })
+  const warranty = await Warranty.create({ itemId, customerId, issuerId: req.user.userId })
 
-  res.status(StatusCodes.OK).json(warrenty)
+  res.status(StatusCodes.OK).json(warranty)
 }
 
-export { getWarrentyById, queryWarrenty, getAllWarrenties, createWarrenty }
+export { getWarrantyById, queryWarranty, getAllWarranties, createWarranty }
