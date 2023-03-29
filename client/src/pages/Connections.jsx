@@ -25,7 +25,7 @@ function Products() {
           fetchedConnections = await axiosFetch.get('/manufacturer/nonRetailerFriends')
         }
         if (user.role===USER.RETAILER){
-          fetchedConnections = await axiosFetch.get('/manufacturer/nonRetailerFriends')
+          fetchedConnections = await axiosFetch.get('/retailer/nonManufacturerFriends')
         }
         
         console.log(fetchedConnections.data)
@@ -49,7 +49,7 @@ function Products() {
         res = await axiosFetch.get(`/manufacturer/sendRetailerRequest?userId=${event.target.id}`)
       }
       if (user.role===USER.RETAILER){
-        res = await axiosFetch.get(`/manufacturer/sendRetailerRequest?userId=${event.target.id}`)
+        res = await axiosFetch.get(`/retailer/sendRetailerRequest?userId=${event.target.id}`)
       }
       console.log(res)
       // toast.error(res)

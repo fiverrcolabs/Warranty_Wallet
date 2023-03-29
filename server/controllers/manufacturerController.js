@@ -28,7 +28,7 @@ const getNonRetailerFriends = async (req, res) => {
   const retailerFriendIds = queryManufacturer.retailerFriends
   const retailerFriends = await Retailer.find({
     _id: { $nin: retailerFriendIds },
-  })
+  }).populate('userId')
   res.status(StatusCodes.OK).json(retailerFriends)
 }
 

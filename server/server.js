@@ -28,6 +28,7 @@ import productRoute from './routes/productRoute.js'
 import itemRoute from './routes/itemRoute.js'
 import warrentyRoute from './routes/warrentyRoute.js'
 import manufacturerRoute from './routes/manufacturerRoute.js'
+import retailerRoute from './routes/retailerRoute.js'
 
 // middleware
 import notFoundMiddleware from './middleware/not-found.js'
@@ -50,6 +51,7 @@ app.use('/api/v1/product', authenticateUser, productRoute)
 app.use('/api/v1/item', itemRoute)
 app.use('/api/v1/warrenty', warrentyRoute)
 app.use('/api/v1/manufacturer', authenticateUser, manufacturerRoute)
+app.use('/api/v1/retailer', authenticateUser, retailerRoute)
 
 app.use(notFoundMiddleware)
 app.use(errorHandlerMiddeware)

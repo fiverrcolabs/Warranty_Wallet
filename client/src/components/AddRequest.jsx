@@ -5,7 +5,7 @@ import { RiCloseCircleFill } from "react-icons/ri";
 
 // RiCloseCircleFill
 
-export default function Friend({company}) {
+export default function Friend({accept,reject, company,userId}) {
     return (
         <div className="container bcontent">
            
@@ -15,11 +15,11 @@ export default function Friend({company}) {
                         <img className="card-img" src={profileImg} alt="Card Image"/>
                     </div>
                     <div className="col-7">
-                        <div className="card-body">
+                        <div className="card-body" id={userId}>
                             <h6 className="card-title">{company}</h6>
                         
-                            <TbCircleCheckFilled size={40} className='clickable cursor-pointer' color={'green'}/>
-                            <RiCloseCircleFill size={40}  className='clickable cursor-pointer' color={'red'}/>
+                            <TbCircleCheckFilled onClick={accept}   size={40} className='clickable cursor-pointer'  color={'green'}/> 
+                            <RiCloseCircleFill onClick={reject}  size={40}  className='clickable cursor-pointer' color={'red'}/>
                         </div>
                     </div>
                 </div>

@@ -24,14 +24,17 @@ function Products() {
         var fetchedConnections;
         if (user.role===USER.MANUFACTURER){
           fetchedConnections = await axiosFetch.get('/manufacturer/retailerRequests')
+          setConnections(fetchedConnections.data.retailerRequests)
         }
         if (user.role===USER.RETAILER){
-          fetchedConnections = await axiosFetch.get('/manufacturer/retailerRequests')
+          fetchedConnections = await axiosFetch.get('/retailer/manufacturerRequests')
+          setConnections(fetchedConnections.data.manufacturerRequests)
         }
         
         console.log(fetchedConnections.data)
         console.log(user.role)
-        setConnections(fetchedConnections.data)
+        
+        
       } catch (error) {
         console.log(error.response.data.msg)
         toast.error(error.response.data.msg)
@@ -40,6 +43,46 @@ function Products() {
     }
     fetchData();
   }, [])
+
+
+  const accept=async (event)=>{
+    console.log(event.currentTarget.parentNode.id)
+    try {
+      var res;
+      if (user.role===USER.MANUFACTURER){
+        res = await axiosFetch.get(`/manufacturer/approveRetailerRequest?userId=${event.currentTarget.parentNode.id}`)
+      }
+      if (user.role===USER.RETAILER){
+        res = await axiosFetch.get(`/retailer/approveManufacturerRequest?userId=${event.currentTarget.parentNode.id}`)
+      }
+      console.log(res)
+      toast.success("accepted")
+     
+    } catch (error) {
+      console.log(error.response.data.msg)
+      toast.error(error.response.data.msg)
+    }
+  }
+
+  const reject=async (event)=>{
+    console.log(event.currentTarget.parentNode.id)
+    console.log(event.currentTarget)
+    try {
+      var res;
+      if (user.role===USER.MANUFACTURER){
+        res = await axiosFetch.get(`/manufacturer/removeRetailerRequest?userId=${event.currentTarget.parentNode.id}`)
+      }
+      if (user.role===USER.RETAILER){
+        res = await axiosFetch.get(`/retailer/removeManufacturerRequest?userId=${event.currentTarget.parentNode.id}`)
+      }
+      console.log(res)
+      toast.success("accepted")
+     
+    } catch (error) {
+      console.log(error.response.data.msg)
+      toast.error(error.response.data.msg)
+    }
+  }
 
   
 
@@ -65,7 +108,7 @@ function Products() {
           </div>
           <div className='col topBar'>
             <div className='topBarIcon'>
-              <MdOutlineCancel onClick={() => navigate('/connections/requests')} className='clickable cursor-pointer' size={40} />
+              <MdOutlineCancel onClick={() => navigate('/connections')} className='clickable cursor-pointer' size={40} />
             </div>
 
           </div>
@@ -78,7 +121,7 @@ function Products() {
         <div className='friendsContainer' >
       
           {connections.map((connection) => (
-             <AddRequest  key={connection._id} company={connection.company} />
+             <AddRequest reject={reject} accept={accept} userId={connection._id} key={connection._id} company={connection.company} />
           ))}
         </div>
       </div>
