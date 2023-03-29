@@ -6,7 +6,7 @@ import {
   getManufacturerFriends,
   getNonManufacturerFriends,
   getManufacturerRequests,
-  sendRetailerRequest,
+  sendManufacturerRequest,
   removeManufacturerRequest,
   approveManufacturerRequest
 } from '../controllers/retailerController.js'
@@ -16,7 +16,7 @@ router
   .route('/nonManufacturerFriends')
   .get(isRetailer, getNonManufacturerFriends)
 router.route('/manufacturerRequests').get(isRetailer, getManufacturerRequests)
-router.route('/sendRetailerRequest').get(isRetailer, sendRetailerRequest)
+router.route('/sendManufacturerRequest').get(isRetailer, sendManufacturerRequest)
 router.route('/removeManufacturerRequest').get(isRetailer, removeManufacturerRequest)
 router.route('/approveManufacturerRequest').get(isRetailer, approveManufacturerRequest)
 
