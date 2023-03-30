@@ -18,7 +18,28 @@ const getManufacturerRequests = async (req, res) => {
   })
     .populate('manufacturerRequests')
     .select('manufacturerRequests')
-  res.status(StatusCodes.OK).json(manufacturerRequests)
+  const manufacturers = await User.aggregate([
+    {
+      $match: {
+        _id: { $in: manufacturerRequests.map((user) => user._id) },
+      },
+    },
+    {
+      $lookup: {
+        from: 'manufacturers',
+        localField: '_id',
+        foreignField: 'userId',
+        as: 'manufacturer',
+      },
+    },
+    {
+      $project: {
+        email: 1,
+        manufacturer: 1,
+      },
+    },
+  ])
+  res.status(StatusCodes.OK).json(manufacturers)
 }
 
 const getNonManufacturerFriends = async (req, res) => {
@@ -28,7 +49,7 @@ const getNonManufacturerFriends = async (req, res) => {
   const manufacturerFriendIds = queryRetailer.manufacturerFriends
   const manufacturerFriends = await Manufacturer.find({
     _id: { $nin: manufacturerFriendIds },
-  })
+  }).populate('userId')
   res.status(StatusCodes.OK).json(manufacturerFriends)
 }
 
@@ -117,11 +138,19 @@ const approveManufacturerRequest = async (req, res) => {
   res.status(StatusCodes.OK).json(approveManufacturerRequest)
 }
 
+const getRetailerSentRequests = async (req, res) => {
+  const getRetailerSentRequests = await Manufacturer.find({
+    retailerRequests: { $in: [req.user.userId] },
+  })
+  res.status(StatusCodes.OK).json(getRetailerSentRequests)
+}
+
 export {
   getManufacturerFriends,
   getNonManufacturerFriends,
   getManufacturerRequests,
   sendManufacturerRequest,
   removeManufacturerRequest,
-  approveManufacturerRequest
+  approveManufacturerRequest,
+  getRetailerSentRequests,
 }
