@@ -1,7 +1,10 @@
-
-
+import { FaUserCircle } from "react-icons/fa";
+import {  useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react'
 
 function DashBoard() {
+
+  const navigate=useNavigate()
 
   return (
     <div className=" mainContainer container">
@@ -16,11 +19,10 @@ function DashBoard() {
 
           <div className='col topBar'>
             <div className='topBarIcon'>
-              {/* <GrAddCircle onClick={() => navigate('/products/addproduct')} className='clickable cursor-pointer' size={40} /> */}
+              <FaUserCircle onClick={() => navigate('/profile')} className='clickable cursor-pointer' size={40} />
             </div>
 
           </div>
-
 
 
 

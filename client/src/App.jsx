@@ -7,13 +7,14 @@ import Dashboard from './pages/Dashboard'
 
 
 import Claims from './pages/Claims'
-import ClaimItem from './pages/claim/ClaimItem'
+import ViewClaim from './pages/claim/ViewClaim'
+import ClaimItem from './pages/warranty/ClaimItem'
 
 import Profile from './pages/Profile'
 
 import Warranty from './pages/Warranty'
 import QRReader from './pages/QRReader'
-import QRResult from './pages/afterscan/QrResult'
+import QRResult from './pages/warranty/QrResult'
 
 import Products from './pages/Products'
 import AddProduct from './pages/product/AddProduct'
@@ -49,11 +50,13 @@ export default function App() {
                     <Route path="/profile" element={<Profile />} />
 
                     <Route path="/claims" element={<Claims />} />
-                    <Route path="/warranty/claims/1" element={<ClaimItem />} />
-
+                    <Route path="/claims/:claimId" element={<ViewClaim />} />
+             
                     <Route path="/warranty" element={<Warranty />} />
                     <Route path="/warranty/qrreader" element={<QRReader />} />
-                    <Route path="/warranty/1" element={<QRResult />} />
+                    <Route path="/warranty/:itemId" element={<QRResult />} />
+                    <Route path="/warranty/claim/1" element={<ClaimItem />} />
+
 
                     <Route path="/products" element={<Products />} />
                     <Route path="/products/addproduct" element={<AddProduct />} />
