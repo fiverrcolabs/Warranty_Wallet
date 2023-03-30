@@ -13,6 +13,37 @@ import { GrAddCircle } from 'react-icons/gr'
 
 function Claims() {
     const navigate = useNavigate()
+    const { axiosFetch, user } = useAppContext()
+    const [connections, setConnections] = useState([])
+    const USER = {
+        MANUFACTURER: "MANUFACTURER",
+        RETAILER: "RETAILER",
+        CONSUMER: "CONSUMER"
+    }
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                var fetchedConnections;
+
+                // if (user.role === USER.RETAILER) {
+                fetchedConnections = await axiosFetch.get('/retailer/manufacturerRequests')
+                setConnections(fetchedConnections.data.manufacturerRequests)
+                // }
+
+
+                console.log(fetchedConnections.data)
+                console.log(user.role)
+
+
+            } catch (error) {
+                console.log(error.response.data.msg)
+                toast.error(error.response.data.msg)
+            }
+
+        }
+        fetchData();
+    }, [])
 
     return (
         <div className=" mainContainer container">
@@ -20,7 +51,7 @@ function Claims() {
                 <div className='row'>
 
                     <div className='col-8' >
-                        <h1 className='px-3'>Warranty Claim Page</h1>
+                        <h1 className='px-3'>Warranty Start Page</h1>
                     </div>
                     <div className='col topBar'>
                         <div className='topBarIcon'>
@@ -35,70 +66,73 @@ function Claims() {
 
                 <div className='secondPageProducts container' >
 
-                    <div className='row  p-3 '>
-                        <div className=''>
-                            <div className="mb-4  d-flex justify-content-center">
-                                {/* <img src={formData.imageData ? formData.imageData : "https://img.freepik.com/premium-vector/profile-flat-blue-simple-icon-with-long-shadowxa_159242-10066.jpg"}
-                                    alt="example placeholder" className='rounded-circle' style={{ width: "280px" }} /> */}
+
+
+
+                    {user.role === USER.RETAILER &&
+                        <div className='row p-3 px-3 mt-5 '>
+                            <div className='col-md-6 col-sm-12  mx-auto '>
+
+
+                                <form>
+                                    <div className="form-outline">
+                                        <label htmlFor="exampleInputEmail1" className="form-label ">Policies</label>
+                                        <textarea type="text" className="form-control form-control-lg border border-info " id="exampleInputEmail1" aria-describedby="emailHelp" />
+
+                                    </div>
+
+                                    <div className="mb-3 mt-2 form-check">
+                                        <input type="checkbox" className="form-check-input border border-info " id="exampleCheck1" />
+                                        <label className="form-check-label" htmlFor="exampleCheck1">I agree on terms and conditions</label>
+                                    </div>
+                                    <button type="submit" className='btn btn-info btn-lg mt-4 mx-auto text-white'>
+                                        Create warrenty
+                                    </button>
+                                </form>
+
                             </div>
 
-                        </div>
+                        </div>}
 
 
-                    </div>
+                    {user.role === USER.CONSUMER &&
+                        <div className='row p-3 px-3 mt-5 '>
+                            <div className='col-md-6 col-sm-12  mx-auto '>
 
 
-                    <div className='row p-3 px-3 '>
-                        <div className='col-md-6 col-sm-12  mx-auto '>
+                                <form>
+                                    <div className="form-outline">
+                                        <label htmlFor="exampleInputEmail1" className="form-label ">Email</label>
+                                        <input type="text" className="form-control form-control-lg border border-info " id="exampleInputEmail1" aria-describedby="emailHelp" />
+
+                                    </div>
+
+                                    <div className="form-outline">
+                                        <label htmlFor="exampleInputEmail1" className="form-label ">Purchase date</label>
+                                        <input type="text" className="form-control form-control-lg border border-info " aria-describedby="emailHelp" />
+
+                                    </div>
 
 
-                            <form>
-                                <div className="form-outline">
-                                    <label htmlFor="exampleInputEmail1" className="form-label ">Policies</label>
-                                    <textarea type="text" className="form-control form-control-lg border border-info " id="exampleInputEmail1" aria-describedby="emailHelp" />
-                                    <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
-                                </div>
-                          
-                                <div className="mb-3 form-check">
-                                    <input type="checkbox" className="form-check-input border border-info " id="exampleCheck1" />
-                                    <label className="form-check-label" htmlFor="exampleCheck1">I agree on terms and conditions</label>
-                                </div>
-                                <button type="submit" className='btn btn-info btn-lg mt-4 mx-auto text-white'>
-                                    Create warrenty
-                                </button>
-                            </form>
+                                    <div className="form-outline">
+                                        <label htmlFor="exampleInputEmail1" className="form-label ">Policies</label>
+                                        <textarea type="text" className="form-control form-control-lg border border-info " aria-describedby="emailHelp" />
 
-                        </div>
+                                    </div>
 
-                        {/* 
-                        <div className='col-md-6 col-sm-12 '>
-                            <input
-                                disabled
-                                className='form-control form-control-lg border border-info mt-5'
-                                type='text'
-                                name='productId'
+                                    <div className="mb-3 mt-2 form-check">
+                                        <input type="checkbox" className="form-check-input border border-info " id="exampleCheck1" />
+                                        <label className="form-check-label" htmlFor="exampleCheck1">I agree on terms and conditions</label>
+                                    </div>
+                                    <button type="submit" className='btn btn-info btn-lg mt-4 mx-auto text-white'>
+                                        Start warrenty
+                                    </button>
+                                </form>
 
-                                aria-label='.form-control-lg example'
+                            </div>
 
-                            />
-                            <input
-                                disabled
-                                className='form-control form-control-lg border border-info mt-5'
-                                type='text'
-                                name='productName'
+                        </div>}
 
-                                aria-label='.form-control-lg example'
-
-                            />
-
-                            <button type="submit" className='btn btn-danger btn-lg mt-4 mx-3 text-white'>
-                                Start warrenty
-                            </button>
-
-                        </div> */}
-
-
-                    </div>
 
                 </div>
             </div>

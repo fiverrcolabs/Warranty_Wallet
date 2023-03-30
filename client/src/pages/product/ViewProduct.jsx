@@ -8,7 +8,7 @@ import { toast } from 'react-toastify'
 import { MdOutlineCancel } from "react-icons/md";
 
 
-function AddProduct() {
+function ViewProduct() {
     const navigate = useNavigate();
     const { axiosFetch } = useAppContext();
     const { productid } = useParams()
@@ -183,4 +183,4 @@ function AddProduct() {
     )
 }
 
-export default AddProduct
+export default ViewProduct
