@@ -23,7 +23,7 @@ function Products() {
         var fetchedConnections;
         if (user.role === USER.MANUFACTURER) {
           fetchedConnections = await axiosFetch.get('/manufacturer/retailerRequests')
-          setConnections(fetchedConnections.data.retailerRequests)
+          setConnections(fetchedConnections.data)
         }
         if (user.role === USER.RETAILER) {
           fetchedConnections = await axiosFetch.get('/retailer/manufacturerRequests')
@@ -126,7 +126,7 @@ function Products() {
         </div>
 
             <hr />
-
+            {/* //todo */}
         <div className='friendsContainer' >
         <h3>Friends</h3>
           {connections.map((connection) => (

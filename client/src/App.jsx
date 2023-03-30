@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import ProtectedRoute from './pages/ProtectedRoute'
 import Login from './pages/Login'
 import Register from './pages/Register'
-import Dashboard from './pages/Dashboard'
+import Dashboard from './pages/DashBoard'
 
 
 import Claims from './pages/Claims'
@@ -36,8 +36,8 @@ import './App.css'
 export default function App() {
     return (
         <Router>
+            <Navbar/>
 
-            <Navbar />
             <ToastContainer />
 
             <Routes>
@@ -45,7 +45,7 @@ export default function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
 
-                <Route path='/' element={<ProtectedRoute />} >
+                <Route path='/' element={<ProtectedRoute/>} >
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/profile" element={<Profile />} />
 
