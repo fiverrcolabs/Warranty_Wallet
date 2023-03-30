@@ -223,6 +223,12 @@ textarea {
 .clickable{
     cursor: pointer;
 }
+
+
+.chartBox{
+    min-height: 300px;
+}
+
 /* ---------friend--------------- */
 .bcontent {
     margin-top: 10px;

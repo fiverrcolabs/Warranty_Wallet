@@ -3,13 +3,18 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import ProtectedRoute from './pages/ProtectedRoute'
 import Login from './pages/Login'
 import Register from './pages/Register'
-import Dashboard from './pages/Dashboard'
+import Dashboard from './pages/DashBoard'
+
+
 import Claims from './pages/Claims'
+import ViewClaim from './pages/claim/ViewClaim'
+import ClaimItem from './pages/warranty/ClaimItem'
+
 import Profile from './pages/Profile'
 
 import Warranty from './pages/Warranty'
 import QRReader from './pages/QRReader'
-import QRResult from './pages/afterscan/QrResult'
+import QRResult from './pages/warranty/QrResult'
 
 import Products from './pages/Products'
 import AddProduct from './pages/product/AddProduct'
@@ -31,8 +36,8 @@ import './App.css'
 export default function App() {
     return (
         <Router>
+            <Navbar/>
 
-            <Navbar />
             <ToastContainer />
 
             <Routes>
@@ -40,14 +45,18 @@ export default function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
 
-                <Route path='/' element={<ProtectedRoute />} >
+                <Route path='/' element={<ProtectedRoute/>} >
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/profile" element={<Profile />} />
-                    <Route path="/claims" element={<Claims />} />
 
+                    <Route path="/claims" element={<Claims />} />
+                    <Route path="/claims/:claimId" element={<ViewClaim />} />
+             
                     <Route path="/warranty" element={<Warranty />} />
                     <Route path="/warranty/qrreader" element={<QRReader />} />
-                    <Route path="/warranty/1" element={<QRResult />} />
+                    <Route path="/warranty/:itemId" element={<QRResult />} />
+                    <Route path="/warranty/claim/1" element={<ClaimItem />} />
+
 
                     <Route path="/products" element={<Products />} />
                     <Route path="/products/addproduct" element={<AddProduct />} />

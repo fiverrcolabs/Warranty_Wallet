@@ -10,7 +10,7 @@ import { MdLogout } from "react-icons/md";
 
 function AddProduct() {
     const navigate = useNavigate();
-    const { axiosFetch } = useAppContext();
+    const { axiosFetch,logoutUser } = useAppContext();
     const { productid } = useParams()
     // const [image, setImage] = useState(null)
     const [qrCount, setQrCount] = useState(0)
@@ -63,6 +63,11 @@ function AddProduct() {
         }));
     };
 
+    const logOut=() => {
+
+        logoutUser()
+    };
+
     // const handleSubmit = async (event) => {
     //     event.preventDefault();
     //     try {
@@ -99,7 +104,7 @@ function AddProduct() {
                     </div>
                     <div className='col topBar'>
                         <div className='topBarIcon'>
-                            <MdLogout onClick={() => navigate('/products')} className='clickable cursor-pointer' color={'red'} size={50} />
+                            <MdLogout onClick={() => logOut()} className='clickable cursor-pointer' color={'red'} size={50} />
                         </div>
                     </div>
 

@@ -7,8 +7,13 @@ import Loader from '../../components/Loader'
 import { toast } from 'react-toastify'
 import { MdOutlineCancel } from "react-icons/md";
 
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
 
-function ViewProduct() {
+
+
+function ClaimItem() {
     const navigate = useNavigate();
     const { axiosFetch } = useAppContext();
     const { productid } = useParams()
@@ -20,26 +25,33 @@ function ViewProduct() {
         productName: '',
         polices: '',
         warrentyPeriod: 0,
-        imageData:null
+        imageData: null
     });
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+
+
 
     useEffect(() => {
         async function fetchData() {
-            try {
-                const fetchedProducts = await axiosFetch.get(`/product/${productid}`)
-                console.log(fetchedProducts);
-                setFormData(fetchedProducts.data)
+            // try {
+            //     const fetchedProducts = await axiosFetch.get(`/product/${productid}`)
+            //     console.log(fetchedProducts);
+            //     setFormData(fetchedProducts.data)
 
-                const qrCountForProduct = await axiosFetch.get(`/item/itemCount?productId=${productid}`)
-                setQrCount(qrCountForProduct.data.count)
-                setIsLoading(false)
+            //     const qrCountForProduct = await axiosFetch.get(`/item/itemCount?productId=${productid}`)
+            //     setQrCount(qrCountForProduct.data.count)
+            //     setIsLoading(false)
 
-            } catch (error) {
-                console.log(error.response.data.msg)
-                toast.error(error.response.data.msg)
+            // } catch (error) {
+            //     console.log(error.response.data.msg)
+            //     toast.error(error.response.data.msg)
 
-            }
+            // }
 
         }
         fetchData();
@@ -95,7 +107,7 @@ function ViewProduct() {
                 <div className='row'>
 
                     <div className='col-8' >
-                        <h1 className='px-3'>Add Products</h1>
+                        <h1 className='px-3'>Claim Item</h1>
                     </div>
                     <div className='col topBar'>
                         <div className='topBarIcon'>
@@ -106,6 +118,49 @@ function ViewProduct() {
                 </div>
 
                 <div className='row p-3 px-3 '>
+                  
+
+                    <Modal show={show} onHide={handleClose} className='border border-info'>
+                        <Modal.Header closeButton>
+                            <Modal.Title>QR generate</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+
+                            <Form.Label> Enter number of QR codes</Form.Label>
+
+                            <input
+                                className='form-control  border border-info mt-3'
+                                type='number'
+                                name='productId'
+                                placeholder='QR count'
+                                aria-label='.form-control-lg example'
+                            // onChange={handleChange}
+                            />
+                               <textarea
+                          
+                            className='form-control border border-info mt-3'
+                            id='exampleFormControlTextarea1'
+                            rows='3'
+                            name='polices'
+                            placeholder='Add description'
+
+                        ></textarea>
+
+
+                        </Modal.Body>
+                        <Modal.Footer>
+
+                            <Button variant="primary">
+                                Submit Claim
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
+
+
+
+
+
+
                     <div className='col-6 mx-auto'>
                         <div>
                             <div className="mb-4 mt-4 d-flex justify-content-center">
@@ -147,10 +202,10 @@ function ViewProduct() {
 
                         />
 
-                        <div className="input-group mb-3 mt-3">
+                        {/* <div className="input-group mb-3 mt-3">
                             <input disabled type="text" className="form-control form-control-lg border border-info " placeholder={`${qrCount}`} aria-label="Recipient's username" aria-describedby="basic-addon2" />
                             <button onClick={() => navigate(`/products/${productid}/qr`)} className="btn btn-outline-info clickable" id="basic-addon2">Add QR</button>
-                        </div>
+                        </div> */}
 
                     </div>
 
@@ -176,11 +231,16 @@ function ViewProduct() {
                     </div>
 
 
+                    <button onClick={handleShow} type="submit" className='btn btn-info btn-lg  text-white'>
+                        Claim Warranty
+                    </button>
+
                 </div>
+
             </div>
         </div>
 
     )
 }
 
-export default ViewProduct
+export default ClaimItem

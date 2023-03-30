@@ -98,7 +98,10 @@ function Products() {
           {connections.map((connection) => (
              <Friend sendRequest={sendRequest} key={connection._id} userId={connection.userId} company={connection.company} />
           ))}
+
+         
         </div>
+        
       </div>
 
 

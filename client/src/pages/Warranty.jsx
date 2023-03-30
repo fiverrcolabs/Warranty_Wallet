@@ -34,7 +34,7 @@ function Claims() {
         </div>
 
         <div className='secondPageProducts container' >
-          <table class="table table-bordered table-hover shadow ">
+          <table className="table table-bordered table-hover shadow ">
             <thead>
               <tr>
                 <th scope="col">WarrantyId</th>
