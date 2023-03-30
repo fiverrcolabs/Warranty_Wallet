@@ -28,10 +28,10 @@ function ClaimItem() {
         imageData: null
     });
     const [isLoading, setIsLoading] = useState(false)
-    const [show, setShow] = useState(false);
+    // const [show, setShow] = useState(false);
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    // const handleClose = () => setShow(false);
+    // const handleShow = () => setShow(true);
 
 
 
@@ -67,13 +67,13 @@ function ClaimItem() {
     //     }
     // }
 
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        setFormData((prevState) => ({
-            ...prevState,
-            [name]: value
-        }));
-    };
+    // const handleChange = (event) => {
+    //     const { name, value } = event.target;
+    //     setFormData((prevState) => ({
+    //         ...prevState,
+    //         [name]: value
+    //     }));
+    // };
 
     // const handleSubmit = async (event) => {
     //     event.preventDefault();
@@ -107,7 +107,7 @@ function ClaimItem() {
                 <div className='row'>
 
                     <div className='col-8' >
-                        <h1 className='px-3'>Claim Item</h1>
+                        <h1 className='px-3'>Claim Item Warranty</h1>
                     </div>
                     <div className='col topBar'>
                         <div className='topBarIcon'>
@@ -120,7 +120,7 @@ function ClaimItem() {
                 <div className='row p-3 px-3 '>
                   
 
-                    <Modal show={show} onHide={handleClose} className='border border-info'>
+                    {/* <Modal show={show} onHide={handleClose} className='border border-info'>
                         <Modal.Header closeButton>
                             <Modal.Title>QR generate</Modal.Title>
                         </Modal.Header>
@@ -156,7 +156,7 @@ function ClaimItem() {
                         </Modal.Footer>
                     </Modal>
 
-
+ */}
 
 
 
@@ -179,16 +179,16 @@ function ClaimItem() {
                             className='form-control form-control-lg border border-info mt-3'
                             type='text'
                             name='productId'
-                            placeholder={formData.productId}
+                            // placeholder={formData.productId}
                             aria-label='.form-control-lg example'
-                            onChange={handleChange}
+                            // onChange={handleChange}
                         />
                         <input
                             disabled
                             className='form-control form-control-lg border border-info mt-3'
                             type='text'
                             name='productName'
-                            placeholder={formData.productName}
+                            // placeholder={formData.productName}
                             aria-label='.form-control-lg example'
 
                         />
@@ -197,7 +197,7 @@ function ClaimItem() {
                             className='form-control form-control-lg border border-info mt-3'
                             type='number'
                             name='warrentyPeriod'
-                            placeholder={formData.warrentyPeriod}
+                            // placeholder={formData.warrentyPeriod}
                             aria-label='.form-control-lg example'
 
                         />
@@ -225,13 +225,13 @@ function ClaimItem() {
                             id='exampleFormControlTextarea1'
                             rows='3'
                             name='polices'
-                            placeholder={formData.polices}
+                            // placeholder={formData.polices}
 
                         ></textarea>
                     </div>
 
 
-                    <button onClick={handleShow} type="submit" className='btn btn-info btn-lg  text-white'>
+                    <button  type="submit" className='btn btn-info btn-lg text-white'>
                         Claim Warranty
                     </button>
 

@@ -50,13 +50,15 @@ function QRPage() {
   }
   const generateQR = async () => {
     console.log("-----",qrCount, productid)
+    handleClose()
     try {
       const fetchedProducts = await axiosFetch.post(`/qr/generateQR`, {
-        productid,
+        productId:productid,
         noOfQRCodes:parseInt(qrCount) 
       })
       console.log(fetchedProducts)
-      setProducts(fetchedProducts.data)
+      setProducts([...products, ...fetchedProducts.data])
+      toast.success("GENERATE COMPLETED")
 
     } catch (error) {
       console.log(error.response.data.msg)

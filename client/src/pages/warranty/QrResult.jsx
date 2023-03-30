@@ -1,6 +1,6 @@
 import { BsQrCodeScan } from "react-icons/bs";
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { useAppContext } from '../../context/appContext'
 import Loader from '../../components/Loader'
@@ -13,8 +13,11 @@ import { GrAddCircle } from 'react-icons/gr'
 
 function Claims() {
     const navigate = useNavigate()
+    const { itemId } = useParams()
+    // const itemId="641fd97a759a32faecb01397"
     const { axiosFetch, user } = useAppContext()
-    const [connections, setConnections] = useState([])
+    const [data, setData] = useState({})
+    const [retailerButton, setRetailerButton] = useState(true)
     const USER = {
         MANUFACTURER: "MANUFACTURER",
         RETAILER: "RETAILER",
@@ -24,26 +27,60 @@ function Claims() {
     useEffect(() => {
         async function fetchData() {
             try {
-                var fetchedConnections;
 
-                // if (user.role === USER.RETAILER) {
-                fetchedConnections = await axiosFetch.get('/retailer/manufacturerRequests')
-                setConnections(fetchedConnections.data.manufacturerRequests)
-                // }
-
+                const fetchedConnections = await axiosFetch.get(`/warranty/getWarrantyByItemId/?itemId=${itemId}`)
+                setData(fetchedConnections.data)
 
                 console.log(fetchedConnections.data)
                 console.log(user.role)
 
 
             } catch (error) {
-                console.log(error.response.data.msg)
-                toast.error(error.response.data.msg)
+                setRetailerButton(false)
+                console.log(data)
+                // toast.error(error.response.data.msg)
+
             }
 
         }
         fetchData();
     }, [])
+
+    const onClickRetailer = async (e) => {
+        e.preventDefault()
+        try {
+            const res = await axiosFetch.post(`/warranty/createWarranty`, {
+                itemId
+            })
+
+            console.log(res)
+            toast.success("WARRANTY CREATED")
+            navigate('/warranty')
+
+        } catch (error) {
+            console.log(error.response.data.msg)
+            toast.error(error.response.data.msg)
+        }
+    }
+
+    const onClickConsumer = async (e) => {
+        e.preventDefault()
+        console.log(data._id)
+        try {
+
+            const res = await axiosFetch.patch(`/warranty/assignSelf`, {
+                warrantyId: data._id
+            })
+
+            console.log(res)
+            toast.success("WARRANTY STARTED")
+            navigate('/warranty')
+        } catch (error) {
+            console.log(error.response.data.msg)
+            toast.error(error.response.data.msg)
+        }
+    }
+
 
     return (
         <div className=" mainContainer container">
@@ -85,8 +122,8 @@ function Claims() {
                                         <input type="checkbox" className="form-check-input border border-info " id="exampleCheck1" />
                                         <label className="form-check-label" htmlFor="exampleCheck1">I agree on terms and conditions</label>
                                     </div>
-                                    <button type="submit" className='btn btn-info btn-lg mt-4 mx-auto text-white'>
-                                        Create warrenty
+                                    <button disabled={!retailerButton} onClick={onClickRetailer} type="submit" className='btn btn-info btn-lg mt-4 mx-auto text-white'>
+                                        {retailerButton ? 'Create warrenty' : 'Already started'}
                                     </button>
                                 </form>
 
@@ -124,8 +161,8 @@ function Claims() {
                                         <input type="checkbox" className="form-check-input border border-info " id="exampleCheck1" />
                                         <label className="form-check-label" htmlFor="exampleCheck1">I agree on terms and conditions</label>
                                     </div>
-                                    <button type="submit" className='btn btn-info btn-lg mt-4 mx-auto text-white'>
-                                        Start warrenty
+                                    <button disabled={data.customerId} onClick={onClickConsumer} type="submit" className='btn btn-info btn-lg mt-4 mx-auto text-white'>
+                                        {data.customerId ? 'Already started' : 'Start warrenty'}
                                     </button>
                                 </form>
 

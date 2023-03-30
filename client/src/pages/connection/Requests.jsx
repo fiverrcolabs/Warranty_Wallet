@@ -116,19 +116,21 @@ function Products() {
 
 
         </div>
+        <h3 className='mt-5'>Requests</h3>
 
-        <div className='friendsContainer' >
-          <h3>Requests</h3>
+        <div className='friendsContainer ' >
+
 
           {connections.map((connection) => (
             <AddRequest reject={reject} accept={accept} userId={connection._id} key={connection._id} company={connection.company} />
           ))}
         </div>
 
-            <hr />
-            {/* //todo */}
-        <div className='friendsContainer' >
+        <hr />
+        {/* //todo */}
         <h3>Friends</h3>
+        <div className='friendsContainer' >
+
           {connections.map((connection) => (
             <AddRequest reject={reject} accept={accept} userId={connection._id} key={connection._id} company={connection.company} />
           ))}

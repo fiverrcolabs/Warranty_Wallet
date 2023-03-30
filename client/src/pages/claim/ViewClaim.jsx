@@ -137,32 +137,33 @@ function ClaimItem() {
 
                     <div className='col-md-6 col-sm-12 '>
                         <input
-                            disabled
+                            
                             className='form-control form-control-lg border border-info mt-3'
                             type='text'
                             name='productId'
                             placeholder={formData.productId}
                             aria-label='.form-control-lg example'
-                            onChange={handleChange}
+                            // onChange={handleChange}
                         />
                         <input
-                            disabled
+                            
                             className='form-control form-control-lg border border-info mt-3'
                             type='text'
                             name='productName'
-                            placeholder={formData.productName}
+                            // placeholder={formData.productName}
                             aria-label='.form-control-lg example'
 
                         />
                         <input
-                            disabled
+                            
                             className='form-control form-control-lg border border-info mt-3'
                             type='number'
                             name='warrentyPeriod'
-                            placeholder={formData.warrentyPeriod}
+                            // placeholder={formData.warrentyPeriod}
                             aria-label='.form-control-lg example'
 
                         />
+                        <button className='btn btn-info btn-lg mt-3  text-white' >Save</button>
 
                         {/* <div className="input-group mb-3 mt-3">
                             <input disabled type="text" className="form-control form-control-lg border border-info " placeholder={`${qrCount}`} aria-label="Recipient's username" aria-describedby="basic-addon2" />
@@ -179,7 +180,7 @@ function ClaimItem() {
                             htmlFor='exampleFormControlTextarea1'
                             className='form-label'
                         >
-                            Polices:
+                            Discription:
                         </label>
                         <textarea
                             disabled

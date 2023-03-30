@@ -11,6 +11,7 @@ function Products() {
   var navigate = useNavigate();
   const { axiosFetch ,user } = useAppContext()
   const [connections, setConnections] = useState([])
+  const [sentRequests, setSentRequests] = useState([])
   const USER = {
     MANUFACTURER: "MANUFACTURER",
     RETAILER: "RETAILER",
@@ -21,14 +22,18 @@ function Products() {
     async function fetchData() {
       try {
         var fetchedConnections;
+        var fetchedRequests;
         if (user.role===USER.MANUFACTURER){
           fetchedConnections = await axiosFetch.get('/manufacturer/nonRetailerFriends')
+          fetchedRequests = await axiosFetch.get('/manufacturer/getManufacturerSentRequests')
         }
         if (user.role===USER.RETAILER){
           fetchedConnections = await axiosFetch.get('/retailer/nonManufacturerFriends')
+          fetchedRequests = await axiosFetch.get('/retailer/nonManufacturerFriends')
         }
         
         console.log(fetchedConnections.data)
+        console.log("-----",fetchedRequests.data)
         console.log(user.role)
         setConnections(fetchedConnections.data)
       } catch (error) {
@@ -96,10 +101,16 @@ function Products() {
         <div className='friendsContainer' >
       
           {connections.map((connection) => (
-             <Friend sendRequest={sendRequest} key={connection._id} userId={connection.userId} company={connection.company} />
+             <Friend sendRequest={sendRequest} key={connection._id} userId={connection.userId._id} company={connection.company} />
           ))}
+        </div>
 
-         
+        <hr />
+        <div className='friendsContainer' >
+      
+          {connections.map((connection) => (
+             <Friend sendRequest={sendRequest} key={connection._id} userId={connection.userId._id} company={connection.company} />
+          ))}
         </div>
         
       </div>
