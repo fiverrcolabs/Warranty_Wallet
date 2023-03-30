@@ -26,7 +26,7 @@ import authRouter from './routes/authRoute.js'
 import qrCodeRouter from './routes/qrCodeRoute.js'
 import productRoute from './routes/productRoute.js'
 import itemRoute from './routes/itemRoute.js'
-import warrentyRoute from './routes/warrentyRoute.js'
+import warrantyRoute from './routes/warrantyRoute.js'
 import manufacturerRoute from './routes/manufacturerRoute.js'
 import retailerRoute from './routes/retailerRoute.js'
 
@@ -49,7 +49,7 @@ app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/qr', qrCodeRouter)
 app.use('/api/v1/product', authenticateUser, productRoute)
 app.use('/api/v1/item', itemRoute)
-app.use('/api/v1/warrenty', warrentyRoute)
+app.use('/api/v1/warranty', authenticateUser, warrantyRoute)
 app.use('/api/v1/manufacturer', authenticateUser, manufacturerRoute)
 app.use('/api/v1/retailer', authenticateUser, retailerRoute)
 

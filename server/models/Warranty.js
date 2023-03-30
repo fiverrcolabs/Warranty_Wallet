@@ -10,7 +10,6 @@ const UserSchema = new mongoose.Schema({
   customerId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: [true, 'No user found'],
   },
   issuerId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -19,7 +18,6 @@ const UserSchema = new mongoose.Schema({
   },
   purchaseDate: {
     type: Date,
-    required: [true, 'Please provide purchase date'],
   },
 })
 
