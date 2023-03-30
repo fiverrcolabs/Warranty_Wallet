@@ -85,9 +85,12 @@ const createWarranty = async (req, res) => {
 const assignSelf = async (req, res) => {
   const { warrantyId } = req.body
   const warranty = await Warranty.findOne({ _id: warrantyId })
-
-  if (!warranty) {
+ 
+  if (!warranty ) {
     throw new BadRequestError(`${warrantyId} has no warrenty`)
+  }
+  if (warranty.customerId) {
+    throw new BadRequestError(`${warrantyId} already assigned`)
   }
 
   warranty.customerId = req.user.userId
