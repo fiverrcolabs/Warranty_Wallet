@@ -1,6 +1,7 @@
 import { StatusCodes } from 'http-status-codes'
 import Manufacturer from '../models/Manufacturer.js'
 import Retailer from '../models/Retailer.js'
+import User from '../models/User.js'
 import { BadRequestError } from '../errors/index.js'
 
 const getManufacturerFriends = async (req, res) => {
@@ -13,11 +14,11 @@ const getManufacturerFriends = async (req, res) => {
 }
 
 const getManufacturerRequests = async (req, res) => {
-  const manufacturerRequests = await Retailer.findOne({
+  const manufacturerRequests = (await Retailer.findOne({
     userId: req.user.userId,
   })
     .populate('manufacturerRequests')
-    .select('manufacturerRequests')
+    .select('manufacturerRequests')).manufacturerRequests
   const manufacturers = await User.aggregate([
     {
       $match: {

@@ -9,9 +9,11 @@ import { useAppContext } from '../context/appContext'
 
 function Products() {
   var navigate = useNavigate();
-  const { axiosFetch ,user } = useAppContext()
+  const { axiosFetch, user } = useAppContext()
   const [connections, setConnections] = useState([])
+  const [arrayIds, setArrayIds] = useState([])
   const [sentRequests, setSentRequests] = useState([])
+
   const USER = {
     MANUFACTURER: "MANUFACTURER",
     RETAILER: "RETAILER",
@@ -23,42 +25,63 @@ function Products() {
       try {
         var fetchedConnections;
         var fetchedRequests;
-        if (user.role===USER.MANUFACTURER){
+        if (user.role === USER.MANUFACTURER) {
           fetchedConnections = await axiosFetch.get('/manufacturer/nonRetailerFriends')
           fetchedRequests = await axiosFetch.get('/manufacturer/getManufacturerSentRequests')
         }
-        if (user.role===USER.RETAILER){
+        if (user.role === USER.RETAILER) {
           fetchedConnections = await axiosFetch.get('/retailer/nonManufacturerFriends')
-          fetchedRequests = await axiosFetch.get('/retailer/nonManufacturerFriends')
+          fetchedRequests = await axiosFetch.get('/retailer/getRetailerSentRequests')
         }
-        
+
         console.log(fetchedConnections.data)
-        console.log("-----",fetchedRequests.data)
+        console.log("-----", fetchedRequests.data)
         console.log(user.role)
+
         setConnections(fetchedConnections.data)
+        setSentRequests(fetchedRequests.data)
+
+        fetchedRequests.data.forEach((request) => {
+          setArrayIds([...arrayIds, request._id])
+        })
+
+
       } catch (error) {
         console.log(error.response.data.msg)
         toast.error(error.response.data.msg)
       }
+
+
 
     }
     fetchData();
   }, [])
 
 
-  const sendRequest=async (event)=>{
+
+
+  function available(id){
+    if(id in arrayIds){
+      return false
+    }
+    return true
+  }
+
+
+  const sendRequest = async (event) => {
+    console.log(arrayIds)
     console.log(event.target)
     try {
       var res;
-      if (user.role===USER.MANUFACTURER){
+      if (user.role === USER.MANUFACTURER) {
         res = await axiosFetch.get(`/manufacturer/sendRetailerRequest?userId=${event.target.id}`)
       }
-      if (user.role===USER.RETAILER){
+      if (user.role === USER.RETAILER) {
         res = await axiosFetch.get(`/retailer/sendManufacturerRequest?userId=${event.target.id}`)
       }
       console.log(res)
       // toast.error(res)
-     
+
     } catch (error) {
       console.log(error.response.data.msg)
       toast.error(error.response.data.msg)
@@ -69,7 +92,7 @@ function Products() {
 
 
 
-  if( !(user.role===USER.MANUFACTURER || user.role===USER.RETAILER)){
+  if (!(user.role === USER.MANUFACTURER || user.role === USER.RETAILER)) {
     return (
       <div className=" mainContainer container">
         <h1>Not Allowed</h1>
@@ -84,7 +107,7 @@ function Products() {
         <div className='row'>
 
           <div className='col-8' >
-            <h1 className='px-3'>{(user.role===USER.MANUFACTURER)?'Retailers':'Manufactures'}</h1>
+            <h1 className='px-3'>{(user.role === USER.MANUFACTURER) ? 'Retailers' : 'Manufactures'}</h1>
           </div>
           <div className='col topBar'>
             <div className='topBarIcon'>
@@ -99,20 +122,20 @@ function Products() {
         </div>
 
         <div className='friendsContainer' >
-      
+
           {connections.map((connection) => (
-             <Friend sendRequest={sendRequest} key={connection._id} userId={connection.userId._id} company={connection.company} />
+            <Friend  sendRequest={sendRequest} available={available} key={connection._id} userId={connection.userId._id} company={connection.company} />
           ))}
         </div>
 
         <hr />
         <div className='friendsContainer' >
-      
+
           {connections.map((connection) => (
-             <Friend sendRequest={sendRequest} key={connection._id} userId={connection.userId._id} company={connection.company} />
+            <Friend sendRequest={sendRequest} available={available} key={connection._id} userId={connection.userId._id} company={connection.company} />
           ))}
         </div>
-        
+
       </div>
 
 

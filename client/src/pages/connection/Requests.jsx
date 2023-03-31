@@ -27,7 +27,8 @@ function Products() {
         }
         if (user.role === USER.RETAILER) {
           fetchedConnections = await axiosFetch.get('/retailer/manufacturerRequests')
-          setConnections(fetchedConnections.data.manufacturerRequests)
+          console.log("=====",fetchedConnections.data)
+          setConnections(fetchedConnections.data)
         }
 
         console.log(fetchedConnections.data)
@@ -35,7 +36,7 @@ function Products() {
 
 
       } catch (error) {
-        console.log(error.response.data.msg)
+        console.log(error.response)
         toast.error(error.response.data.msg)
       }
 
