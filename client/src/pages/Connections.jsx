@@ -41,9 +41,11 @@ function Products() {
         setConnections(fetchedConnections.data)
         setSentRequests(fetchedRequests.data)
 
+        var ar = [];
         fetchedRequests.data.forEach((request) => {
-          setArrayIds([...arrayIds, request._id])
+          ar.push(request._id)
         })
+        setArrayIds(ar)
 
 
       } catch (error) {
@@ -60,16 +62,18 @@ function Products() {
 
 
 
-  function available(id){
-    if(id in arrayIds){
+  function available(id) {
+    console.log(arrayIds, "--", id, arrayIds.includes(id))
+    if (arrayIds.includes(id)) {
       return false
+
     }
     return true
   }
 
 
   const sendRequest = async (event) => {
-    console.log(arrayIds)
+
     console.log(event.target)
     try {
       var res;
@@ -116,25 +120,22 @@ function Products() {
 
           </div>
 
-
-
-
         </div>
 
         <div className='friendsContainer' >
 
           {connections.map((connection) => (
-            <Friend  sendRequest={sendRequest} available={available} key={connection._id} userId={connection.userId._id} company={connection.company} />
+            <Friend sendRequest={sendRequest} id={connection._id} available={available} key={connection._id} userId={connection.userId._id} company={connection.company} />
           ))}
         </div>
 
-        <hr />
+        {/* <hr />
         <div className='friendsContainer' >
 
           {connections.map((connection) => (
-            <Friend sendRequest={sendRequest} available={available} key={connection._id} userId={connection.userId._id} company={connection.company} />
+            <Friend sendRequest={sendRequest} id={connection._id} key={connection._id} userId={connection.userId._id} company={connection.company} />
           ))}
-        </div>
+        </div> */}
 
       </div>
 

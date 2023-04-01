@@ -4,13 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react'
 import { toast } from 'react-toastify'
 import { useAppContext } from '../../context/appContext'
+import Friend from '../../components/Friend';
 
 
 
-function Products() {
+function Request() {
   var navigate = useNavigate();
   const { axiosFetch, user } = useAppContext()
   const [connections, setConnections] = useState([])
+  const [friends, setFriends] = useState([])
   const USER = {
     MANUFACTURER: "MANUFACTURER",
     RETAILER: "RETAILER",
@@ -21,18 +23,25 @@ function Products() {
     async function fetchData() {
       try {
         var fetchedConnections;
+        var fetchFriends;
         if (user.role === USER.MANUFACTURER) {
           fetchedConnections = await axiosFetch.get('/manufacturer/retailerRequests')
-          setConnections(fetchedConnections.data)
+          fetchFriends = await axiosFetch.get('/manufacturer/retailerFriends')
+          setFriends(fetchFriends.data.retailerFriends)
+    
         }
         if (user.role === USER.RETAILER) {
           fetchedConnections = await axiosFetch.get('/retailer/manufacturerRequests')
           console.log("=====",fetchedConnections.data)
-          setConnections(fetchedConnections.data)
+          fetchFriends = await axiosFetch.get('/retailer/manufacturerFriends')
+          setFriends(fetchFriends.data.manufacturerFriends)
+     
         }
 
+        setConnections(fetchedConnections.data)
+       
         console.log(fetchedConnections.data)
-        console.log(user.role)
+        console.log("friends",fetchFriends.data)
 
 
       } catch (error) {
@@ -49,6 +58,7 @@ function Products() {
     console.log(event.currentTarget.parentNode.id)
     try {
       var res;
+
       if (user.role === USER.MANUFACTURER) {
         res = await axiosFetch.get(`/manufacturer/approveRetailerRequest?userId=${event.currentTarget.parentNode.id}`)
       }
@@ -84,7 +94,13 @@ function Products() {
     }
   }
 
-
+function filterCname(connection){
+  // console.log("!! ", connection.manufacturer[0].company)
+  if(user.role === USER.RETAILER){
+    return connection.manufacturer[0].company
+  }
+  return connection.retailer[0].company
+}
 
 
 
@@ -123,7 +139,7 @@ function Products() {
 
 
           {connections.map((connection) => (
-            <AddRequest reject={reject} accept={accept} userId={connection._id} key={connection._id} company={connection.company} />
+            <AddRequest reject={reject} accept={accept} userId={connection._id} key={connection._id} company={filterCname(connection)} />
           ))}
         </div>
 
@@ -132,8 +148,9 @@ function Products() {
         <h3>Friends</h3>
         <div className='friendsContainer' >
 
-          {connections.map((connection) => (
-            <AddRequest reject={reject} accept={accept} userId={connection._id} key={connection._id} company={connection.company} />
+          {friends.map((friend) => (
+           
+            <Friend available={()=>{true}} id={friend._id} key={friend._id} userId={friend._id} company={friend.email} />
           ))}
         </div>
       </div>
@@ -144,4 +161,4 @@ function Products() {
   )
 }
 
-export default Products
+export default Request

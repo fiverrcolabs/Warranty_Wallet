@@ -11,8 +11,33 @@ import { GrAddCircle } from 'react-icons/gr'
 
 
 
-function Claims() {
-  const navigate=useNavigate()
+function Warranty() {
+  const navigate = useNavigate()
+  const { axiosFetch } = useAppContext()
+  const [warranties, setWarranties] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const fetchedProducts = await axiosFetch.get('/warranty/getAllWarranties')
+        setWarranties(fetchedProducts.data)
+        console.log(fetchedProducts.data)
+        setIsLoading(false)
+      } catch (error) {
+        console.log(error.response.data.msg)
+        toast.error(error.response.data.msg)
+      }
+
+    }
+    fetchData();
+  }, [])
+
+  if (isLoading) {
+    return (
+      <Loader />
+    )
+  }
 
   return (
     <div className=" mainContainer container">
@@ -44,25 +69,16 @@ function Claims() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Thornton</td>
-                <td>@fat</td>
-                <td>Thornton</td>
-
-              </tr>
+            {warranties.map((warranty) => (
+               
+               <tr key={warranty._id} className="clickable" onClick={() => navigate(`/warranty/${warranty._id}`)}>
+               <th scope="row">{warranty._id}</th>
+               <td>{warranty.assignee}</td>
+               <td>{warranty.tasktime}</td>
+               <td>{warranty.status}</td>
+             </tr>
+             ))}
+            
             </tbody>
           </table>
         </div>
@@ -74,4 +90,4 @@ function Claims() {
   )
 }
 
-export default Claims
+export default Warranty

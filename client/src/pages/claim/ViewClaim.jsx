@@ -16,9 +16,9 @@ import Form from 'react-bootstrap/Form';
 function ClaimItem() {
     const navigate = useNavigate();
     const { axiosFetch, user } = useAppContext();
-    const { productid } = useParams()
+    const { claimId } = useParams()
+    
     // const [image, setImage] = useState(null)
-    const [qrCount, setQrCount] = useState(0)
     const [formData, setFormData] = useState({
         _id: '',
         productId: '',
@@ -27,7 +27,7 @@ function ClaimItem() {
         warrentyPeriod: 0,
         imageData: null
     });
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
@@ -38,20 +38,17 @@ function ClaimItem() {
 
     useEffect(() => {
         async function fetchData() {
-            // try {
-            //     const fetchedProducts = await axiosFetch.get(`/product/${productid}`)
-            //     console.log(fetchedProducts);
-            //     setFormData(fetchedProducts.data)
+            try {
+                const fetchedProducts = await axiosFetch.get(`/claim/${claimId}`)
+                console.log(fetchedProducts.data);
+                setFormData(fetchedProducts.data[0])
+                setIsLoading(false)
 
-            //     const qrCountForProduct = await axiosFetch.get(`/item/itemCount?productId=${productid}`)
-            //     setQrCount(qrCountForProduct.data.count)
-            //     setIsLoading(false)
+            } catch (error) {
+                console.log(error.response.data.msg)
+                toast.error(error.response.data.msg)
 
-            // } catch (error) {
-            //     console.log(error.response.data.msg)
-            //     toast.error(error.response.data.msg)
-
-            // }
+            }
 
         }
         fetchData();

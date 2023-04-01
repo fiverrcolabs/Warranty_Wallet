@@ -12,7 +12,34 @@ import { GrAddCircle } from 'react-icons/gr'
 
 
 function Claims() {
-  const navigate=useNavigate()
+  const navigate = useNavigate()
+  const { axiosFetch } = useAppContext()
+  const [claims, setClaims] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const fetchedProducts = await axiosFetch.get('/claim/getAllClaims')
+        setClaims(fetchedProducts.data)
+        console.log(fetchedProducts.data)
+        setIsLoading(false)
+      } catch (error) {
+        console.log(error.response.data.msg)
+        toast.error(error.response.data.msg)
+      }
+
+    }
+    fetchData();
+  }, [])
+
+  if (isLoading) {
+    return (
+      <Loader />
+    )
+  }
+
+
 
   return (
     <div className=" mainContainer container">
@@ -48,32 +75,23 @@ function Claims() {
               </tr>
             </thead>
             <tbody>
-              <tr className="clickable" onClick={() => navigate(`/claims/${_id}`)}>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
+              {claims.map((claim) => (
+               
+                <tr key={claim._id} className="clickable" onClick={() => navigate(`/claims/${claim._id}`)}>
+                <th scope="row">{claim._id}</th>
+                <td>{claim.assignee}</td>
+                <td>{claim.tasktime}</td>
+                <td>{claim.status}</td>
               </tr>
-              <tr className="clickable">
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Thornton</td>
-                <td>@fat</td>
-                <td>Thornton</td>
-            
-              </tr>
+              ))}
+             
             </tbody>
           </table>
         </div>
       </div>
 
 
-    </div>
+    </div >
 
   )
 }

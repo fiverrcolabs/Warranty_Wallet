@@ -28,9 +28,9 @@ function Navbar() {
 
   if (location.pathname === "/login" || location.pathname === "/register") return null;
 
-  // if (!user){
-  //   return navigate('/login')
-  // }
+  if (!user){
+    return navigate('/login')
+  }
 
 
   return (
