@@ -155,7 +155,7 @@ function ClaimItem() {
                     <div className='col-6 mx-auto'>
                         <div>
                             <div className="mb-4 mt-4 d-flex justify-content-center">
-                                <img src={formData.imageData ? formData.imageData : "https://mdbootstrap.com/img/Photos/Others/placeholder.jpg"}
+                                <img src={"https://mdbootstrap.com/img/Photos/Others/placeholder.jpg"}
                                     alt="example placeholder" className='rounded' style={{ width: "280px" }} />
                             </div>
 

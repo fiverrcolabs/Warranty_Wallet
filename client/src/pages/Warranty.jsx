@@ -7,7 +7,7 @@ import Product from '../components/Product'
 
 import { toast } from 'react-toastify'
 import { GrAddCircle } from 'react-icons/gr'
-
+import moment from 'moment'
 
 
 function Warranty() {
@@ -73,8 +73,8 @@ function Warranty() {
 
                 <tr key={warranty._id} className="clickable" onClick={() => navigate(`/warranty/${warranty._id}`)}>
                   <th scope="row">{warranty._id}</th>
-                  <td>{warranty.assignee}</td>
-                  <td>{warranty.tasktime}</td>
+                  <td>{warranty.customerId}</td>
+                  <td>{moment(warranty.purchaseDate).format('YYYY-MM-DD')}</td>
                   <td>{warranty.state}</td>
                 </tr>
               ))}

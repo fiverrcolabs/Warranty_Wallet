@@ -8,7 +8,7 @@ import Product from '../../components/Product'
 
 import { toast } from 'react-toastify'
 import { GrAddCircle } from 'react-icons/gr'
-
+import moment from 'moment'
 
 
 function Claims() {
@@ -18,6 +18,7 @@ function Claims() {
     const { axiosFetch, user } = useAppContext()
     const [data, setData] = useState({})
     const [retailerButton, setRetailerButton] = useState(true)
+    const [retailerAvailable, setRetailerAvailable] = useState(false)
     const USER = {
         MANUFACTURER: "MANUFACTURER",
         RETAILER: "RETAILER",
@@ -31,6 +32,9 @@ function Claims() {
                 const fetchedConnections = await axiosFetch.get(`/warranty/getWarrantyByItemId/?itemId=${itemId}`)
                 setData(fetchedConnections.data)
 
+                // const fetchedConnections = await axiosFetch.get(`/warranty/getWarrantyByItemId/?itemId=${itemId}`)
+                // setData(fetchedConnections.data)
+
                 console.log(fetchedConnections.data)
                 console.log(user.role)
 
@@ -38,7 +42,7 @@ function Claims() {
             } catch (error) {
                 setRetailerButton(false)
                 console.log(data)
-                // toast.error(error.response.data.msg)
+                toast.error(error.response.data.msg)
 
             }
 
@@ -114,15 +118,15 @@ function Claims() {
                                 <form>
                                     <div className="form-outline">
                                         <label htmlFor="exampleInputEmail1" className="form-label ">Policies</label>
-                                        <textarea type="text" className="form-control form-control-lg border border-info " id="exampleInputEmail1" aria-describedby="emailHelp" />
+                                        <textarea disabled type="text" value={data.productId?data.productId.polices:""}  className="form-control form-control border border-info " id="exampleInputEmail1" aria-describedby="emailHelp" />
 
                                     </div>
 
                                     <div className="mb-3 mt-2 form-check">
-                                        <input type="checkbox" className="form-check-input border border-info " id="exampleCheck1" />
+                                        <input onClick={()=>{setRetailerAvailable(!retailerAvailable)}} type="checkbox" className="form-check-input border border-info " id="exampleCheck1" />
                                         <label className="form-check-label" htmlFor="exampleCheck1">I agree on terms and conditions</label>
                                     </div>
-                                    <button disabled={!retailerButton} onClick={onClickRetailer} type="submit" className='btn btn-info btn-lg mt-4 mx-auto text-white'>
+                                    <button disabled={!retailerButton || !retailerAvailable} onClick={onClickRetailer} type="submit" className='btn btn-info btn-lg mt-4 mx-auto text-white'>
                                         {retailerButton ? 'Create warrenty' : 'Already started'}
                                     </button>
                                 </form>
@@ -140,28 +144,28 @@ function Claims() {
                                 <form>
                                     <div className="form-outline">
                                         <label htmlFor="exampleInputEmail1" className="form-label ">Email</label>
-                                        <input type="text" className="form-control form-control-lg border border-info " id="exampleInputEmail1" aria-describedby="emailHelp" />
+                                        <input disabled value={user.email?user.email:""} type="text" className="form-control  border border-info " id="exampleInputEmail1" aria-describedby="emailHelp" />
 
                                     </div>
 
                                     <div className="form-outline">
                                         <label htmlFor="exampleInputEmail1" className="form-label ">Purchase date</label>
-                                        <input type="text" className="form-control form-control-lg border border-info " aria-describedby="emailHelp" />
+                                        <input disabled value={data.purchaseDate? moment(data.purchaseDate).format('YYYY-MM-DD') :""} type="text" className="form-control  border border-info " aria-describedby="emailHelp" />
 
                                     </div>
 
 
                                     <div className="form-outline">
                                         <label htmlFor="exampleInputEmail1" className="form-label ">Policies</label>
-                                        <textarea type="text" className="form-control form-control-lg border border-info " aria-describedby="emailHelp" />
+                                        <textarea disabled value={data.itemId?data.itemId.productId.polices:""} type="text" className="form-control form-control border border-info " id="exampleInputEmail1" aria-describedby="emailHelp" />
 
                                     </div>
 
                                     <div className="mb-3 mt-2 form-check">
-                                        <input type="checkbox" className="form-check-input border border-info " id="exampleCheck1" />
+                                        <input onClick={()=>{setRetailerAvailable(!retailerAvailable)}}  type="checkbox" className="form-check-input border border-info " id="exampleCheck1" />
                                         <label className="form-check-label" htmlFor="exampleCheck1">I agree on terms and conditions</label>
                                     </div>
-                                    <button disabled={data.customerId} onClick={onClickConsumer} type="submit" className='btn btn-info btn-lg mt-4 mx-auto text-white'>
+                                    <button disabled={!retailerButton || !retailerAvailable} onClick={onClickConsumer} type="submit" className='btn btn-info btn-lg mt-4 mx-auto text-white'>
                                         {data.customerId ? 'Already started' : 'Start warrenty'}
                                     </button>
                                 </form>

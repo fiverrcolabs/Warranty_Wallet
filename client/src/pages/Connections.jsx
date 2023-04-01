@@ -16,6 +16,7 @@ function Products() {
   const [arrayIds, setArrayIds] = useState([])
   const [sentRequests, setSentRequests] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [refresh, setRefresh] = useState(true)
 
   const USER = {
     MANUFACTURER: "MANUFACTURER",
@@ -60,7 +61,7 @@ function Products() {
 
     }
     fetchData();
-  }, [])
+  }, [refresh])
 
 
 
@@ -87,7 +88,7 @@ function Products() {
         res = await axiosFetch.get(`/retailer/sendManufacturerRequest?userId=${event.target.id}`)
       }
       console.log(res)
-      // toast.error(res)
+      setRefresh(!refresh)
 
     } catch (error) {
       console.log(error.response.data.msg)

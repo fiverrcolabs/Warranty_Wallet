@@ -22,11 +22,15 @@ function ClaimItem() {
     const navigate = useNavigate();
     const { axiosFetch, user } = useAppContext();
     const { warrantyId } = useParams()
-    // const [image, setImage] = useState(null)
     const [qrCount, setQrCount] = useState(0)
     const [formData, setFormData] = useState({});
     const [isLoading, setIsLoading] = useState(true)
-    // const [show, setShow] = useState(false);
+    const [newData, setNewData] = useState({
+        warrantyId:warrantyId,
+        description:"",
+       
+    });
+
 
     // const handleClose = () => setShow(false);
     // const handleShow = () => setShow(true);
@@ -56,14 +60,13 @@ function ClaimItem() {
     }, [])
 
 
-    // const handleImageChange = (event) => {
-    //     const file = event.target.files[0]
-    //     const reader = new FileReader()
-    //     reader.readAsDataURL(file)
-    //     reader.onloadend = () => {
-    //         setImage(reader.result)
-    //     }
-    // }
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setNewData((prevState) => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
 
     // const handleChange = (event) => {
     //     const { name, value } = event.target;
@@ -73,23 +76,24 @@ function ClaimItem() {
     //     }));
     // };
 
-    // const handleSubmit = async (event) => {
-    //     event.preventDefault();
-    //     try {
-    //         const createdProduct = await axiosFetch.post('/product/addProduct', {
-    //             ...formData,
-    //             imageData: image
-    //         })
-    //         console.log(createdProduct);
-    //         toast.success("Product Created Successfully")
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+            const createdProduct = await axiosFetch.post('/claim/createClaim', {
+     
+                warrantyId:warrantyId,
+                description:newData.description
+            })
+            console.log(createdProduct);
+            toast.success("Product Created Successfully")
 
-    //     } catch (error) {
-    //         console.log(error.response.data.msg)
-    //         toast.error(error.response.data.msg)
+        } catch (error) {
+            console.log(error.response.data.msg)
+            toast.error(error.response.data.msg)
 
-    //     }
+        }
 
-    // };
+    };
 
     if (isLoading) {
         return (
@@ -118,45 +122,6 @@ function ClaimItem() {
                 </div>
 
                 <div className='row p-3 px-3 '>
-
-
-                    {/* <Modal show={show} onHide={handleClose} className='border border-info'>
-                        <Modal.Header closeButton>
-                            <Modal.Title>QR generate</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-
-                            <Form.Label> Enter number of QR codes</Form.Label>
-
-                            <input
-                                className='form-control  border border-info mt-3'
-                                type='number'
-                                name='productId'
-                                placeholder='QR count'
-                                aria-label='.form-control-lg example'
-                            // onChange={handleChange}
-                            />
-                               <textarea
-                          
-                            className='form-control border border-info mt-3'
-                            id='exampleFormControlTextarea1'
-                            rows='3'
-                            name='polices'
-                            placeholder='Add description'
-
-                        ></textarea>
-
-
-                        </Modal.Body>
-                        <Modal.Footer>
-
-                            <Button variant="primary">
-                                Submit Claim
-                            </Button>
-                        </Modal.Footer>
-                    </Modal>
-
- */}
 
 
 
@@ -213,14 +178,15 @@ function ClaimItem() {
                             className='form-control border border-info mt-1'
                             id='exampleFormControlTextarea1'
                             rows='3'
-                            name='polices'
+                            name='description'
                             placeholder='add claim details here'
+                            onChange={handleChange}
 
                         ></textarea>
                     </div>
 
 
-                    {user.role === USER.CONSUMER && <button type="submit" onClick={() => { navigate(`/warranty/${warrantyId}/claimwarranty`) }} className='btn btn-info btn-lg text-white'>
+                    {user.role === USER.CONSUMER && <button type="submit" onClick={handleSubmit} className='btn btn-info btn-lg text-white'>
                         Claim Warranty
                     </button>}
 
