@@ -1,7 +1,9 @@
 import { StatusCodes } from 'http-status-codes'
 import moment from 'moment'
 import Warranty from '../models/Warranty.js'
+import Manufacturer from '../models/Manufacturer.js'
 import { BadRequestError } from '../errors/index.js'
+import Item from '../models/Item.js'
 
 const getWarrantyById = async (req, res) => {
   const warrantyId = req.params.warrantyId
@@ -9,12 +11,23 @@ const getWarrantyById = async (req, res) => {
     throw new BadRequestError('please provide warrantyId')
   }
 
-  const warranty = await Warranty.findOne({ _id: warrantyId }).populate({
+  const warrantyExist = await Warranty.findOne({ _id: warrantyId }).populate({
     path: 'itemId',
-    populate: { path: 'productId' },
-  })
+    select: 'productId',
+    populate: {
+      path:'productId'
+    }
+  }).lean()
 
-  res.status(StatusCodes.OK).json(warranty)
+  if (!warrantyExist) {
+    throw new BadRequestError(`warranty with ${warrantyId} does not exist`)
+  }
+
+  const manufacturer = await Manufacturer.findOne({ products: { $in: [warrantyExist.itemId.productId] }})
+
+  warrantyExist.manufacturer = manufacturer.userId
+
+  res.status(StatusCodes.OK).json(warrantyExist)
 }
 
 const getWarrantyByItemId = async (req, res) => {
@@ -23,9 +36,10 @@ const getWarrantyByItemId = async (req, res) => {
     throw new BadRequestError('please provide itemId')
   }
 
-  const warranty = await Warranty.findOne({ itemId })
+  const warranty = await Warranty.findOne({ itemId }).populate({ path: 'itemId', select: 'productId', populate: { path: 'productId', select: 'polices' }})
 
   if (req.user.role === 'CONSUMER') {
+    console.log(itemId, warranty)
     if (warranty) {
       res.status(StatusCodes.OK).json(warranty)
     } else {
@@ -35,7 +49,9 @@ const getWarrantyByItemId = async (req, res) => {
     if (warranty) {
       throw new BadRequestError('provided itemId already has a warranty')
     } else {
-      res.status(StatusCodes.OK).json(warranty)
+      const item = await Item.findOne({ _id: itemId }, {productId: 1}).populate({ path: 'productId', select: 'polices'})
+      console.log(item)
+      res.status(StatusCodes.OK).json(item)
     }
   }
 }
@@ -109,9 +125,12 @@ const createWarranty = async (req, res) => {
 const assignSelf = async (req, res) => {
   const { warrantyId } = req.body
   const warranty = await Warranty.findOne({ _id: warrantyId })
-
-  if (!warranty) {
+ 
+  if (!warranty ) {
     throw new BadRequestError(`${warrantyId} has no warrenty`)
+  }
+  if (warranty.customerId) {
+    throw new BadRequestError(`${warrantyId} already assigned`)
   }
 
   warranty.customerId = req.user.userId

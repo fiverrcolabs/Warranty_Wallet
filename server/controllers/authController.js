@@ -8,7 +8,7 @@ import { BadRequestError, UnAuthenticatedError } from '../errors/index.js'
 
 const register = async (req, res, next) => {
   console.log(req.body)
-  const { email, password,role } = req.body
+  const { email, password, role } = req.body
 
   if (!email || !password) {
     throw new BadRequestError('please provide all values')
@@ -96,4 +96,16 @@ const login = async (req, res) => {
   res.status(StatusCodes.OK).json({ user, token })
 }
 
-export { register, login }
+const getProfile = async (req, res, next) => {
+  let user = await User.findOne({ _id: req.user.userId }).lean()
+  if (req.user.role === 'MANUFACTURER') {
+    const manufacturer = await Manufacturer.findOne({ userId: req.user.userId }).lean()
+    user = { ...user, ...manufacturer }
+  } else if (req.user.role === 'RETAILER') {
+    const retailer = await Retailer.findOne({ userId: req.user.userId }).lean()
+    user = { ...user, ...retailer }
+  }
+  res.status(StatusCodes.OK).json(user)
+}
+
+export { register, login, getProfile }

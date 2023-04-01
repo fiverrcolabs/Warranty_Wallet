@@ -8,7 +8,10 @@ import Dashboard from './pages/DashBoard'
 
 import Claims from './pages/Claims'
 import ViewClaim from './pages/claim/ViewClaim'
-import ClaimItem from './pages/warranty/ClaimItem'
+
+import ViewWarranty from './pages/warranty/ViewWarranty'
+import ClaimWarranty from './pages/warranty/ClaimWarranty'
+
 
 import Profile from './pages/Profile'
 
@@ -36,8 +39,8 @@ import './App.css'
 export default function App() {
     return (
         <Router>
+            
             <Navbar/>
-
             <ToastContainer />
 
             <Routes>
@@ -54,8 +57,10 @@ export default function App() {
              
                     <Route path="/warranty" element={<Warranty />} />
                     <Route path="/warranty/qrreader" element={<QRReader />} />
-                    <Route path="/warranty/:itemId" element={<QRResult />} />
-                    <Route path="/warranty/claim/1" element={<ClaimItem />} />
+                    <Route path="/warranty/create/:itemId" element={<QRResult />} />
+                    <Route path="/warranty/:warrantyId" element={<ViewWarranty />} />
+                    <Route path="/warranty/:warrantyId/claimwarranty" element={<ClaimWarranty />} />
+
 
 
                     <Route path="/products" element={<Products />} />

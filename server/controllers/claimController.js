@@ -6,7 +6,7 @@ import Manufacturer from '../models/Manufacturer.js'
 import { BadRequestError } from '../errors/index.js'
 
 const createClaim = async (req, res) => {
-    const { warrantyId, description } = req.body
+    const { warrantyId, description, serviceProviderType } = req.body
 
     if (!warrantyId) {
         throw new BadRequestError('please provide warrantyId')
@@ -32,9 +32,15 @@ const createClaim = async (req, res) => {
     if (!verifyPurchaseDate) {
         throw new BadRequestError(`WARNING! purchase date altering detected...`)
     }
-    const claim = await Claim.create({ warrantyId, description, warrantyServiceProvider: { userId: warrantyExists.issuerId } })
 
-    res.status(StatusCodes.OK).json(claim)
+    if (serviceProviderType==='RETAILER') {
+        const claim = await Claim.create({ warrantyId, description, warrantyServiceProvider: { userId: warrantyExists.issuerId } })
+        res.status(StatusCodes.OK).json(claim)
+    } else if (serviceProviderType==='MANUFACTURER') {
+        const manufacturer = await Manufacturer.findOne({ products: { $in: [warrantyExists.itemId.productId] }})
+        const claim = await Claim.create({ warrantyId, description, warrantyServiceProvider: { userId: manufacturer.userId, role: 'MANUFACTURER' } })
+        res.status(StatusCodes.OK).json(claim)
+    }
 }
 
 const fillClaim = async (req, res) => {
@@ -54,9 +60,36 @@ const fillClaim = async (req, res) => {
         throw new BadRequestError(`you are not authorized to fill the claim by ${claimId}`)
     }
 
+    if (claimExists.status === 'RESOLVED') {
+        throw new BadRequestError(`customer already indicated the claim by ${claimId} as resolved`)
+    }
+
     claimExists.assignee = assignee
     claimExists.taskTime = taskTime
     claimExists.status = status
+    const claim = await claimExists.save()
+
+    res.status(StatusCodes.OK).json(claim)
+}
+
+const resolveClaim = async (req, res) => {
+    const { claimId } = req.body
+
+    if (!claimId) {
+        throw new BadRequestError('please provide all values')
+    }
+
+    let claimExists = await Claim.findOne({ _id: claimId }).populate('warrantyId')
+
+    if (!claimExists) {
+        throw new BadRequestError(`claim does not exist by ${claimId}`)
+    }
+
+    if (req.user.userId != claimExists.warrantyId.customerId) {
+        throw new BadRequestError(`you are not authorized to fill the claim by ${claimId}`)
+    }
+
+    claimExists.status = 'RESOLVED'
     const claim = await claimExists.save()
 
     res.status(StatusCodes.OK).json(claim)
@@ -118,5 +151,6 @@ export {
     fillClaim,
     forwardClaim,
     getAllClaims,
-    getClaimById
+    getClaimById,
+    resolveClaim
 }

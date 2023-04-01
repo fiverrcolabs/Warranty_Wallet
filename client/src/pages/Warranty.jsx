@@ -1,18 +1,43 @@
 import { BsQrCodeScan } from "react-icons/bs";
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
-
 import { useAppContext } from '../context/appContext'
 import Loader from '../components/Loader'
 import Product from '../components/Product'
 
 import { toast } from 'react-toastify'
 import { GrAddCircle } from 'react-icons/gr'
+import moment from 'moment'
 
 
+function Warranty() {
+  const navigate = useNavigate()
+  const { axiosFetch, addWarrantyStatus } = useAppContext()
+  const [warranties, setWarranties] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
 
-function Claims() {
-  const navigate=useNavigate()
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const fetchedProducts = await axiosFetch.get('/warranty/getAllWarranties')
+        addWarrantyStatus(fetchedProducts.data)
+        setWarranties(fetchedProducts.data)
+        console.log(fetchedProducts.data)
+        setIsLoading(false)
+      } catch (error) {
+        console.log(error.response.data.msg)
+        toast.error(error.response.data.msg)
+      }
+
+    }
+    fetchData();
+  }, [])
+
+  if (isLoading) {
+    return (
+      <Loader />
+    )
+  }
 
   return (
     <div className=" mainContainer container">
@@ -44,25 +69,16 @@ function Claims() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Thornton</td>
-                <td>@fat</td>
-                <td>Thornton</td>
+              {warranties.map((warranty) => (
 
-              </tr>
+                <tr key={warranty._id} className="clickable" onClick={() => navigate(`/warranty/${warranty._id}`)}>
+                  <th scope="row">{warranty._id}</th>
+                  <td>{warranty.customerId}</td>
+                  <td>{moment(warranty.purchaseDate).format('YYYY-MM-DD')}</td>
+                  <td>{warranty.state}</td>
+                </tr>
+              ))}
+
             </tbody>
           </table>
         </div>
@@ -74,4 +90,4 @@ function Claims() {
   )
 }
 
-export default Claims
+export default Warranty
