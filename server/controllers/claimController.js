@@ -1,4 +1,5 @@
 import { StatusCodes } from 'http-status-codes'
+import moment from 'moment'
 import Claim from '../models/Claim.js'
 import Warranty from '../models/Warranty.js'
 import Manufacturer from '../models/Manufacturer.js'
@@ -11,18 +12,21 @@ const createClaim = async (req, res) => {
         throw new BadRequestError('please provide warrantyId')
     }
 
-    const warrantyExists = await Warranty.findOne({ _id: warrantyId })
+    const warrantyExists = await Warranty.findOne({ _id: warrantyId }).populate({ path: 'itemId', select: 'productId', populate: { path: 'productId', select: 'warrentyPeriod' }})
 
     if (!warrantyExists) {
         throw new BadRequestError(`warranty does not exist by ${warrantyId}`)
     }
 
     if (req.user.userId != warrantyExists.customerId) {
-        console.log(req.user.userId, warrantyExists.customerId)
         throw new BadRequestError(`you are not authorized to claim warranty by ${warrantyId}`)
     }
 
-    // TODO: check if warranty expired
+    const expirationDate = moment(warrantyExists.purchaseDate).add(warrantyExists.itemId.productId.warrentyPeriod, 'months').toDate();
+    const currentDate = new Date();
+    if (expirationDate<currentDate) {
+        throw new BadRequestError(`warranty by ${warrantyId} is expired`)
+    }
 
     // TODO: verify with blockchain
     const claim = await Claim.create({ warrantyId, description, warrantyServiceProvider: { userId: warrantyExists.issuerId } })
@@ -78,10 +82,8 @@ const forwardClaim = async (req, res) => {
     }
 
     const manufacturer = await Manufacturer.findOne({ products: { $elemMatch: { $eq: productId } } })
-    console.log(productId, manufacturer)
 
     claimExists.warrantyServiceProvider = { userId: manufacturer.userId, role: 'MANUFACTURER' }
-    console.log(claimExists)
     const claim = await claimExists.save()
 
     res.status(StatusCodes.OK).json(claim)

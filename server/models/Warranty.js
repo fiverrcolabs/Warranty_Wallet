@@ -22,6 +22,8 @@ const UserSchema = new mongoose.Schema({
 })
 
 UserSchema.pre('save', async function () {
+  // TODO: create smart contract and store in db
+  // needs another field to refer the smart contract
   this.purchaseDate = Date.now()
 })
 
