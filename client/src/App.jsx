@@ -5,6 +5,7 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Dashboard from './pages/DashBoard'
 
+import Chat from './pages/Chat'
 
 import Claims from './pages/Claims'
 import ViewClaim from './pages/claim/ViewClaim'
@@ -51,6 +52,7 @@ export default function App() {
                 <Route path='/' element={<ProtectedRoute/>} >
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/profile" element={<Profile />} />
+                    <Route path="/chat" element={<Chat />} />
 
                     <Route path="/claims" element={<Claims />} />
                     <Route path="/claims/:claimId" element={<ViewClaim />} />
