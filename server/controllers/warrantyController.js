@@ -14,6 +14,9 @@ const getWarrantyById = async (req, res) => {
   const warrantyExist = await Warranty.findOne({ _id: warrantyId }).populate({
     path: 'itemId',
     select: 'productId',
+    populate: {
+      path:'productId'
+    }
   }).lean()
 
   if (!warrantyExist) {
