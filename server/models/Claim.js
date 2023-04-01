@@ -5,7 +5,7 @@ const UserSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Warranty',
     required: [true, 'No warranty found'],
-    unique: true,
+    // unique: true,
   },
   assignee: {
     type: String,
