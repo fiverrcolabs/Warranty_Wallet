@@ -17,22 +17,22 @@ function ClaimItem() {
     const navigate = useNavigate();
     const { axiosFetch, user } = useAppContext();
     const { claimId } = useParams()
-    
+
     // const [image, setImage] = useState(null)
-    const [formData, setFormData] = useState({
-        _id: '',
-        productId: '',
-        productName: '',
-        polices: '',
-        warrentyPeriod: 0,
-        imageData: null
-    });
+    const [formData, setFormData] = useState({});
     const [isLoading, setIsLoading] = useState(true)
+    const [editable, setEditable] = useState(false)
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    const [newData, setNewData] = useState({
+        state: '',
+        asigneer: '',
+        tasktime: '',
+      });
+    
 
 
 
@@ -55,40 +55,31 @@ function ClaimItem() {
     }, [])
 
 
-    // const handleImageChange = (event) => {
-    //     const file = event.target.files[0]
-    //     const reader = new FileReader()
-    //     reader.readAsDataURL(file)
-    //     reader.onloadend = () => {
-    //         setImage(reader.result)
-    //     }
-    // }
-
     const handleChange = (event) => {
-        const { name, value } = event.target;
-        setFormData((prevState) => ({
-            ...prevState,
-            [name]: value
-        }));
-    };
+    const { name, value } = event.target;
+    setNewData((prevState) => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
 
-    // const handleSubmit = async (event) => {
-    //     event.preventDefault();
-    //     try {
-    //         const createdProduct = await axiosFetch.post('/product/addProduct', {
-    //             ...formData,
-    //             imageData: image
-    //         })
-    //         console.log(createdProduct);
-    //         toast.success("Product Created Successfully")
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const createdProduct = await axiosFetch.post('/product/addProduct', {
+        ...formData,
+        imageData: image
+      })
+      console.log(createdProduct);
+      toast.success("Product Created Successfully")
 
-    //     } catch (error) {
-    //         console.log(error.response.data.msg)
-    //         toast.error(error.response.data.msg)
+    } catch (error) {
+      console.log(error.response.data.msg)
+      toast.error(error.response.data.msg)
 
-    //     }
+    }
 
-    // };
+  };
 
     if (isLoading) {
         return (
@@ -115,10 +106,6 @@ function ClaimItem() {
                 </div>
 
                 <div className='row p-3 px-3 '>
-                  
-
-                 
-
 
                     <div className='col-6 mx-auto'>
                         <div>
@@ -133,34 +120,34 @@ function ClaimItem() {
 
 
                     <div className='col-md-6 col-sm-12 '>
-                        <input
-                            
+                        <select  onChange={handleChange} name='state' disabled={!editable} className='form-control form-control-lg border border-info mt-4' aria-label="Default select example">
+                            <option value="1">New</option>
+                            <option value="2">InProgress</option>
+                            <option value="3">Completed</option>
+                            <option value="4">Rejected</option>
+                        </select>
+                        <input onChange={handleChange}
+                            disabled={!editable}
                             className='form-control form-control-lg border border-info mt-3'
                             type='text'
-                            name='productId'
-                            placeholder={formData.productId}
-                            aria-label='.form-control-lg example'
-                            // onChange={handleChange}
-                        />
-                        <input
-                            
-                            className='form-control form-control-lg border border-info mt-3'
-                            type='text'
-                            name='productName'
-                            // placeholder={formData.productName}
+                            name='asigneer'
+                            placeholder={!editable?(formData.asigneer):"add asigneer"}
                             aria-label='.form-control-lg example'
 
                         />
-                        <input
-                            
+                        <input onChange={handleChange}
+                             disabled={!editable}
                             className='form-control form-control-lg border border-info mt-3'
                             type='number'
-                            name='warrentyPeriod'
-                            // placeholder={formData.warrentyPeriod}
+                            name='tasktime'
+                            placeholder={!editable?(formData.tasktime):"add tasktime"}
+                            min={1}
                             aria-label='.form-control-lg example'
 
                         />
-                        <button className='btn btn-info btn-lg mt-3  text-white' >Save</button>
+                        <button disabled={!editable}  className='btn btn-info btn-lg mt-3  text-white' >Save</button>
+                        <button onClick={()=>{setEditable(!editable)}} className='btn btn-info btn-lg mt-3 mx-4  text-white' >Edit</button>
+
 
                         {/* <div className="input-group mb-3 mt-3">
                             <input disabled type="text" className="form-control form-control-lg border border-info " placeholder={`${qrCount}`} aria-label="Recipient's username" aria-describedby="basic-addon2" />
@@ -185,13 +172,13 @@ function ClaimItem() {
                             id='exampleFormControlTextarea1'
                             rows='3'
                             name='polices'
-                            placeholder={formData.polices}
+                            placeholder={formData.description}
 
                         ></textarea>
                     </div>
 
 
-                    {user.role==="RETAILER" && <button onClick={handleShow} type="submit" className='btn btn-info btn-lg  text-white'>
+                    {user.role === "RETAILER" && <button onClick={handleShow} type="submit" className='btn btn-info btn-lg  text-white'>
                         Transfer to Manufacturer
                     </button>}
 
