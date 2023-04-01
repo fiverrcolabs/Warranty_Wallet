@@ -28,11 +28,12 @@ function ClaimItem() {
     const handleShow = () => setShow(true);
 
     const [newData, setNewData] = useState({
-        state: '',
-        asigneer: '',
-        tasktime: '',
-      });
-    
+        claimId: claimId,
+        status: '',
+        assignee: '',
+        taskTime: '',
+    });
+
 
 
 
@@ -56,30 +57,74 @@ function ClaimItem() {
 
 
     const handleChange = (event) => {
-    const { name, value } = event.target;
-    setNewData((prevState) => ({
-      ...prevState,
-      [name]: value
-    }));
-  };
+        const { name, value } = event.target;
+        setNewData((prevState) => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const createdProduct = await axiosFetch.post('/product/addProduct', {
-        ...formData,
-        imageData: image
-      })
-      console.log(createdProduct);
-      toast.success("Product Created Successfully")
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+            const createdProduct = await axiosFetch.post('/claim/fillClaim', {
+                ...newData,
 
-    } catch (error) {
-      console.log(error.response.data.msg)
-      toast.error(error.response.data.msg)
+            })
+            console.log(createdProduct);
+            const fetchedProducts = await axiosFetch.get(`/claim/${claimId}`)
+            console.log(fetchedProducts.data);
+            setFormData(fetchedProducts.data[0])
+            toast.success("Claim updated Successfully")
 
-    }
+        } catch (error) {
+            console.log(error.response.data.msg)
+            toast.error(error.response.data.msg)
 
-  };
+        }
+
+    };
+
+    const transfer = async (event) => {
+        event.preventDefault();
+        try {
+            const createdProduct = await axiosFetch.post('/claim/forwardClaim', {
+                claimId,
+
+            })
+            const fetchedProducts = await axiosFetch.get(`/claim/${claimId}`)
+            console.log(fetchedProducts.data);
+            setFormData(fetchedProducts.data[0])
+            toast.success("Make As resolved")
+
+        } catch (error) {
+            console.log(error.response.data.msg)
+            toast.error(error.response.data.msg)
+
+        }
+
+    };
+
+    const makeAsResolved = async (event) => {
+        event.preventDefault();
+        try {
+            const createdProduct = await axiosFetch.post('/claim/resolveClaim', {
+                claimId,
+            })
+            const fetchedProducts = await axiosFetch.get(`/claim/${claimId}`)
+            console.log(fetchedProducts.data);
+            setFormData(fetchedProducts.data[0])
+            toast.success("Claim transfer Successfull")
+
+        } catch (error) {
+            console.log(error.response.data.msg)
+            toast.error(error.response.data.msg)
+
+        }
+
+    };
+
+
 
     if (isLoading) {
         return (
@@ -95,7 +140,7 @@ function ClaimItem() {
                 <div className='row'>
 
                     <div className='col-8' >
-                        <h1 className='px-3'>Claim Item</h1>
+                        <h2 className='px-3'>Claim: <span>{claimId}</span> </h2>
                     </div>
                     <div className='col topBar'>
                         <div className='topBarIcon'>
@@ -118,35 +163,39 @@ function ClaimItem() {
 
                     </div>
 
-
+                    {/* 'NEW', 'IN_PROGRESS', 'REJECTED', 'COMPLETED', 'RESOLVED' */}
                     <div className='col-md-6 col-sm-12 '>
-                        <select  onChange={handleChange} name='state' disabled={!editable} className='form-control form-control-lg border border-info mt-4' aria-label="Default select example">
-                            <option value="1">New</option>
-                            <option value="2">InProgress</option>
-                            <option value="3">Completed</option>
-                            <option value="4">Rejected</option>
+                        <select required onChange={handleChange} name='status' defaultValue={formData.status} disabled={!editable} className='form-control form-control-lg border border-info mt-4' aria-label="Default select example">
+                            <option value={formData.status} disabled>{formData.status} </option>
+                            <option value="IN_PROGRESS">InProgress</option>
+                            <option value="COMPLETED">Completed</option>
+                            <option value="REJECTED">Rejected</option>
                         </select>
-                        <input onChange={handleChange}
+                        <input required onChange={handleChange}
                             disabled={!editable}
                             className='form-control form-control-lg border border-info mt-3'
                             type='text'
-                            name='asigneer'
-                            placeholder={!editable?(formData.asigneer):"add asigneer"}
+                            name='assignee'
+                            value={!editable ? "" : newData.assignee}
+                            placeholder={!editable ? (formData.assignee) : "add asigneer"}
                             aria-label='.form-control-lg example'
 
                         />
-                        <input onChange={handleChange}
-                             disabled={!editable}
+                        <input required onChange={handleChange}
+                            disabled={!editable}
                             className='form-control form-control-lg border border-info mt-3'
                             type='number'
-                            name='tasktime'
-                            placeholder={!editable?(formData.tasktime):"add tasktime"}
+                            name='taskTime'
+                            value={!editable ? "" : newData.taskTime}
+                            placeholder={!editable ? (formData.taskTime) : "add tasktime"}
                             min={1}
                             aria-label='.form-control-lg example'
 
                         />
-                        <button disabled={!editable}  className='btn btn-info btn-lg mt-3  text-white' >Save</button>
-                        <button onClick={()=>{setEditable(!editable)}} className='btn btn-info btn-lg mt-3 mx-4  text-white' >Edit</button>
+                        {user.role !== "CONSUMER" && <><button disabled={!editable} onClick={handleSubmit} className='btn btn-info btn-lg mt-3  text-white'>Save</button>
+                            <button disabled={formData.status === "RESOLVED"} onClick={() => {
+                                setEditable(!editable);
+                            }} className='btn btn-info btn-lg mt-3 mx-4  text-white'>{!editable ? "Edit" : "Cancel"}</button></>}
 
 
                         {/* <div className="input-group mb-3 mt-3">
@@ -178,8 +227,11 @@ function ClaimItem() {
                     </div>
 
 
-                    {user.role === "RETAILER" && <button onClick={handleShow} type="submit" className='btn btn-info btn-lg  text-white'>
+                    {user.role === "RETAILER" && <button onClick={transfer} type="submit" className='btn btn-info btn-lg  text-white'>
                         Transfer to Manufacturer
+                    </button>}
+                    {user.role === "CONSUMER" && <button onClick={makeAsResolved} type="submit" className='btn btn-info btn-lg  text-white'>
+                        Make As Resolved
                     </button>}
 
                 </div>

@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react'
 import { toast } from 'react-toastify'
 import { useAppContext } from '../context/appContext'
+import Loader from '../components/Loader'
+
 
 
 
@@ -13,6 +15,7 @@ function Products() {
   const [connections, setConnections] = useState([])
   const [arrayIds, setArrayIds] = useState([])
   const [sentRequests, setSentRequests] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
 
   const USER = {
     MANUFACTURER: "MANUFACTURER",
@@ -46,7 +49,7 @@ function Products() {
           ar.push(request._id)
         })
         setArrayIds(ar)
-
+        setIsLoading(false)
 
       } catch (error) {
         console.log(error.response.data.msg)
@@ -95,13 +98,18 @@ function Products() {
 
 
 
-
   if (!(user.role === USER.MANUFACTURER || user.role === USER.RETAILER)) {
     return (
       <div className=" mainContainer container">
         <h1>Not Allowed</h1>
       </div>
 
+    )
+  }
+
+  if (isLoading) {
+    return (
+      <Loader />
     )
   }
 

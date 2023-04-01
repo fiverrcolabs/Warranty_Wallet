@@ -5,6 +5,8 @@ import { useState, useEffect } from 'react'
 import { toast } from 'react-toastify'
 import { useAppContext } from '../../context/appContext'
 import Friend from '../../components/Friend';
+import Loader from '../../components/Loader'
+
 
 
 
@@ -13,6 +15,8 @@ function Request() {
   const { axiosFetch, user } = useAppContext()
   const [connections, setConnections] = useState([])
   const [friends, setFriends] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+
   const USER = {
     MANUFACTURER: "MANUFACTURER",
     RETAILER: "RETAILER",
@@ -28,20 +32,21 @@ function Request() {
           fetchedConnections = await axiosFetch.get('/manufacturer/retailerRequests')
           fetchFriends = await axiosFetch.get('/manufacturer/retailerFriends')
           setFriends(fetchFriends.data.retailerFriends)
-    
+
         }
         if (user.role === USER.RETAILER) {
           fetchedConnections = await axiosFetch.get('/retailer/manufacturerRequests')
-          console.log("=====",fetchedConnections.data)
+          console.log("=====", fetchedConnections.data)
           fetchFriends = await axiosFetch.get('/retailer/manufacturerFriends')
           setFriends(fetchFriends.data.manufacturerFriends)
-     
+
         }
 
         setConnections(fetchedConnections.data)
-       
+
         console.log(fetchedConnections.data)
-        console.log("friends",fetchFriends.data)
+        console.log("friends", fetchFriends.data)
+        setIsLoading(false)
 
 
       } catch (error) {
@@ -94,13 +99,13 @@ function Request() {
     }
   }
 
-function filterCname(connection){
-  // console.log("!! ", connection.manufacturer[0].company)
-  if(user.role === USER.RETAILER){
-    return connection.manufacturer[0].company
+  function filterCname(connection) {
+    // console.log("!! ", connection.manufacturer[0].company)
+    if (user.role === USER.RETAILER) {
+      return connection.manufacturer[0].company
+    }
+    return connection.retailer[0].company
   }
-  return connection.retailer[0].company
-}
 
 
 
@@ -113,6 +118,13 @@ function filterCname(connection){
 
     )
   }
+
+  if (isLoading) {
+    return (
+      <Loader />
+    )
+  }
+
 
   return (
     <div className=" mainContainer container">
@@ -149,8 +161,8 @@ function filterCname(connection){
         <div className='friendsContainer' >
 
           {friends.map((friend) => (
-           
-            <Friend available={()=>{true}} id={friend._id} key={friend._id} userId={friend._id} company={friend.email} />
+
+            <Friend available={() => { true }} id={friend._id} key={friend._id} userId={friend._id} company={friend.email} />
           ))}
         </div>
       </div>

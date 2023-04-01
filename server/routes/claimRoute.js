@@ -9,12 +9,14 @@ import {
     fillClaim,
     forwardClaim,
     getAllClaims,
-    getClaimById
+    getClaimById,
+    resolveClaim
 } from "../controllers/claimController.js"
 
 // TODO: IF role based access
 router.route('/createClaim').post(isConsumer, createClaim)
 router.route('/fillClaim').post(isRetailerManufacturer, fillClaim)
+router.route('/resolveClaim').post(isConsumer, resolveClaim)
 router.route('/forwardClaim').post(isRetailer, forwardClaim)
 router.route('/getAllClaims').get(getAllClaims)
 router.route('/:claimId').get(getClaimById)

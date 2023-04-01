@@ -59,6 +59,29 @@ const fillClaim = async (req, res) => {
     res.status(StatusCodes.OK).json(claim)
 }
 
+const resolveClaim = async (req, res) => {
+    const { claimId } = req.body
+
+    if (!claimId) {
+        throw new BadRequestError('please provide all values')
+    }
+
+    let claimExists = await Claim.findOne({ _id: claimId }).populate('warrantyId')
+
+    if (!claimExists) {
+        throw new BadRequestError(`claim does not exist by ${claimId}`)
+    }
+
+    if (req.user.userId != claimExists.warrantyId.customerId) {
+        throw new BadRequestError(`you are not authorized to fill the claim by ${claimId}`)
+    }
+
+    claimExists.status = 'RESOLVED'
+    const claim = await claimExists.save()
+
+    res.status(StatusCodes.OK).json(claim)
+}
+
 const forwardClaim = async (req, res) => {
     const { claimId } = req.body
 
@@ -115,5 +138,6 @@ export {
     fillClaim,
     forwardClaim,
     getAllClaims,
-    getClaimById
+    getClaimById,
+    resolveClaim
 }

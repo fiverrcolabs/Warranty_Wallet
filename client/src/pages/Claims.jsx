@@ -80,7 +80,7 @@ function Claims() {
                 <tr key={claim._id} className="clickable" onClick={() => navigate(`/claims/${claim._id}`)}>
                 <th scope="row">{claim._id}</th>
                 <td>{claim.assignee}</td>
-                <td>{claim.tasktime}</td>
+                <td>{claim.taskTime}</td>
                 <td>{claim.status}</td>
               </tr>
               ))}
