@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.9;
 
-contract WarrentyWallet {
+contract WarrantyWallet {
     bytes32 private hashValue;
 
     constructor(bytes32 _hashValue) {
