@@ -51,6 +51,10 @@ const fillClaim = async (req, res) => {
         throw new BadRequestError(`you are not authorized to fill the claim by ${claimId}`)
     }
 
+    if (claimExists.status === 'RESOLVED') {
+        throw new BadRequestError(`customer already indicated the claim by ${claimId} as resolved`)
+    }
+
     claimExists.assignee = assignee
     claimExists.taskTime = taskTime
     claimExists.status = status
