@@ -6,7 +6,7 @@ import Manufacturer from '../models/Manufacturer.js'
 import { BadRequestError } from '../errors/index.js'
 
 const createClaim = async (req, res) => {
-    const { warrantyId, description } = req.body
+    const { warrantyId, description, serviceProviderType } = req.body
 
     if (!warrantyId) {
         throw new BadRequestError('please provide warrantyId')
@@ -29,9 +29,14 @@ const createClaim = async (req, res) => {
     }
 
     // TODO: verify with blockchain
-    const claim = await Claim.create({ warrantyId, description, warrantyServiceProvider: { userId: warrantyExists.issuerId } })
-
-    res.status(StatusCodes.OK).json(claim)
+    if (serviceProviderType==='RETAILER') {
+        const claim = await Claim.create({ warrantyId, description, warrantyServiceProvider: { userId: warrantyExists.issuerId } })
+        res.status(StatusCodes.OK).json(claim)
+    } else if (serviceProviderType==='MANUFACTURER') {
+        const manufacturer = await Manufacturer.findOne({ products: { $in: [warrantyExists.itemId.productId] }})
+        const claim = await Claim.create({ warrantyId, description, warrantyServiceProvider: { userId: manufacturer.userId, role: 'MANUFACTURER' } })
+        res.status(StatusCodes.OK).json(claim)
+    }
 }
 
 const fillClaim = async (req, res) => {
