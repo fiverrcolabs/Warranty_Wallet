@@ -99,9 +99,21 @@ const getAllClaims = async (req, res) => {
     }
 }
 
+const getClaimById = async (req, res) => {
+    const claimId = req.params.claimId
+    if (req.user.role === "CONSUMER") {
+        const claims = await Claim.find({ _id: claimId }).populate({ path: 'warrantyId', match: { customerId: req.user.userId }})
+        res.status(StatusCodes.OK).json(claims)
+    } else {
+        const claims = await Claim.find({ _id: claimId, 'warrantyServiceProvider.userId': req.user.userId })
+        res.status(StatusCodes.OK).json(claims)
+    }
+}
+
 export {
     createClaim,
     fillClaim,
     forwardClaim,
-    getAllClaims
+    getAllClaims,
+    getClaimById
 }
