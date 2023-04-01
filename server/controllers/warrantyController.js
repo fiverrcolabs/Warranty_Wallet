@@ -1,6 +1,7 @@
 import { StatusCodes } from 'http-status-codes'
 import moment from 'moment'
 import Warranty from '../models/Warranty.js'
+import Manufacturer from '../models/Manufacturer.js'
 import { BadRequestError } from '../errors/index.js'
 
 const getWarrantyById = async (req, res) => {
@@ -9,12 +10,20 @@ const getWarrantyById = async (req, res) => {
     throw new BadRequestError('please provide warrantyId')
   }
 
-  const warranty = await Warranty.findOne({ _id: warrantyId }).populate({
+  const warrantyExist = await Warranty.findOne({ _id: warrantyId }).populate({
     path: 'itemId',
-    populate: { path: 'productId' },
-  })
+    select: 'productId',
+  }).lean()
 
-  res.status(StatusCodes.OK).json(warranty)
+  if (!warrantyExist) {
+    throw new BadRequestError(`warranty with ${warrantyId} does not exist`)
+  }
+
+  const manufacturer = await Manufacturer.findOne({ products: { $in: [warrantyExist.itemId.productId] }})
+
+  warrantyExist.manufacturer = manufacturer.userId
+
+  res.status(StatusCodes.OK).json(warrantyExist)
 }
 
 const getWarrantyByItemId = async (req, res) => {
