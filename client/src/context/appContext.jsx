@@ -1,6 +1,7 @@
 import React, { useReducer, useContext  } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import moment from 'moment'
 
 import reducer from './reducer'
 
@@ -161,6 +162,23 @@ const AppProvider = ({ children }) => {
     removeUserToLocalStorage()
   }
 
+  const addWarrantyStatus = (warranties) => {
+    warranties.forEach((warranty) => {
+      const expirationDate = moment(warranty.purchaseDate).add(warranty.itemId.productId.warrentyPeriod, 'months').toDate();
+      const currentDate = new Date();
+
+      if (expirationDate < currentDate) {
+        warranty.state = 'EXPIRED'
+      } else if (!warranty.customerId) {
+        warranty.state = 'INACTIVE'
+      } else {
+        warranty.state = 'ACTIVE'
+      }
+
+      console.log(warranty)
+    })
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -169,6 +187,7 @@ const AppProvider = ({ children }) => {
         register,
         logoutUser,
         axiosFetch,
+        addWarrantyStatus
       }}
     >
       {children}

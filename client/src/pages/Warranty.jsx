@@ -1,7 +1,6 @@
 import { BsQrCodeScan } from "react-icons/bs";
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
-
 import { useAppContext } from '../context/appContext'
 import Loader from '../components/Loader'
 import Product from '../components/Product'
@@ -13,7 +12,7 @@ import { GrAddCircle } from 'react-icons/gr'
 
 function Warranty() {
   const navigate = useNavigate()
-  const { axiosFetch } = useAppContext()
+  const { axiosFetch, addWarrantyStatus } = useAppContext()
   const [warranties, setWarranties] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 
@@ -21,6 +20,7 @@ function Warranty() {
     async function fetchData() {
       try {
         const fetchedProducts = await axiosFetch.get('/warranty/getAllWarranties')
+        addWarrantyStatus(fetchedProducts.data)
         setWarranties(fetchedProducts.data)
         console.log(fetchedProducts.data)
         setIsLoading(false)
@@ -69,16 +69,16 @@ function Warranty() {
               </tr>
             </thead>
             <tbody>
-            {warranties.map((warranty) => (
-               
-               <tr key={warranty._id} className="clickable" onClick={() => navigate(`/warranty/${warranty._id}`)}>
-               <th scope="row">{warranty._id}</th>
-               <td>{warranty.assignee}</td>
-               <td>{warranty.tasktime}</td>
-               <td>{warranty.status}</td>
-             </tr>
-             ))}
-            
+              {warranties.map((warranty) => (
+
+                <tr key={warranty._id} className="clickable" onClick={() => navigate(`/warranty/${warranty._id}`)}>
+                  <th scope="row">{warranty._id}</th>
+                  <td>{warranty.assignee}</td>
+                  <td>{warranty.tasktime}</td>
+                  <td>{warranty.state}</td>
+                </tr>
+              ))}
+
             </tbody>
           </table>
         </div>
