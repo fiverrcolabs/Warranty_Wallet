@@ -7,15 +7,31 @@ const UserSchema = new mongoose.Schema({
     required: [true, 'No warranty found'],
     unique: true,
   },
-  handler: {
+  assignee: {
     type: String,
-    enum: ['RETAILER', 'MANUFACTURER'],
-    default: 'RETAILER',
+  },
+  taskTime: {
+    type: String,
+  },
+  description: {
+    type: String,
   },
   status: {
     type: String,
     enum: ['NEW', 'IN_PROGRESS', 'REJECTED', 'COMPLETED', 'RESOLVED'],
     default: 'NEW',
+  },
+  warrantyServiceProvider: {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: [true, 'Please provide userId'],
+      ref: 'User',
+    },
+    role: {
+      type: String,
+      enum: ['MANUFACTURER', 'RETAILER'],
+      default: 'RETAILER',
+    }
   },
 })
 

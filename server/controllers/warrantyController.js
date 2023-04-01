@@ -8,7 +8,11 @@ const getWarrantyById = async (req, res) => {
     throw new BadRequestError('please provide warrantyId')
   }
 
-  const warranty = await Warranty.findOne({ _id: warrantyId })
+  const warranty = await Warranty.findOne({ _id: warrantyId }).populate({
+    path: 'itemId',
+    populate: { path: 'productId' },
+  })
+
   res.status(StatusCodes.OK).json(warranty)
 }
 
