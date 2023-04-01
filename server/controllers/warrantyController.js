@@ -1,4 +1,5 @@
 import { StatusCodes } from 'http-status-codes'
+import moment from 'moment'
 import Warranty from '../models/Warranty.js'
 import { BadRequestError } from '../errors/index.js'
 
@@ -58,12 +59,31 @@ const getAllWarranties = async (req, res) => {
       select: 'productId',
       populate: {
         path: 'productId',
-        select: 'productName warrentyPeriod polices',
+        select: 'warrentyPeriod',
       },
     })
   } else if (req.user.role === 'RETAILER') {
-    warranties = await Warranty.find({ issuerId: req.user.userId })
+    warranties = await Warranty.find({ issuerId: req.user.userId }).populate({
+      path: 'itemId',
+      select: 'productId',
+      populate: {
+        path: 'productId',
+        select: 'warrentyPeriod',
+      },
+    })
   }
+  warranties.forEach((warranty) => {
+    const expirationDate = moment(warranty.purchaseDate).add(warranty.itemId.productId.warrentyPeriod, 'months').toDate();
+    const currentDate = new Date();
+
+    if (expirationDate < currentDate) {
+      warranty.state = 'EXPIRED'
+    } else if (!warranty.customerId) {
+      warranty.state = 'INACTIVE'
+    } else {
+      warranty.state = 'ACTIVE'
+    }
+  })
 
   res.status(StatusCodes.OK).json(warranties)
 }
