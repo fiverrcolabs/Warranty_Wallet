@@ -4,7 +4,7 @@ import { useAppContext } from '../context/appContext'
 const ProtectedRoute = ({ children }) => {
   const { user } = useAppContext()
 
-  console.log(user)
+  // console.log(user)
   if (!user) {
     return <Navigate to='/login' />
   }

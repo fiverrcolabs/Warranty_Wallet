@@ -1,5 +1,45 @@
+import { BsQrCodeScan } from "react-icons/bs";
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
+
+import { useAppContext } from '../context/appContext'
+import Loader from '../components/Loader'
+import Product from '../components/Product'
+
+import { toast } from 'react-toastify'
+import { GrAddCircle } from 'react-icons/gr'
+
+
 
 function Claims() {
+  const navigate = useNavigate()
+  const { axiosFetch } = useAppContext()
+  const [claims, setClaims] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const fetchedProducts = await axiosFetch.get('/claim/getAllClaims')
+        setClaims(fetchedProducts.data)
+        console.log(fetchedProducts.data)
+        setIsLoading(false)
+      } catch (error) {
+        console.log(error.response.data.msg)
+        toast.error(error.response.data.msg)
+      }
+
+    }
+    fetchData();
+  }, [])
+
+  if (isLoading) {
+    return (
+      <Loader />
+    )
+  }
+
+
 
   return (
     <div className=" mainContainer container">
@@ -25,7 +65,7 @@ function Claims() {
         </div>
 
         <div className='secondPageProducts container' >
-          <table class="table table-bordered table-hover shadow ">
+          <table className="table table-bordered table-hover shadow ">
             <thead>
               <tr>
                 <th scope="col">ClaimId</th>
@@ -35,32 +75,23 @@ function Claims() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
+              {claims.map((claim) => (
+               
+                <tr key={claim._id} className="clickable" onClick={() => navigate(`/claims/${claim._id}`)}>
+                <th scope="row">{claim._id}</th>
+                <td>{claim.assignee}</td>
+                <td>{claim.taskTime}</td>
+                <td>{claim.status}</td>
               </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Thornton</td>
-                <td>@fat</td>
-                <td>Thornton</td>
-            
-              </tr>
+              ))}
+             
             </tbody>
           </table>
         </div>
       </div>
 
 
-    </div>
+    </div >
 
   )
 }

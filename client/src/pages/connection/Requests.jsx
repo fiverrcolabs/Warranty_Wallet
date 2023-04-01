@@ -4,13 +4,19 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react'
 import { toast } from 'react-toastify'
 import { useAppContext } from '../../context/appContext'
+import Friend from '../../components/Friend';
+import Loader from '../../components/Loader'
 
 
 
-function Products() {
+
+function Request() {
   var navigate = useNavigate();
   const { axiosFetch, user } = useAppContext()
   const [connections, setConnections] = useState([])
+  const [friends, setFriends] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+
   const USER = {
     MANUFACTURER: "MANUFACTURER",
     RETAILER: "RETAILER",
@@ -21,21 +27,30 @@ function Products() {
     async function fetchData() {
       try {
         var fetchedConnections;
+        var fetchFriends;
         if (user.role === USER.MANUFACTURER) {
           fetchedConnections = await axiosFetch.get('/manufacturer/retailerRequests')
-          setConnections(fetchedConnections.data)
+          fetchFriends = await axiosFetch.get('/manufacturer/retailerFriends')
+          setFriends(fetchFriends.data.retailerFriends)
+
         }
         if (user.role === USER.RETAILER) {
           fetchedConnections = await axiosFetch.get('/retailer/manufacturerRequests')
-          setConnections(fetchedConnections.data.manufacturerRequests)
+          console.log("=====", fetchedConnections.data)
+          fetchFriends = await axiosFetch.get('/retailer/manufacturerFriends')
+          setFriends(fetchFriends.data.manufacturerFriends)
+
         }
 
+        setConnections(fetchedConnections.data)
+
         console.log(fetchedConnections.data)
-        console.log(user.role)
+        console.log("friends", fetchFriends.data)
+        setIsLoading(false)
 
 
       } catch (error) {
-        console.log(error.response.data.msg)
+        console.log(error.response)
         toast.error(error.response.data.msg)
       }
 
@@ -48,6 +63,7 @@ function Products() {
     console.log(event.currentTarget.parentNode.id)
     try {
       var res;
+
       if (user.role === USER.MANUFACTURER) {
         res = await axiosFetch.get(`/manufacturer/approveRetailerRequest?userId=${event.currentTarget.parentNode.id}`)
       }
@@ -83,7 +99,13 @@ function Products() {
     }
   }
 
-
+  function filterCname(connection) {
+    // console.log("!! ", connection.manufacturer[0].company)
+    if (user.role === USER.RETAILER) {
+      return connection.manufacturer[0].company
+    }
+    return connection.retailer[0].company
+  }
 
 
 
@@ -96,6 +118,13 @@ function Products() {
 
     )
   }
+
+  if (isLoading) {
+    return (
+      <Loader />
+    )
+  }
+
 
   return (
     <div className=" mainContainer container">
@@ -116,21 +145,24 @@ function Products() {
 
 
         </div>
+        <h3 className='mt-5'>Requests</h3>
 
-        <div className='friendsContainer' >
-          <h3>Requests</h3>
+        <div className='friendsContainer ' >
+
 
           {connections.map((connection) => (
-            <AddRequest reject={reject} accept={accept} userId={connection._id} key={connection._id} company={connection.company} />
+            <AddRequest reject={reject} accept={accept} userId={connection._id} key={connection._id} company={filterCname(connection)} />
           ))}
         </div>
 
-            <hr />
-            {/* //todo */}
-        <div className='friendsContainer' >
+        <hr />
+        {/* //todo */}
         <h3>Friends</h3>
-          {connections.map((connection) => (
-            <AddRequest reject={reject} accept={accept} userId={connection._id} key={connection._id} company={connection.company} />
+        <div className='friendsContainer' >
+
+          {friends.map((friend) => (
+
+            <Friend available={() => { true }} id={friend._id} key={friend._id} userId={friend._id} company={friend.email} />
           ))}
         </div>
       </div>
@@ -141,4 +173,4 @@ function Products() {
   )
 }
 
-export default Products
+export default Request

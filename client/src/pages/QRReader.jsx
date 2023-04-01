@@ -61,7 +61,16 @@ function QRscanner() {
 
                     <div class="input-group mb-3 mt-3">
                         <input disabled type="text" class="form-control form-control-lg border border-info " placeholder={qrscan} aria-label="Recipient's username" aria-describedby="basic-addon2" />
-                        <button onClick={() => navigate({ qrscan })} class="btn btn-outline-info clickable" id="basic-addon2">Add</button>
+                        {/* <button onClick={() => navigate({ qrscan })} class="btn btn-outline-info clickable" id="basic-addon2">Add</button> */}
+                      
+                        <a
+                            class="btn btn-outline-info clickable"
+                            id="basic-addon2"
+                            href={qrscan}
+                            target="_blank"
+                            rel="noreferrer"
+                        >Go..
+                        </a>
                     </div>
 
 
