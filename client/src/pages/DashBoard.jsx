@@ -3,14 +3,25 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react'
 import React from 'react';
 import Chart from "chart.js/auto";
-import { Line, Pie ,Doughnut } from "react-chartjs-2";
+import { useAppContext } from '../context/appContext'
+import { Line, Pie, Doughnut } from "react-chartjs-2";
 // import {faker} from 'faker';
 
 
 function DashBoard() {
-
   const navigate = useNavigate()
+  const { axiosFetch, user } = useAppContext()
 
+  const [claims, setClaims] = useState([])
+  const [friends, setFriends] = useState([])
+  const [sentRequests, setSentRequests] = useState([])
+  const [receivedRequests, setReceivedRequests] = useState([])
+
+  const USER = {
+    MANUFACTURER: "MANUFACTURER",
+    RETAILER: "RETAILER",
+    CONSUMER: "CONSUMER"
+  }
 
   const labels = ["January", "February", "March", "April", "May", "June"];
 
@@ -43,8 +54,78 @@ function DashBoard() {
     }]
   };
 
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const claimsData = await axiosFetch.get('/claim/getAllClaims')
+        setClaims(claimsData.data)
+        if (user.role === USER.RETAILER) {
+          const manufacturerFriendsData = await axiosFetch.get('/retailer/manufacturerFriends')
+          setFriends(manufacturerFriendsData.data.manufacturerFriends)
+          const manufacturerRequestsData = await axiosFetch.get('/retailer/manufacturerRequests')
+          setReceivedRequests(manufacturerRequestsData.data)
+          const retailerSentRequestsData = await axiosFetch.get('/retailer/getRetailerSentRequests')
+          setSentRequests(retailerSentRequestsData.data)
+        } else if (user.role === USER.MANUFACTURER) {
+          const retailerFriendsData = await axiosFetch.get('/manufacturer/retailerFriends')
+          setFriends(retailerFriendsData.data.retailerFriends)
+          const retailerRequestsData = await axiosFetch.get('/manufacturer/retailerRequests')
+          setReceivedRequests(retailerRequestsData.data)
+          const manufacturerSentRequestsData = await axiosFetch.get('/manufacturer/getManufacturerSentRequests')
+          setSentRequests(manufacturerSentRequestsData.data)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchData()
+  }, [])
+
+  const getHighestClaimProducts = () => {
+    const productIdCounts = {};
+    const productIdNames = {};
+
+    claims.forEach(claim => {
+      const productId = claim.warrantyId.itemId.productId._id;
+      const productName = claim.warrantyId.itemId.productId.productName;
+
+      if (!productIdCounts[productId]) {
+        productIdCounts[productId] = 1;
+        productIdNames[productId] = productName;
+      } else {
+        productIdCounts[productId]++;
+      }
+    });
+
+    return { claimProductIdNames: Object.values(productIdNames), claimProductIdCounts: Object.values(productIdCounts) }
+  }
+
+  const getClaimsAndCompletionRate = () => {
+    const statusCounts = {};
+
+    claims.forEach(claim => {
+      if (!statusCounts[claim.status]) {
+        statusCounts[claim.status] = 1;
+      } else {
+        statusCounts[claim.status]++;
+      }
+    });
+
+    return statusCounts
+  }
+
+  const friendsSummary = () => {
+    
+    return {
+      friendsCount: friends.length,
+      sentRequestsCount: sentRequests.length,
+      receivedRequestsCount: receivedRequests.length,
+    }
+  }
+
   return (
     <div className=" mainContainer container">
+      {console.log(friendsSummary())}
       <div className='firstPageProducts container'>
         <div className='row'>
 
@@ -90,7 +171,7 @@ function DashBoard() {
           </div>
           <div className='row mt-3 chartBox'>
 
-          <div className='col-md-5 col-sm-12 p-3 shadow chartBox'>
+            <div className='col-md-5 col-sm-12 p-3 shadow chartBox'>
               {/* <div className=''> */}
               <Pie options={{ responsive: true, maintainAspectRatio: false }} data={data} />
               {/* </div> */}
