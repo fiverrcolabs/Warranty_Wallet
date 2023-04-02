@@ -28,7 +28,11 @@ const createClaim = async (req, res) => {
         throw new BadRequestError(`warranty by ${warrantyId} is expired`)
     }
 
-    // TODO: verify with blockchain
+    const verifyPurchaseDate = await warrantyExists.verify()
+    if (!verifyPurchaseDate) {
+        throw new BadRequestError(`WARNING! purchase date altering detected...`)
+    }
+
     if (serviceProviderType==='RETAILER') {
         const claim = await Claim.create({ warrantyId, description, warrantyServiceProvider: { userId: warrantyExists.issuerId } })
         res.status(StatusCodes.OK).json(claim)
