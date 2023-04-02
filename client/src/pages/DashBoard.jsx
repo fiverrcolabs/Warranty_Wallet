@@ -13,6 +13,7 @@ function DashBoard() {
   const { axiosFetch, user } = useAppContext()
 
   const [claims, setClaims] = useState([])
+  const [warranties, setWarranties] = useState([])
   const [friends, setFriends] = useState([])
   const [sentRequests, setSentRequests] = useState([])
   const [receivedRequests, setReceivedRequests] = useState([])
@@ -59,6 +60,9 @@ function DashBoard() {
       try {
         const claimsData = await axiosFetch.get('/claim/getAllClaims')
         setClaims(claimsData.data)
+        const warrantyData = await axiosFetch.get('/warranty/getAllWarranties')
+        setWarranties(warrantyData.data)
+        setClaims(warrantyData.data)
         if (user.role === USER.RETAILER) {
           const manufacturerFriendsData = await axiosFetch.get('/retailer/manufacturerFriends')
           setFriends(manufacturerFriendsData.data.manufacturerFriends)
@@ -115,7 +119,7 @@ function DashBoard() {
   }
 
   const friendsSummary = () => {
-    
+
     return {
       friendsCount: friends.length,
       sentRequestsCount: sentRequests.length,
@@ -123,9 +127,24 @@ function DashBoard() {
     }
   }
 
+  const customerWarrantyRegistrationCountByMonthBackN = (n) => {
+    const now = new Date();
+    const interval = 1; // interval in months
+    const warrantyRegistrationCount = {};
+    for (let i = 0; i < n; i += interval) {
+      const startDate = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const endDate = new Date(now.getFullYear(), now.getMonth() - i + interval, 0);
+      warrantyRegistrationCount[startDate.toISOString()] = warranties.filter((warranty) => {
+        const purchaseDate = new Date(warranty.purchaseDate);
+        return purchaseDate >= startDate && purchaseDate <= endDate && warranty.issuerId;
+      }).length;
+    }
+    return warrantyRegistrationCount;
+  }
+
   return (
     <div className=" mainContainer container">
-      {console.log(friendsSummary())}
+      {console.log(customerWarrantyRegistrationCountByMonthBackN(6))}
       <div className='firstPageProducts container'>
         <div className='row'>
 
