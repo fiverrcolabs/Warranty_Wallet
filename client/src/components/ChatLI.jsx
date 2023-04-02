@@ -4,23 +4,25 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export default function Product({id}) {
+export default function Product({ id, currentListItem,clickListItem  }) {
     const navigate = useNavigate()
+    // console.log(id,currentListItem)
     return (
 
-        <li id={id} class="p-2 border-bottom">
-            <a href="#!" class="d-flex justify-content-between">
-                <div class="d-flex flex-row">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-3.webp" alt="avatar"
-                        class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60" />
-                    <div class="pt-1">
-                        <p class="fw-bold mb-0">Ashley Olsen</p>
-                        <p class="small text-muted">Lorem ipsum dolor sit.</p>
+        <li id={id} onClick={clickListItem} className="p-2 border-bottom"
+            style={{
+                backgroundColor: id===currentListItem ? '#eee' : '#FFFFFF'
+            }}>
+            <a href="#!" className="d-flex justify-content-between">
+                <div className="d-flex flex-row">
+                    <img src="https://www.seekpng.com/png/small/966-9665493_my-profile-icon-blank-profile-image-circle.png" alt="avatar"
+                        className="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60" />
+                    <div className="pt-1">
+                        <p className="fw-bold mb-0 cardName">{id}</p>
+                        <p className="small text-muted cardName">claim id</p>
                     </div>
                 </div>
-                <div class="pt-1">
-                    <p class="small text-muted mb-1">Yesterday</p>
-                </div>
+           
             </a>
         </li>
 
