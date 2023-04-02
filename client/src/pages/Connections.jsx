@@ -17,6 +17,7 @@ function Products() {
   const [sentRequests, setSentRequests] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [refresh, setRefresh] = useState(true)
+ 
 
   const USER = {
     MANUFACTURER: "MANUFACTURER",

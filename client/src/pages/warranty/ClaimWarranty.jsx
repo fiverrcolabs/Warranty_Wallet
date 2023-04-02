@@ -83,7 +83,7 @@ function ClaimItem() {
         try {
             const createdProduct = await axiosFetch.post('/claim/createClaim', newData)
             console.log(createdProduct);
-            toast.success("Product Created Successfully")
+            toast.success("Claim Created Successfully")
 
         } catch (error) {
             console.log(error.response.data.msg)

@@ -99,6 +99,11 @@
     --bs-nav-pills-link-active-bg: #19A7CE;
 }
 
+.navbar img{
+    object-fit: fill;
+    bottom: 20px;
+    /* max-width: 100px; */
+}
 
 
 .loginButton {

@@ -18,9 +18,9 @@ function ClaimItem() {
         MANUFACTURER: "MANUFACTURER",
         RETAILER: "RETAILER",
         CONSUMER: "CONSUMER"
-      }
+    }
     const navigate = useNavigate();
-    const { axiosFetch,user } = useAppContext();
+    const { axiosFetch, user } = useAppContext();
     const { warrantyId } = useParams()
     // const [image, setImage] = useState(null)
     const [qrCount, setQrCount] = useState(0)
@@ -37,12 +37,12 @@ function ClaimItem() {
     useEffect(() => {
         async function fetchData() {
             try {
-                
+
                 const fetchedProducts = await axiosFetch.get(`/warranty/${warrantyId}`)
                 console.log(fetchedProducts.data);
                 setFormData(fetchedProducts.data)
 
-               
+
                 setIsLoading(false)
 
             } catch (error) {
@@ -103,7 +103,7 @@ function ClaimItem() {
 
         <div className=' mainContainer container'>
             <div className='secondPageProducts container'>
-           
+
                 <div className='row'>
 
                     <div className='col-8' >
@@ -118,50 +118,8 @@ function ClaimItem() {
                 </div>
 
                 <div className='row p-3 px-3 '>
-                  
 
-                    {/* <Modal show={show} onHide={handleClose} className='border border-info'>
-                        <Modal.Header closeButton>
-                            <Modal.Title>QR generate</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-
-                            <Form.Label> Enter number of QR codes</Form.Label>
-
-                            <input
-                                className='form-control  border border-info mt-3'
-                                type='number'
-                                name='productId'
-                                placeholder='QR count'
-                                aria-label='.form-control-lg example'
-                            // onChange={handleChange}
-                            />
-                               <textarea
-                          
-                            className='form-control border border-info mt-3'
-                            id='exampleFormControlTextarea1'
-                            rows='3'
-                            name='polices'
-                            placeholder='Add description'
-
-                        ></textarea>
-
-
-                        </Modal.Body>
-                        <Modal.Footer>
-
-                            <Button variant="primary">
-                                Submit Claim
-                            </Button>
-                        </Modal.Footer>
-                    </Modal>
-
- */}
-
-
-
-
-                    <div className='col-6 mx-auto'>
+                    <div className='col-md-12 col-lg-6 col-xl-6 mx-auto'>
                         <div>
                             <div className="mb-4 mt-4 d-flex justify-content-center">
                                 <img src={formData.imageData ? formData.imageData : "https://mdbootstrap.com/img/Photos/Others/placeholder.jpg"}
@@ -173,22 +131,22 @@ function ClaimItem() {
                     </div>
 
 
-                    <div className='col-md-6 col-sm-12 '>
+                    <div className='col-md-12 col-lg-6 col-xl-6 '>
                         <input
                             disabled
                             className='form-control form-control-lg border border-info mt-3'
                             type='text'
                             name='productId'
-                            placeholder={formData.itemId?formData.itemId.productId.productId :"" }
+                            placeholder={formData.itemId ? formData.itemId.productId.productId : ""}
                             aria-label='.form-control-lg example'
-                            // onChange={handleChange}
+                        // onChange={handleChange}
                         />
                         <input
                             disabled
                             className='form-control form-control-lg border border-info mt-3'
                             type='text'
                             name='productName'
-                            placeholder={formData.itemId?formData.itemId.productId.productName :"" }
+                            placeholder={formData.itemId ? formData.itemId.productId.productName : ""}
                             aria-label='.form-control-lg example'
 
                         />
@@ -197,7 +155,7 @@ function ClaimItem() {
                             className='form-control form-control-lg border border-info mt-3'
                             type='number'
                             name='warrentyPeriod'
-                            placeholder={formData.itemId?formData.purchaseDate :"" }
+                            placeholder={formData.itemId ? formData.purchaseDate : ""}
                             aria-label='.form-control-lg example'
 
                         />
@@ -225,13 +183,13 @@ function ClaimItem() {
                             id='exampleFormControlTextarea1'
                             rows='3'
                             name='polices'
-                            placeholder={formData.itemId?formData.itemId.productId.polices :"" }
+                            placeholder={formData.itemId ? formData.itemId.productId.polices : ""}
 
                         ></textarea>
                     </div>
 
 
-                    {user.role===USER.CONSUMER &&  <button type="submit" onClick={()=>{navigate(`/warranty/${warrantyId}/claimwarranty`)}} className='btn btn-info btn-lg text-white'>
+                    {user.role === USER.CONSUMER && <button type="submit" onClick={() => { navigate(`/warranty/${warrantyId}/claimwarranty`) }} className='btn btn-info btn-lg text-white'>
                         Submit claim
                     </button>}
 

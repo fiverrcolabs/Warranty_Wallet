@@ -71,25 +71,8 @@ function AddProduct() {
           </div>
 
           <div className='row p-3 px-3 '>
-            <div className='col-6 mx-auto'>
+            <div className='col-md-12 col-lg-6 col-xl-6 mx-auto'>
 
-              {/* 
-              <input
-                type='file'
-                accept='image/*'
-                onChange={handleImageChange}
-
-              /> */}
-              {/* {image && (
-                <div>
-                  <img
-                    src={image}
-                    alt='Preview'
-
-                    style={{ maxWidth: '100%', maxHeight: '300px' }}
-                  />
-                </div>
-              )} */}
 
               <div>
                 <div className="mb-4 d-flex justify-content-center">
@@ -103,15 +86,11 @@ function AddProduct() {
                   </div>
                 </div>
               </div>
-
-
             </div>
 
 
 
-
-
-            <div className='col-md-6 col-sm-12 '>
+            <div className='col-md-12 col-lg-6 col-xl-6 '>
               <input
                 className='form-control form-control-lg border border-info mt-3'
                 type='text'

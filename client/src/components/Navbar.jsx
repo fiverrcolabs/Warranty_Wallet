@@ -28,7 +28,7 @@ function Navbar() {
 
   if (location.pathname === "/login" || location.pathname === "/register") return null;
 
-  if (!user){
+  if (!user) {
     return navigate('/login')
   }
 
@@ -38,7 +38,10 @@ function Navbar() {
 
     <div className='navbar'>
 
+
+
       <nav className='navbarNav'>
+
         <ul className='navbarListItems'>
 
           <li onClick={() => navigate('/dashboard')} className={

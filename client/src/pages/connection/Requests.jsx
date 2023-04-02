@@ -16,6 +16,8 @@ function Request() {
   const [connections, setConnections] = useState([])
   const [friends, setFriends] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [refresh, setRefresh] = useState(true)
+
 
   const USER = {
     MANUFACTURER: "MANUFACTURER",
@@ -56,7 +58,7 @@ function Request() {
 
     }
     fetchData();
-  }, [])
+  }, [refresh])
 
 
   const accept = async (event) => {
@@ -71,7 +73,9 @@ function Request() {
         res = await axiosFetch.get(`/retailer/approveManufacturerRequest?userId=${event.currentTarget.parentNode.id}`)
       }
       console.log(res)
+      setRefresh(!refresh)
       toast.success("accepted")
+
 
     } catch (error) {
       console.log(error.response.data.msg)
@@ -91,7 +95,8 @@ function Request() {
         res = await axiosFetch.get(`/retailer/removeManufacturerRequest?userId=${event.currentTarget.parentNode.id}`)
       }
       console.log(res)
-      toast.success("accepted")
+      setRefresh(!refresh)
+      toast.info("rejected")
 
     } catch (error) {
       console.log(error.response.data.msg)
@@ -106,8 +111,6 @@ function Request() {
     }
     return connection.retailer[0].company
   }
-
-
 
 
   if (!(user.role === USER.MANUFACTURER || user.role === USER.RETAILER)) {
@@ -141,9 +144,6 @@ function Request() {
 
           </div>
 
-
-
-
         </div>
         <h3 className='mt-5'>Requests</h3>
 
@@ -156,13 +156,12 @@ function Request() {
         </div>
 
         <hr />
-        {/* //todo */}
+
         <h3>Friends</h3>
         <div className='friendsContainer' >
 
           {friends.map((friend) => (
-
-            <Friend available={() => { true }} id={friend._id} key={friend._id} userId={friend._id} company={friend.email} />
+            <Friend hide={true} available={() => { true }} id={friend._id} key={friend._id} userId={friend._id} company={friend.email} />
           ))}
         </div>
       </div>

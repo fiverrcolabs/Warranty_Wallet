@@ -106,7 +106,7 @@ function ViewProduct() {
                 </div>
 
                 <div className='row p-3 px-3 '>
-                    <div className='col-6 mx-auto'>
+                    <div className='col-md-12 col-lg-6 col-xl-6 mx-auto'>
                         <div>
                             <div className="mb-4 mt-4 d-flex justify-content-center">
                                 <img src={formData.imageData ? formData.imageData : "https://mdbootstrap.com/img/Photos/Others/placeholder.jpg"}
@@ -118,7 +118,7 @@ function ViewProduct() {
                     </div>
 
 
-                    <div className='col-md-6 col-sm-12 '>
+                    <div className='col-md-12 col-lg-6 col-xl-6'>
                         <input
                             disabled
                             className='form-control form-control-lg border border-info mt-3'

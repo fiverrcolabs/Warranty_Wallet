@@ -1,7 +1,7 @@
 import React from 'react';
 import profileImg from '../assets/defaultimg.png';
 
-export default function Friend({sendRequest,company,userId,id,available}) {
+export default function Friend({sendRequest,company,userId,id,available,hide}) {
     return (
         <div className="container bcontent">
            
@@ -13,7 +13,7 @@ export default function Friend({sendRequest,company,userId,id,available}) {
                     <div className="col-7">
                         <div className="card-body">
                             <h6 className="card-title">{company}</h6>
-                            <button disabled={available? !available(id):false} id={userId} href="#" onClick={sendRequest} className="btn btn-primary btn-sm">Send request</button>
+                            <button hidden={hide} disabled={available? !available(id):false} id={userId} href="#" onClick={sendRequest} className="btn btn-primary btn-sm">Send request</button>
                         </div>
                     </div>
                 </div>
