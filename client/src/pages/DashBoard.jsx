@@ -17,17 +17,28 @@ function DashBoard() {
   const [friends, setFriends] = useState([])
   const [sentRequests, setSentRequests] = useState([])
   const [receivedRequests, setReceivedRequests] = useState([])
+  const [frienddata, setFrienddata] = useState({
+    friendsCount: "-",
+    sentRequestsCount: "-",
+    receivedRequestsCount: "-",
+  })
 
-  const USER = {
-    MANUFACTURER: "MANUFACTURER",
-    RETAILER: "RETAILER",
-    CONSUMER: "CONSUMER"
-  }
+  const [data1, setData1] = useState({
+    labels: [
+    ],
+    datasets: [{
+      label: 'My First Dataset',
+      data: [],
+      backgroundColor: [
+        'rgb(255, 99, 132)',
+        'rgb(54, 162, 235)',
 
-  const labels = ["January", "February", "March", "April", "May"];
-
-  const data = {
-    labels: labels,
+      ],
+      hoverOffset: 4
+    }]
+  })
+  const [data3, setData3] = useState({
+    labels: [],
     datasets: [
       {
         label: "My First dataset",
@@ -37,27 +48,34 @@ function DashBoard() {
           'rgb(255, 205, 86)'
         ],
         borderColor: "rgb(255, 99, 132)",
-        data: [15, 10, 5, 2, 20],
+        data: [],
       },
     ],
-  };
-  const data2 = {
-    labels: [
-      'Red',
-      'Blue',
-      'Yellow'
+  })
+
+  const [data4, setData4] = useState({
+    labels: [],
+    datasets: [
+      {
+        label: "My First dataset",
+        backgroundColor: [
+          'rgb(255, 99, 132)',
+          'rgb(54, 162, 235)',
+          'rgb(255, 205, 86)'
+        ],
+        borderColor: "rgb(255, 99, 132)",
+        data: [],
+      },
     ],
-    datasets: [{
-      label: 'My First Dataset',
-      data: [300, 50, 100],
-      backgroundColor: [
-        'rgb(255, 99, 132)',
-        'rgb(54, 162, 235)',
-        'rgb(255, 205, 86)'
-      ],
-      hoverOffset: 4
-    }]
-  };
+  })
+
+  const USER = {
+    MANUFACTURER: "MANUFACTURER",
+    RETAILER: "RETAILER",
+    CONSUMER: "CONSUMER"
+  }
+
+
 
   useEffect(() => {
     async function fetchData() {
@@ -66,7 +84,8 @@ function DashBoard() {
         setClaims(claimsData.data)
         const warrantyData = await axiosFetch.get('/warranty/getAllWarranties')
         setWarranties(warrantyData.data)
-        setClaims(warrantyData.data)
+
+        // setData1(getClaimsAndCompletionRate(warrantyData.data))
         if (user.role === USER.RETAILER) {
           const manufacturerFriendsData = await axiosFetch.get('/retailer/manufacturerFriends')
           setFriends(manufacturerFriendsData.data.manufacturerFriends)
@@ -82,12 +101,81 @@ function DashBoard() {
           const manufacturerSentRequestsData = await axiosFetch.get('/manufacturer/getManufacturerSentRequests')
           setSentRequests(manufacturerSentRequestsData.data)
         }
+
+
+
       } catch (error) {
         console.log(error)
       }
     }
     fetchData()
   }, [])
+
+
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const claimStatesdata1 = {
+          labels: [
+            'NEW',
+            'COMPLETED',
+          ],
+          datasets: [{
+            label: 'Claims And Completion Rate',
+            data: [getClaimsAndCompletionRate().NEW ? getClaimsAndCompletionRate().NEW : 0, getClaimsAndCompletionRate().COMPLETED ? getClaimsAndCompletionRate().COMPLETED : 0],
+            backgroundColor: [
+              'rgb(255, 99, 132)',
+              'rgb(54, 162, 235)',
+
+            ],
+            hoverOffset: 4
+          }]
+        };
+
+        const highestClaim = {
+          labels: getHighestClaimProducts().claimProductIdNames,
+          datasets: [
+            {
+              label: "Highest Claim Products",
+              backgroundColor: [
+                'rgb(255, 99, 132)',
+                'rgb(54, 162, 235)',
+                'rgb(255, 205, 86)'
+              ],
+              borderColor: "rgb(255, 99, 132)",
+              data: getHighestClaimProducts().claimProductIdCounts,
+            },
+          ],
+        };
+
+        const linechartdata = {
+          labels: customerWarrantyRegistrationCountByMonthBackN().labels,
+          datasets: [
+            {
+              label: " customer Warranty Registration",
+              backgroundColor: [
+                'rgb(255, 99, 132)',
+                'rgb(54, 162, 235)',
+                'rgb(255, 205, 86)'
+              ],
+              borderColor: "rgb(255, 99, 132)",
+              data: customerWarrantyRegistrationCountByMonthBackN().data,
+            },
+          ],
+        };
+
+        setData4(linechartdata)
+        setData3(highestClaim)
+        setData1(claimStatesdata1)
+        setFrienddata(friendsSummary)
+
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchData()
+  }, [claims, friends])
 
   const getHighestClaimProducts = () => {
     const productIdCounts = {};
@@ -143,12 +231,22 @@ function DashBoard() {
         return purchaseDate >= startDate && purchaseDate <= endDate && warranty.issuerId;
       }).length;
     }
-    return warrantyRegistrationCount;
+    // return warrantyRegistrationCount;
+
+    return {
+      //get kesy inside object
+      labels: Object.keys(warrantyRegistrationCount),
+      //get values as a array inside object
+      data: Object.values(warrantyRegistrationCount)
+
+
+    }
   }
 
   return (
     <div className=" mainContainer container">
-      {console.log(customerWarrantyRegistrationCountByMonthBackN(6))}
+      {/* {console.log("from data 1", data1)} */}
+      {console.log("from data new", customerWarrantyRegistrationCountByMonthBackN(6))}
       <div className='firstPageProducts container'>
         <div className='row'>
 
@@ -174,36 +272,47 @@ function DashBoard() {
           <div className='row pb-3 chartBox'>
 
             <div className='col-md-7 col-sm-12 shadow' >
-
-              <Line options={{ responsive: true, maintainAspectRatio: false }} data={data} />
+              <Line options={{ responsive: true, maintainAspectRatio: false }} data={data4} />
             </div>
-
-
 
             <div className='col-md-4 col-sm-12 ms-auto p-3 chartBox shadow '>
-              {/* <div className=''> */}
-              <Doughnut options={{ responsive: true, maintainAspectRatio: false }} data={data2} />
-              {/* </div> */}
-
+              <Doughnut options={{ responsive: true, maintainAspectRatio: false }} data={data1} />
             </div>
-
-
-
-
 
           </div>
           <div className='row mt-3 chartBox'>
 
             <div className='col-md-5 col-sm-12 p-3 shadow chartBox'>
-              {/* <div className=''> */}
-              <Pie options={{ responsive: true, maintainAspectRatio: false }} data={data} />
-              {/* </div> */}
-
+              <Pie options={{ responsive: true, maintainAspectRatio: false }} data={data3} />
             </div>
 
             <div className='col-md-6 col-sm-12 p-3 ms-auto shadow' >
+              <div className="input-group mt-5 mb-3">
+                <div className="input-group-prepend">
+                  <span className="input-group-text" id="basic-addon1">All friends   :</span>
+                </div>
+                <input disabled type="text" className="form-control border border-info" placeholder={frienddata.friendsCount} aria-label="Username" aria-describedby="basic-addon1" />
 
-              <Line options={{ responsive: true, maintainAspectRatio: false }} data={data} />
+              </div>
+
+              <div className="input-group mb-3">
+                <div className="input-group-prepend">
+                  <span className="input-group-text" id="basic-addon1">Received Requests</span>
+                </div>
+                <input disabled type="text" className="form-control  border border-info" placeholder={frienddata.receivedRequestsCount} aria-label="Username" aria-describedby="basic-addon1" />
+
+              </div>
+
+
+              <div className="input-group mb-3">
+                <div className="input-group-prepend">
+                  <span className="input-group-text" id="basic-addon1">Sent Requests</span>
+                </div>
+                <input disabled type="text" className="form-control border border-info" placeholder={frienddata.sentRequestsCount} aria-label="Username" aria-describedby="basic-addon1" />
+
+              </div>
+
+
             </div>
 
 
