@@ -6,13 +6,13 @@ import Manufacturer from '../models/Manufacturer.js'
 import { BadRequestError } from '../errors/index.js'
 
 const createClaim = async (req, res) => {
-    const { warrantyId, description } = req.body
+    const { warrantyId, description, serviceProviderType } = req.body
 
     if (!warrantyId) {
         throw new BadRequestError('please provide warrantyId')
     }
 
-    const warrantyExists = await Warranty.findOne({ _id: warrantyId }).populate({ path: 'itemId', select: 'productId', populate: { path: 'productId', select: 'warrentyPeriod' }})
+    const warrantyExists = await Warranty.findOne({ _id: warrantyId }).populate({ path: 'itemId', select: 'productId', populate: { path: 'productId', select: 'warrentyPeriod' } })
 
     if (!warrantyExists) {
         throw new BadRequestError(`warranty does not exist by ${warrantyId}`)
@@ -24,14 +24,25 @@ const createClaim = async (req, res) => {
 
     const expirationDate = moment(warrantyExists.purchaseDate).add(warrantyExists.itemId.productId.warrentyPeriod, 'months').toDate();
     const currentDate = new Date();
-    if (expirationDate<currentDate) {
+    if (expirationDate < currentDate) {
         throw new BadRequestError(`warranty by ${warrantyId} is expired`)
     }
 
-    // TODO: verify with blockchain
-    const claim = await Claim.create({ warrantyId, description, warrantyServiceProvider: { userId: warrantyExists.issuerId } })
 
-    res.status(StatusCodes.OK).json(claim)
+    const verifyPurchaseDate = await warrantyExists.verify()
+    if (!verifyPurchaseDate) {
+        throw new BadRequestError(`WARNING! purchase date altering detected...`)
+    }
+
+    if (serviceProviderType==='RETAILER') {
+
+        const claim = await Claim.create({ warrantyId, description, warrantyServiceProvider: { userId: warrantyExists.issuerId } })
+        res.status(StatusCodes.OK).json(claim)
+    } else if (serviceProviderType === 'MANUFACTURER') {
+        const manufacturer = await Manufacturer.findOne({ products: { $in: [warrantyExists.itemId.productId] } })
+        const claim = await Claim.create({ warrantyId, description, warrantyServiceProvider: { userId: manufacturer.userId, role: 'MANUFACTURER' } })
+        res.status(StatusCodes.OK).json(claim)
+    }
 }
 
 const fillClaim = async (req, res) => {
@@ -118,10 +129,10 @@ const forwardClaim = async (req, res) => {
 
 const getAllClaims = async (req, res) => {
     if (req.user.role === "CONSUMER") {
-        const claims = await Claim.find().populate({ path: 'warrantyId', match: { customerId: req.user.userId }})
+        const claims = await Claim.find().populate({ path: 'warrantyId', match: { customerId: req.user.userId } })
         res.status(StatusCodes.OK).json(claims)
     } else {
-        const claims = await Claim.find({ 'warrantyServiceProvider.userId': req.user.userId })
+        const claims = await Claim.find({ 'warrantyServiceProvider.userId': req.user.userId }).populate({ path: 'warrantyId', populate: { path: 'itemId', select: '-qr', populate: { path: 'productId', select: '-imageData -polices' } } })
         res.status(StatusCodes.OK).json(claims)
     }
 }
@@ -129,7 +140,7 @@ const getAllClaims = async (req, res) => {
 const getClaimById = async (req, res) => {
     const claimId = req.params.claimId
     if (req.user.role === "CONSUMER") {
-        const claims = await Claim.find({ _id: claimId }).populate({ path: 'warrantyId', match: { customerId: req.user.userId }})
+        const claims = await Claim.find({ _id: claimId }).populate({ path: 'warrantyId', match: { customerId: req.user.userId } })
         res.status(StatusCodes.OK).json(claims)
     } else {
         const claims = await Claim.find({ _id: claimId, 'warrantyServiceProvider.userId': req.user.userId })

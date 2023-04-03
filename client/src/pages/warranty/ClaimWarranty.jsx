@@ -26,9 +26,10 @@ function ClaimItem() {
     const [formData, setFormData] = useState({});
     const [isLoading, setIsLoading] = useState(true)
     const [newData, setNewData] = useState({
-        warrantyId:warrantyId,
-        description:"",
-       
+        warrantyId: warrantyId,
+        description: "",
+        serviceProviderType: ""
+
     });
 
 
@@ -78,14 +79,11 @@ function ClaimItem() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        console.log(event.target)
         try {
-            const createdProduct = await axiosFetch.post('/claim/createClaim', {
-     
-                warrantyId:warrantyId,
-                description:newData.description
-            })
+            const createdProduct = await axiosFetch.post('/claim/createClaim', newData)
             console.log(createdProduct);
-            toast.success("Product Created Successfully")
+            toast.success("Claim Created Successfully")
 
         } catch (error) {
             console.log(error.response.data.msg)
@@ -140,11 +138,11 @@ function ClaimItem() {
 
                     <div className='col-md-6 col-sm-12 '>
 
-                        <select className='form-control form-control-lg border border-info mt-4' aria-label="Default select example">
-                            <option selected>Open this select menu</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
+                        <select required onChange={handleChange} name='serviceProviderType' defaultValue={"RETAILER"} className='form-control form-control-lg border border-info mt-4' aria-label="Default select example">
+                        <option value="RETAILER" disabled >Choose service provider</option>
+                            <option value="RETAILER">Retailer</option>
+                            <option value="MANUFACTURER">Manufacturer</option>
+
                         </select>
                         <input
                             disabled
