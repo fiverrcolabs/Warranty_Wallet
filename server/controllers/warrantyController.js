@@ -39,7 +39,6 @@ const getWarrantyByItemId = async (req, res) => {
   const warranty = await Warranty.findOne({ itemId }).populate({ path: 'itemId', select: 'productId', populate: { path: 'productId', select: 'polices' }})
 
   if (req.user.role === 'CONSUMER') {
-    console.log(itemId, warranty)
     if (warranty) {
       res.status(StatusCodes.OK).json(warranty)
     } else {
@@ -50,7 +49,6 @@ const getWarrantyByItemId = async (req, res) => {
       throw new BadRequestError('provided itemId already has a warranty')
     } else {
       const item = await Item.findOne({ _id: itemId }, {productId: 1}).populate({ path: 'productId', select: 'polices'})
-      console.log(item)
       res.status(StatusCodes.OK).json(item)
     }
   }

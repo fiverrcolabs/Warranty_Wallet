@@ -72,8 +72,6 @@ const sendRetailerRequest = async (req, res) => {
   if (retailerHasSentRequest > 0) {
     throw new BadRequestError('retailer has already sent a request')
   }
-  console.log('retailerExists', retailerExists)
-  console.log('retailerHasSentRequest', retailerHasSentRequest)
 
   const addRetailerRequest = await Retailer.findOneAndUpdate(
     {

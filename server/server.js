@@ -18,6 +18,10 @@ import { fileURLToPath } from 'url'
 import path from 'path'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
+import helmet from 'helmet'
+import xss from 'xss-clean'
+import mongoSanitize from 'express-mongo-sanitize'
+
 // db and authentication
 import connectDB from './db/connect.js'
 
@@ -41,6 +45,12 @@ if (process.env.NODE_ENV !== 'Production') {
     app.use(morgan('dev'))
 }
 
+// only when production
+app.use(express.static(path.resolve(__dirname, '../client/dist')))
+app.use(helmet())
+app.use(xss())
+app.use(mongoSanitize())
+
 app.use(express.json())
 
 app.get('/', (req, res) => {
@@ -48,15 +58,20 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/v1/auth', authRouter)
-app.use('/api/v1/qr', qrCodeRouter)
+app.use('/api/v1/qr', authenticateUser, qrCodeRouter)
 app.use('/api/v1/product', authenticateUser, productRoute)
-app.use('/api/v1/item', itemRoute)
+app.use('/api/v1/item', authenticateUser, itemRoute)
 app.use('/api/v1/warranty', authenticateUser, warrantyRoute)
 app.use('/api/v1/manufacturer', authenticateUser, manufacturerRoute)
 app.use('/api/v1/retailer', authenticateUser, retailerRoute)
 app.use('/api/v1/claim', authenticateUser, claimRoute)
-app.use('/api/v1/chat',authenticateUser,chatRoute)
+app.use('/api/v1/chat', authenticateUser, chatRoute)
 
+
+// only when production
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../client/dist', 'index.html'))
+})
 
 app.use(notFoundMiddleware)
 app.use(errorHandlerMiddeware)

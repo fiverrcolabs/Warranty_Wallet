@@ -7,7 +7,6 @@ import { BadRequestError, UnAuthenticatedError } from '../errors/index.js'
 // import Subscription from '../models/Subscription.js'
 
 const register = async (req, res, next) => {
-  console.log(req.body)
   const { email, password, role } = req.body
 
   if (!email || !password) {

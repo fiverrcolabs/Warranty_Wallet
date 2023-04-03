@@ -84,8 +84,6 @@ function DashBoard() {
         setClaims(claimsData.data)
         const warrantyData = await axiosFetch.get('/warranty/getAllWarranties')
         setWarranties(warrantyData.data)
-
-        // setData1(getClaimsAndCompletionRate(warrantyData.data))
         if (user.role === USER.RETAILER) {
           const manufacturerFriendsData = await axiosFetch.get('/retailer/manufacturerFriends')
           setFriends(manufacturerFriendsData.data.manufacturerFriends)
@@ -245,8 +243,6 @@ function DashBoard() {
 
   return (
     <div className=" mainContainer container">
-      {/* {console.log("from data 1", data1)} */}
-      {console.log("from data new", customerWarrantyRegistrationCountByMonthBackN(6))}
       <div className='firstPageProducts container'>
         <div className='row'>
 
