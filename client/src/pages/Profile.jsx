@@ -6,6 +6,7 @@ import Loader from '../components/Loader'
 
 import { toast } from 'react-toastify'
 import { MdLogout } from "react-icons/md";
+import { BiChat } from "react-icons/bi";
 
 
 function AddProduct() {
@@ -80,9 +81,17 @@ function AddProduct() {
                     </div>
                     <div className='col topBar'>
                         <div className='topBarIcon'>
-                            <MdLogout onClick={() => logOut()} className='clickable cursor-pointer' color={'red'} size={50} />
+                            <BiChat onClick={() => navigate('/chat')} className='clickable cursor-pointer'  size={50} />
+                         
                         </div>
                     </div>
+                    <div className='col topBar'>
+                        <div className='topBarIcon'>
+                            <MdLogout onClick={() => logOut()} className='clickable cursor-pointer' color={'red'} size={50} />
+                         
+                        </div>
+                    </div>
+                 
 
                 </div>
 
