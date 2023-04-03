@@ -6,6 +6,7 @@ import { useAppContext } from '../../context/appContext'
 import Loader from '../../components/Loader'
 import Product from '../../components/Product'
 
+
 import { toast } from 'react-toastify'
 import { GrAddCircle } from 'react-icons/gr'
 import moment from 'moment'
@@ -17,6 +18,7 @@ function Claims() {
     // const itemId="641fd97a759a32faecb01397"
     const { axiosFetch, user } = useAppContext()
     const [data, setData] = useState({})
+    const [isLoading, setIsLoading] = useState(true)
     const [retailerButton, setRetailerButton] = useState(true)
     const [retailerAvailable, setRetailerAvailable] = useState(false)
     const USER = {
@@ -37,6 +39,7 @@ function Claims() {
 
                 console.log(fetchedConnections.data)
                 console.log(user.role)
+                setIsLoading(false)
 
 
             } catch (error) {
@@ -52,6 +55,7 @@ function Claims() {
 
     const onClickRetailer = async (e) => {
         e.preventDefault()
+        isLoading(true)
         try {
             const res = await axiosFetch.post(`/warranty/createWarranty`, {
                 itemId
@@ -59,6 +63,7 @@ function Claims() {
 
             console.log(res)
             toast.success("WARRANTY CREATED")
+            isLoading(false)
             navigate('/warranty')
 
         } catch (error) {
@@ -70,6 +75,7 @@ function Claims() {
     const onClickConsumer = async (e) => {
         e.preventDefault()
         console.log(data._id)
+        isLoading(true)
         try {
 
             const res = await axiosFetch.patch(`/warranty/assignSelf`, {
@@ -78,6 +84,7 @@ function Claims() {
 
             console.log(res)
             toast.success("WARRANTY STARTED")
+            isLoading(false)
             navigate('/warranty')
         } catch (error) {
             console.log(error.response.data.msg)
@@ -86,6 +93,11 @@ function Claims() {
     }
 
 
+    if (isLoading) {
+        return (
+            <Loader />
+        )
+    }
     return (
         <div className=" mainContainer container">
             <div className='firstPageProducts container'>

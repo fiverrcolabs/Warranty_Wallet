@@ -152,7 +152,7 @@ function ClaimItem() {
 
                 <div className='row p-3 px-3 '>
 
-                    <div className='col-6 mx-auto'>
+                    <div className='col-md-12 col-lg-6 col-xl-6 mx-auto'>
                         <div>
                             <div className="mb-4 mt-4 d-flex justify-content-center">
                                 <img src={"https://mdbootstrap.com/img/Photos/Others/placeholder.jpg"}
@@ -164,7 +164,7 @@ function ClaimItem() {
                     </div>
 
                     {/* 'NEW', 'IN_PROGRESS', 'REJECTED', 'COMPLETED', 'RESOLVED' */}
-                    <div className='col-md-6 col-sm-12 '>
+                    <div className='col-md-12 col-lg-6 col-xl-6'>
                         <select required onChange={handleChange} name='status' defaultValue={formData.status} disabled={!editable} className='form-control form-control-lg border border-info mt-4' aria-label="Default select example">
                             <option value={formData.status} disabled>{formData.status} </option>
                             <option value="IN_PROGRESS">InProgress</option>
