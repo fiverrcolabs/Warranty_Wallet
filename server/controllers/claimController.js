@@ -1,5 +1,6 @@
 import { StatusCodes } from 'http-status-codes'
 import moment from 'moment'
+import mongoose from 'mongoose'
 import Claim from '../models/Claim.js'
 import Warranty from '../models/Warranty.js'
 import Manufacturer from '../models/Manufacturer.js'
@@ -130,7 +131,21 @@ const forwardClaim = async (req, res) => {
 
 const getAllClaims = async (req, res) => {
     if (req.user.role === "CONSUMER") {
-        const claims = await Claim.find().populate({ path: 'warrantyId', match: { customerId: req.user.userId } })
+        const claims = await Claim.aggregate([
+            {
+                $lookup: {
+                    from: 'warranties',
+                    localField: 'warrantyId',
+                    foreignField: '_id',
+                    as: 'warrantyId',
+                },
+            },
+            {
+                $match: {
+                    'warrantyId.customerId': new mongoose.Types.ObjectId(req.user.userId),
+                },
+            },
+        ])
         res.status(StatusCodes.OK).json(claims)
     } else {
         const claims = await Claim.find({ 'warrantyServiceProvider.userId': req.user.userId }).populate({ path: 'warrantyId', populate: { path: 'itemId', select: '-qr', populate: { path: 'productId', select: '-imageData -polices' } } })

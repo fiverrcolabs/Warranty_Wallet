@@ -124,7 +124,7 @@ function DashBoard() {
           ],
           datasets: [{
             label: '',
-            data: [getClaimsAndCompletionRate().NEW ? getClaimsAndCompletionRate().NEW : 0, getClaimsAndCompletionRate().COMPLETED ? getClaimsAndCompletionRate().COMPLETED : 0,getClaimsAndCompletionRate().IN_PROGRESS ? getClaimsAndCompletionRate().IN_PROGRESS : 0],
+            data: [getClaimsAndCompletionRate().NEW ? getClaimsAndCompletionRate().NEW : 0, getClaimsAndCompletionRate().COMPLETED ? getClaimsAndCompletionRate().COMPLETED : 0, getClaimsAndCompletionRate().IN_PROGRESS ? getClaimsAndCompletionRate().IN_PROGRESS : 0],
             backgroundColor: [
               'rgb(255, 99, 132)',
               'rgb(54, 162, 235)',
@@ -151,17 +151,17 @@ function DashBoard() {
         };
 
         const linechartdata = {
-          labels: customerWarrantyRegistrationCountByMonthBackN().labels,
+          labels: customerWarrantyRegistrationCountByMonthBackN(6).labels,
           datasets: [
             {
-              label: " customer Warranty Registration",
+              label: "",
               backgroundColor: [
                 'rgb(255, 99, 132)',
                 'rgb(54, 162, 235)',
                 'rgb(255, 205, 86)'
               ],
               borderColor: "rgb(255, 99, 132)",
-              data: customerWarrantyRegistrationCountByMonthBackN().data,
+              data: customerWarrantyRegistrationCountByMonthBackN(6).data,
             },
           ],
         };
@@ -227,7 +227,7 @@ function DashBoard() {
     for (let i = 0; i < n; i += interval) {
       const startDate = new Date(now.getFullYear(), now.getMonth() - i, 1);
       const endDate = new Date(now.getFullYear(), now.getMonth() - i + interval, 0);
-      warrantyRegistrationCount[startDate.toISOString()] = warranties.filter((warranty) => {
+      warrantyRegistrationCount[startDate.toISOString().split('T')[0]] = warranties.filter((warranty) => {
         const purchaseDate = new Date(warranty.purchaseDate);
         return purchaseDate >= startDate && purchaseDate <= endDate && warranty.issuerId;
       }).length;
@@ -246,8 +246,8 @@ function DashBoard() {
 
   return (
     <div className=" mainContainer container">
-      {/* {console.log("from data 1", data1)} */}
-      {console.log("from data new", getClaimsAndCompletionRate())}
+      {console.log("linechartdata: ", customerWarrantyRegistrationCountByMonthBackN(6))}
+      {/* {console.log("from data new", getClaimsAndCompletionRate())} */}
       <div className='firstPageProducts container'>
         <div className='row'>
 
@@ -279,32 +279,47 @@ function DashBoard() {
                   title: {
                     display: true,
                     text: 'Customer Warranty Registration Chart'
+                  },
+                  legend: {
+                    display: false
                   }
+                },
+                scales: {
+                  y: {
+                    ticks: {
+                      stepSize: 10,
+                      beginAtZero: true,
+                    },
+                  },
                 }
-              } } data={data4} />
+              }} data={data4} />
             </div>
 
             <div className='col-md-4 col-sm-12 ms-auto p-3 chartBox shadow '>
-              <Doughnut options={{ responsive: true, maintainAspectRatio: false,
-               plugins: {
-                title: {
-                  display: true,
-                  text: 'Claims Status Overview'
+              <Doughnut options={{
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                  title: {
+                    display: true,
+                    text: 'Claims Status Overview'
+                  }
                 }
-              } }} data={data1} />
+              }} data={data1} />
             </div>
 
           </div>
           <div className='row mt-3 chartBox'>
 
             <div className='col-md-5 col-sm-12 p-3 shadow chartBox'>
-              <Pie options={{ responsive: true, maintainAspectRatio: false,
-               plugins: {
-                title: {
-                  display: true,
-                  text: 'Highest Claim Products'
+              <Pie options={{
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                  title: {
+                    display: true,
+                    text: 'Highest Claim Products'
+                  }
                 }
-              } }} data={data3} />
+              }} data={data3} />
             </div>
 
             <div className='col-md-6 col-sm-12 p-3 ms-auto shadow' >
