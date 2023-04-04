@@ -157,7 +157,7 @@ function Request() {
 
         <hr />
 
-        <h3>Friends</h3>
+        <h3>Approved</h3>
         <div className='friendsContainer' >
 
           {friends.map((friend) => (

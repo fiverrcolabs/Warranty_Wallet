@@ -114,8 +114,8 @@ function Login() {
                 <form className='form-login' onSubmit={onSubmit}>
 
 
-                  <MDBInput wrapperClass='mb-4' label='Email address' id='form1' type='email' name='email' size="lg" />
-                  <MDBInput wrapperClass='mb-4' label='Password' id='form2' type='password' name='password' size="lg" />
+                  <MDBInput wrapperClass='mb-4' label='Email address' id='form11' type='email' name='email' size="lg" />
+                  <MDBInput wrapperClass='mb-4' label='Password' id='form22' type='password' name='password' size="lg" />
 
 
                   <button className={isLoading ? "btn mb-4 w-100 loginButton disabled" : "btn mb-4 w-100 loginButton"} > {isLoading ? "Loading..." : "Sign in"} </button>
@@ -129,8 +129,8 @@ function Login() {
                 <form className='form-login' onSubmit={onSubmit}>
 
 
-                  <MDBInput wrapperClass='mb-4' label='Email address' id='form1' type='email' name='email' size="lg" />
-                  <MDBInput wrapperClass='mb-4' label='Password' id='form2' type='password' name='password' size="lg" />
+                  <MDBInput wrapperClass='mb-4' label='Email address' id='form13' type='email' name='email' size="lg" />
+                  <MDBInput wrapperClass='mb-4' label='Password' id='form24' type='password' name='password' size="lg" />
 
 
                   <button className={isLoading ? "btn mb-4 w-100 loginButton disabled" : "btn mb-4 w-100 loginButton"} > {isLoading ? "Loading..." : "Sign in"} </button>
@@ -144,8 +144,8 @@ function Login() {
                 <form className='form-login' onSubmit={onSubmit}>
 
 
-                  <MDBInput wrapperClass='mb-4' label='Email address' id='form1' type='email' name='email' size="lg" />
-                  <MDBInput wrapperClass='mb-4' label='Password' id='form2' type='password' name='password' size="lg" />
+                  <MDBInput wrapperClass='mb-4' label='Email address' id='form15' type='email' name='email' size="lg" />
+                  <MDBInput wrapperClass='mb-4' label='Password' id='form26' type='password' name='password' size="lg" />
 
 
                   <button className={isLoading ? "btn mb-4 w-100 loginButton disabled" : "btn mb-4 w-100 loginButton"} > {isLoading ? "Loading..." : "Sign in"} </button>

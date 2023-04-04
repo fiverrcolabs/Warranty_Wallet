@@ -55,7 +55,7 @@ function Claims() {
 
     const onClickRetailer = async (e) => {
         e.preventDefault()
-        isLoading(true)
+        setIsLoading(true)
         try {
             const res = await axiosFetch.post(`/warranty/createWarranty`, {
                 itemId
@@ -63,7 +63,7 @@ function Claims() {
 
             console.log(res)
             toast.success("WARRANTY CREATED")
-            isLoading(false)
+            setIsLoading(false)
             navigate('/warranty')
 
         } catch (error) {
@@ -75,7 +75,7 @@ function Claims() {
     const onClickConsumer = async (e) => {
         e.preventDefault()
         console.log(data._id)
-        isLoading(true)
+        setIsLoading(true)
         try {
 
             const res = await axiosFetch.patch(`/warranty/assignSelf`, {
@@ -84,7 +84,7 @@ function Claims() {
 
             console.log(res)
             toast.success("WARRANTY STARTED")
-            isLoading(false)
+            setIsLoading(false)
             navigate('/warranty')
         } catch (error) {
             console.log(error.response.data.msg)

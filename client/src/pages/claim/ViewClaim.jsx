@@ -95,7 +95,8 @@ function ClaimItem() {
             const fetchedProducts = await axiosFetch.get(`/claim/${claimId}`)
             console.log(fetchedProducts.data);
             setFormData(fetchedProducts.data[0])
-            toast.success("Make As resolved")
+            toast.success("Claim transfer Successfull")
+            
 
         } catch (error) {
             console.log(error.response.data.msg)
@@ -114,7 +115,8 @@ function ClaimItem() {
             const fetchedProducts = await axiosFetch.get(`/claim/${claimId}`)
             console.log(fetchedProducts.data);
             setFormData(fetchedProducts.data[0])
-            toast.success("Claim transfer Successfull")
+            toast.success("Make As resolved")
+           
 
         } catch (error) {
             console.log(error.response.data.msg)
