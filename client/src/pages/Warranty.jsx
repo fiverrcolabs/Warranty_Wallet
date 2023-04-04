@@ -8,6 +8,9 @@ import Product from '../components/Product'
 import { toast } from 'react-toastify'
 import { GrAddCircle } from 'react-icons/gr'
 import moment from 'moment'
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+
 
 
 function Warranty() {
@@ -32,6 +35,28 @@ function Warranty() {
     }
     fetchData();
   }, [])
+
+  const sortByName = (value, warranties, setClaims) => {
+    const ar = [...warranties];
+    const sortedProducts = ar.sort(
+      (a, b) => {
+        // move objects with name "aa" to the beginning of the array
+        if (a.status === value) {
+          return -1;
+        } else if (b.status === value) {
+          return 1;
+        }
+        return 0;
+      }
+    );
+    setClaims(sortedProducts);
+  };
+
+  const handleClick = (e) => {
+    console.log(e.target.id);
+    sortByName(e.target.id, warranties, setWarranties);
+  };
+
 
   if (isLoading) {
     return (
@@ -59,6 +84,14 @@ function Warranty() {
         </div>
 
         <div className='secondPageProducts container' >
+
+        <DropdownButton id="dropdown-basic-button" className="my-2" title="Sort Using Status">
+            <Dropdown.Item id="ACTIVE" onClick={handleClick}>ACTIVE</Dropdown.Item>
+            <Dropdown.Item id="INACTIVE" onClick={handleClick}>INACTIVE</Dropdown.Item>
+            <Dropdown.Item id ="EXPIRED" onClick={handleClick}>EXPIRED</Dropdown.Item>
+          </DropdownButton>
+
+
           <table className="table table-bordered table-hover shadow ">
             <thead>
               <tr>

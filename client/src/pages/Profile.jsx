@@ -99,7 +99,7 @@ function AddProduct() {
                 <div className='row  p-3 '>
                     <div className=''>
                         <div className="mb-4  d-flex justify-content-center">
-                            <img src={formData.imageData ? formData.imageData : "https://img.freepik.com/premium-vector/profile-flat-blue-simple-icon-with-long-shadowxa_159242-10066.jpg"}
+                            <img src={ "https://img.freepik.com/premium-vector/profile-flat-blue-simple-icon-with-long-shadowxa_159242-10066.jpg"}
                                 alt="example placeholder" className='rounded-circle' style={{ width: "280px" }} />
                         </div>
 
