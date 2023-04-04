@@ -95,6 +95,12 @@ export default function App() {
     }
   }
 
+  if (isLoading) {
+    return (
+        <Loader />
+    )
+}
+
   return (
     <div className='mainContainer container'>
       <div className='row'>

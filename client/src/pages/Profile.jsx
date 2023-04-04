@@ -17,7 +17,7 @@ function AddProduct() {
     const [qrCount, setQrCount] = useState(0)
     const [formData, setFormData] = useState({
     });
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         async function fetchData() {
@@ -81,7 +81,7 @@ function AddProduct() {
                     </div>
                     <div className='col topBar'>
                         <div className='topBarIcon'>
-                            <BiChat onClick={() => navigate('/chat')} className='clickable cursor-pointer'  size={50} />
+                            <BiChat onClick={() => navigate('/chat')} className='clickable cursor-pointer'   size={50} />
                          
                         </div>
                     </div>
@@ -110,7 +110,7 @@ function AddProduct() {
 
 
                 <div className='row p-3 px-3 '>
-                    <div className='col-md-12 col-lg-6 col-xl-6'>
+                    <div className={ user.role !== 'CONSUMER'? 'col-md-12 col-lg-6 col-xl-6':'col-md-12 p-5'}>
                         <div id="emailHelp" className="form-text mt-5">email</div>
                         <input
                             disabled
@@ -128,7 +128,7 @@ function AddProduct() {
                             className='form-control form-control-lg border border-info '
                             type='text'
                             name='productName'
-                            placeholder={formData.userId}
+                            placeholder={formData._id}
                             aria-label='.form-control-lg example'
 
                         />

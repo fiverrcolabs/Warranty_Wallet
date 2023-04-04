@@ -92,9 +92,10 @@ function ClaimItem() {
                 claimId,
 
             })
-            const fetchedProducts = await axiosFetch.get(`/claim/${claimId}`)
-            console.log(fetchedProducts.data);
-            setFormData(fetchedProducts.data[0])
+            // const fetchedProducts = await axiosFetch.get(`/claim/${claimId}`)
+            // console.log(fetchedProducts.data);
+            // setFormData(fetchedProducts.data[0])
+            navigate('/claims')
             toast.success("Claim transfer Successfull")
             
 
@@ -112,9 +113,10 @@ function ClaimItem() {
             const createdProduct = await axiosFetch.post('/claim/resolveClaim', {
                 claimId,
             })
-            const fetchedProducts = await axiosFetch.get(`/claim/${claimId}`)
-            console.log(fetchedProducts.data);
-            setFormData(fetchedProducts.data[0])
+            // const fetchedProducts = await axiosFetch.get(`/claim/${claimId}`)
+            // console.log(fetchedProducts.data);
+            // setFormData(fetchedProducts.data[0])
+            navigate('/claims')
             toast.success("Make As resolved")
            
 
@@ -167,7 +169,17 @@ function ClaimItem() {
 
                     {/* 'NEW', 'IN_PROGRESS', 'REJECTED', 'COMPLETED', 'RESOLVED' */}
                     <div className='col-md-12 col-lg-6 col-xl-6'>
-                        <select required onChange={handleChange} name='status' defaultValue={formData.status} disabled={!editable} className='form-control form-control-lg border border-info mt-4' aria-label="Default select example">
+                    <input required onChange={handleChange}
+                            disabled
+                            className='form-control form-control-lg border border-info mt-3'
+                            type='text'
+                            name='assignee'
+                            value={'product name'}
+                            // placeholder={!editable ? (formData.assignee) : "add asigneer"}
+                            aria-label='.form-control-lg example'
+
+                        />
+                        <select required onChange={handleChange} name='status' defaultValue={formData.status} disabled={!editable} className='form-control form-control-lg border border-info mt-2' aria-label="Default select example">
                             <option value={formData.status} disabled>{formData.status} </option>
                             <option value="IN_PROGRESS">InProgress</option>
                             <option value="COMPLETED">Completed</option>
@@ -175,7 +187,7 @@ function ClaimItem() {
                         </select>
                         <input required onChange={handleChange}
                             disabled={!editable}
-                            className='form-control form-control-lg border border-info mt-3'
+                            className='form-control form-control-lg border border-info mt-2'
                             type='text'
                             name='assignee'
                             value={!editable ? "" : newData.assignee}
@@ -185,7 +197,7 @@ function ClaimItem() {
                         />
                         <input required onChange={handleChange}
                             disabled={!editable}
-                            className='form-control form-control-lg border border-info mt-3'
+                            className='form-control form-control-lg border border-info mt-2'
                             type='number'
                             name='taskTime'
                             value={!editable ? "" : newData.taskTime}
@@ -194,6 +206,15 @@ function ClaimItem() {
                             aria-label='.form-control-lg example'
 
                         />
+                         {user.role !== "CONSUMER" && <textarea
+                            disabled
+                            className='form-control border border-info mt-2'
+                            id='exampleFormControlTextarea1'
+                            rows='1'
+                            name='polices'
+                            // placeholder={formData.description}
+
+                        ></textarea>}
                         {user.role !== "CONSUMER" && <><button disabled={!editable} onClick={handleSubmit} className='btn btn-info btn-lg mt-3  text-white'>Save</button>
                             <button disabled={formData.status === "RESOLVED"} onClick={() => {
                                 setEditable(!editable);
