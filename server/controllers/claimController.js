@@ -34,7 +34,7 @@ const createClaim = async (req, res) => {
         throw new BadRequestError(`WARNING! purchase date altering detected...`)
     }
 
-    if (serviceProviderType==='RETAILER') {
+    if (serviceProviderType === 'RETAILER') {
 
         const claim = await Claim.create({ warrantyId, description, warrantyServiceProvider: { userId: warrantyExists.issuerId } })
         res.status(StatusCodes.OK).json(claim)
@@ -46,7 +46,7 @@ const createClaim = async (req, res) => {
 }
 
 const fillClaim = async (req, res) => {
-    const { claimId, assignee, taskTime, status } = req.body
+    const { claimId, assignee, taskTime, status, internalNotes } = req.body
 
     if (!claimId) {
         throw new BadRequestError('please provide all values')
@@ -69,6 +69,7 @@ const fillClaim = async (req, res) => {
     claimExists.assignee = assignee
     claimExists.taskTime = taskTime
     claimExists.status = status
+    claimExists.internalNotes = internalNotes
     const claim = await claimExists.save()
 
     res.status(StatusCodes.OK).json(claim)
@@ -140,10 +141,10 @@ const getAllClaims = async (req, res) => {
 const getClaimById = async (req, res) => {
     const claimId = req.params.claimId
     if (req.user.role === "CONSUMER") {
-        const claims = await Claim.find({ _id: claimId }).populate({ path: 'warrantyId', match: { customerId: req.user.userId } })
+        const claims = await Claim.find({ _id: claimId }).populate({ path: 'warrantyId', match: { customerId: req.user.userId }, populate: { path: 'itemId', select: 'productId', populate: { path: 'productId' } } })
         res.status(StatusCodes.OK).json(claims)
     } else {
-        const claims = await Claim.find({ _id: claimId, 'warrantyServiceProvider.userId': req.user.userId })
+        const claims = await Claim.find({ _id: claimId, 'warrantyServiceProvider.userId': req.user.userId }).populate({ path: 'warrantyId', populate: { path: 'itemId', select: 'productId', populate: { path: 'productId' } } })
         res.status(StatusCodes.OK).json(claims)
     }
 }
