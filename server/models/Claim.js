@@ -10,8 +10,11 @@ const UserSchema = new mongoose.Schema({
   assignee: {
     type: String,
   },
-  taskTime: {
+  internalNotes: {
     type: String,
+  },
+  createdAt: {
+    type: Date,
   },
   description: {
     type: String,
@@ -33,6 +36,12 @@ const UserSchema = new mongoose.Schema({
       default: 'RETAILER',
     }
   },
+})
+
+UserSchema.pre('save', async function () {
+  if (this.createdAt) return
+  const now = Date.now()
+  this.createdAt = now
 })
 
 export default mongoose.model('Claim', UserSchema)

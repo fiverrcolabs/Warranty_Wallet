@@ -50,9 +50,10 @@ export default function App() {
                 <Route path="/register" element={<Register />} />
 
                 <Route path='/' element={<ProtectedRoute/>} >
-                    <Route path="/dashboard" element={<Dashboard />} />
+                   
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/chat" element={<Chat />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
 
                     <Route path="/claims" element={<Claims />} />
                     <Route path="/claims/:claimId" element={<ViewClaim />} />

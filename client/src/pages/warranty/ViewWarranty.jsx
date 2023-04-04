@@ -141,6 +141,15 @@ function ClaimItem() {
                             aria-label='.form-control-lg example'
                         // onChange={handleChange}
                         />
+                          <input
+                            disabled
+                            className='form-control form-control-lg border border-info mt-3'
+                            type='text'
+                            name='productName'
+                            placeholder={formData.itemId ? formData.itemId.productId.productName : ""}
+                            aria-label='.form-control-lg example'
+
+                        />
                         <input
                             disabled
                             className='form-control form-control-lg border border-info mt-3'

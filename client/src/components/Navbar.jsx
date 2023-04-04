@@ -6,13 +6,22 @@ import { GiRibbonMedal } from "react-icons/gi";
 import { RiUserAddLine } from "react-icons/ri";
 import { BiCartAlt } from "react-icons/bi";
 import { useAppContext } from '../context/appContext'
+import { FaUserCircle } from "react-icons/fa";
+import { useState, useEffect } from 'react'
 
 
 function Navbar() {
   const navigate = useNavigate()
   const location = useLocation()
-  const { axiosFetch, user } = useAppContext()
+  const { user } = useAppContext()
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 600);
 
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+        const ismobile = window.innerWidth < 600;
+        if (ismobile !== isMobile) setIsMobile(ismobile);
+    }, false);
+}, [isMobile]);
 
   // const user = {
   //   email: "test@gmail.com",
@@ -41,10 +50,11 @@ function Navbar() {
 
 
       <nav className='navbarNav'>
+        {console.log(isMobile)}
 
         <ul className='navbarListItems'>
 
-          <li onClick={() => navigate('/dashboard')} className={
+          {(user.role === "MANUFACTURER" || user.role === "RETAILER") && <li onClick={() => navigate('/dashboard')} className={
             pathMatchRoute('/dashboard')
               ? 'navbarListItemActive'
               : 'navbarListItem'}>
@@ -52,7 +62,7 @@ function Navbar() {
               <span className='mx-2'><RxDashboard /></span>
               Dashboard
             </h4>
-          </li>
+          </li>}
 
           {user.role === "MANUFACTURER" && <li onClick={() => navigate('/products')} className={pathMatchRoute('/products') ? 'navbarListItemActive' : 'navbarListItem'}>
 
@@ -99,6 +109,18 @@ function Navbar() {
               Warranty
             </h4>
           </li>}
+
+
+          <li onClick={() => navigate('/profile')} className={
+            pathMatchRoute('/profile')
+              ? 'navbarListItemActive'
+              : 'navbarListItem'}>
+            <h4 className='navbarListItemName'>
+              <span className='mx-2'><FaUserCircle /></span>
+              Profile
+            </h4>
+          </li>
+         
 
         </ul>
       </nav>

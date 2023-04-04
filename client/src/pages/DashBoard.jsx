@@ -166,14 +166,14 @@ function DashBoard() {
         setData4(linechartdata)
         setData3(highestClaim)
         setData1(claimStatesdata1)
-        setFrienddata(friendsSummary)
+        setFrienddata(friendsSummary())
 
       } catch (error) {
         console.log(error)
       }
     }
     fetchData()
-  }, [claims, friends])
+  }, [claims, friends, sentRequests, receivedRequests,warranties])
 
   const getHighestClaimProducts = () => {
     const productIdCounts = {};

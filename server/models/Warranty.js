@@ -22,6 +22,9 @@ const UserSchema = new mongoose.Schema({
   },
   contractAddress: {
     type: String,
+  },
+  nickname: {
+    type: String,
   }
 })
 
