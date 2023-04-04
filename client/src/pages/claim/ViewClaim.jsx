@@ -6,6 +6,7 @@ import Loader from '../../components/Loader'
 
 import { toast } from 'react-toastify'
 import { MdOutlineCancel } from "react-icons/md";
+import moment from 'moment'
 
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
@@ -31,7 +32,8 @@ function ClaimItem() {
         claimId: claimId,
         status: '',
         assignee: '',
-        taskTime: '',
+        internalNotes: '',
+
     });
 
 
@@ -97,7 +99,7 @@ function ClaimItem() {
             // setFormData(fetchedProducts.data[0])
             navigate('/claims')
             toast.success("Claim transfer Successfull")
-            
+
 
         } catch (error) {
             console.log(error.response.data.msg)
@@ -118,7 +120,7 @@ function ClaimItem() {
             // setFormData(fetchedProducts.data[0])
             navigate('/claims')
             toast.success("Make As resolved")
-           
+
 
         } catch (error) {
             console.log(error.response.data.msg)
@@ -159,7 +161,7 @@ function ClaimItem() {
                     <div className='col-md-12 col-lg-6 col-xl-6 mx-auto'>
                         <div>
                             <div className="mb-4 mt-4 d-flex justify-content-center">
-                                <img src={"https://mdbootstrap.com/img/Photos/Others/placeholder.jpg"}
+                            <img src={formData.warrantyId ? formData.warrantyId.itemId.productId.imageData : "https://mdbootstrap.com/img/Photos/Others/placeholder.jpg"}
                                     alt="example placeholder" className='rounded' style={{ width: "280px" }} />
                             </div>
 
@@ -169,12 +171,25 @@ function ClaimItem() {
 
                     {/* 'NEW', 'IN_PROGRESS', 'REJECTED', 'COMPLETED', 'RESOLVED' */}
                     <div className='col-md-12 col-lg-6 col-xl-6'>
-                    <input required onChange={handleChange}
+                        <input required onChange={handleChange}
                             disabled
                             className='form-control form-control-lg border border-info mt-3'
                             type='text'
                             name='assignee'
-                            value={'product name'}
+                            value={formData.warrantyId
+                                ? (formData.warrantyId.itemId.productId.productName) : "add asigneer"}
+                            // placeholder={!editable ? (formData.assignee) : "add asigneer"}
+                            aria-label='.form-control-lg example'
+
+                        />
+
+                        <input required onChange={handleChange}
+                            disabled
+                            className='form-control form-control-lg border border-info mt-3'
+                            type='text'
+                            name='assignee'
+                            value={formData.warrantyId
+                                ? (formData.warrantyId.nickname) : "add asigneer"}
                             // placeholder={!editable ? (formData.assignee) : "add asigneer"}
                             aria-label='.form-control-lg example'
 
@@ -195,24 +210,28 @@ function ClaimItem() {
                             aria-label='.form-control-lg example'
 
                         />
-                        <input required onChange={handleChange}
-                            disabled={!editable}
+                        <input required 
+                            disabled
                             className='form-control form-control-lg border border-info mt-2'
                             type='number'
                             name='taskTime'
-                            value={!editable ? "" : newData.taskTime}
-                            placeholder={!editable ? (formData.taskTime) : "add tasktime"}
+                            // value={!editable ? "" : newData.taskTime}
+                            placeholder={formData.createdAt?moment(formData.createdAt).diff(Date.now(),'days'):""}
                             min={1}
                             aria-label='.form-control-lg example'
 
                         />
-                         {user.role !== "CONSUMER" && <textarea
-                            disabled
+                        {user.role !== "CONSUMER" && <textarea
+                            required onChange={handleChange}
+                              disabled={!editable}
                             className='form-control border border-info mt-2'
                             id='exampleFormControlTextarea1'
                             rows='1'
-                            name='polices'
-                            // placeholder={formData.description}
+                            type='text'
+                            name='internalNotes'
+                            value={!editable ? "" : newData.internalNotes}
+                            placeholder={!editable ? (formData.internalNotes) : "add tasktime"}
+                        // placeholder={formData.description}
 
                         ></textarea>}
                         {user.role !== "CONSUMER" && <><button disabled={!editable} onClick={handleSubmit} className='btn btn-info btn-lg mt-3  text-white'>Save</button>

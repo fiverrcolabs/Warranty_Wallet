@@ -122,7 +122,7 @@ function ClaimItem() {
                     <div className='col-md-12 col-lg-6 col-xl-6 mx-auto'>
                         <div>
                             <div className="mb-4 mt-4 d-flex justify-content-center">
-                                <img src={formData.imageData ? formData.imageData : "https://mdbootstrap.com/img/Photos/Others/placeholder.jpg"}
+                                <img src={formData.itemId ? formData.itemId.productId.imageData : "https://mdbootstrap.com/img/Photos/Others/placeholder.jpg"}
                                     alt="example placeholder" className='rounded' style={{ width: "280px" }} />
                             </div>
 
@@ -155,7 +155,7 @@ function ClaimItem() {
                             className='form-control form-control-lg border border-info mt-3'
                             type='text'
                             name='productName'
-                            placeholder={formData.itemId ? formData.itemId.productId.productName : ""}
+                            placeholder={formData.itemId ? formData.nickname : ""}
                             aria-label='.form-control-lg example'
 
                         />

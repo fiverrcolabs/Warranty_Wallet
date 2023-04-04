@@ -26,6 +26,12 @@ function Claims() {
         RETAILER: "RETAILER",
         CONSUMER: "CONSUMER"
     }
+    const [newData, setNewData] = useState({
+      
+        nickname: '',
+     
+    });
+
 
     useEffect(() => {
         async function fetchData() {
@@ -53,6 +59,15 @@ function Claims() {
         fetchData();
     }, [])
 
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setNewData((prevState) => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
+
+
     const onClickRetailer = async (e) => {
         e.preventDefault()
         setIsLoading(true)
@@ -79,7 +94,8 @@ function Claims() {
         try {
 
             const res = await axiosFetch.patch(`/warranty/assignSelf`, {
-                warrantyId: data._id
+                warrantyId: data._id,
+                nickname:newData.nickname
             })
 
             console.log(res)
@@ -157,6 +173,12 @@ function Claims() {
                                     <div className="form-outline">
                                         <label htmlFor="exampleInputEmail1" className="form-label ">Email</label>
                                         <input disabled value={user.email?user.email:""} type="text" className="form-control  border border-info " id="exampleInputEmail1" aria-describedby="emailHelp" />
+
+                                    </div>
+
+                                    <div className="form-outline">
+                                        <label htmlFor="exampleInputEmail1" className="form-label ">Nick name</label>
+                                        <input onChange={handleChange} value={newData.nickname} type="text" className="form-control  border border-info " name="nickname" id="nickname" aria-describedby="emailHelp" />
 
                                     </div>
 
