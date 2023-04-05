@@ -18,7 +18,6 @@ router.route('/retailerRequests').get(isManufacturer, getRetailerRequests)
 router.route('/getManufacturerSentRequests').get(isManufacturer, getManufacturerSentRequests)
 router.route('/sendRetailerRequest').get(isManufacturer, sendRetailerRequest)
 router.route('/removeRetailerRequest').get(isManufacturer, removeRetailerRequest)
-router.route('/removeRetailerRequest').get(isManufacturer, removeRetailerRequest)
 router.route('/approveRetailerRequest').get(isManufacturer, approveRetailerRequest)
 
 export default router

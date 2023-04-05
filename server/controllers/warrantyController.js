@@ -54,17 +54,6 @@ const getWarrantyByItemId = async (req, res) => {
   }
 }
 
-const queryWarranty = async (req, res) => {
-  const { itemId, customerId, purchaseDate, issuerId } = req.query
-  const warrenties = await Warranty.find({
-    itemId,
-    customerId,
-    issuerId,
-    purchaseDate,
-  })
-  res.status(StatusCodes.OK).json(warrenties)
-}
-
 const getAllWarranties = async (req, res) => {
   let warranties = []
   if (req.user.role === 'CONSUMER') {

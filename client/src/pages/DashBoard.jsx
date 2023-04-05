@@ -227,10 +227,9 @@ function DashBoard() {
       const endDate = new Date(now.getFullYear(), now.getMonth() - i + interval, 0);
       warrantyRegistrationCount[startDate.toISOString().split('T')[0]] = warranties.filter((warranty) => {
         const purchaseDate = new Date(warranty.purchaseDate);
-        return purchaseDate >= startDate && purchaseDate <= endDate && warranty.issuerId;
+        return purchaseDate >= startDate && purchaseDate <= endDate && warranty.customerId;
       }).length;
     }
-    // return warrantyRegistrationCount;
 
     return {
       //get kesy inside object
