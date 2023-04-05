@@ -140,9 +140,8 @@ function Products() {
         </div>
 
         <div className='friendsContainer' >
-
           {connections.map((connection) => (
-            <Friend sendRequest={sendRequest} id={connection._id} available={available} key={connection._id} userId={connection.userId._id} company={connection.company} />
+            <Friend sendRequest={sendRequest} id={connection.userId._id} available={available} key={connection._id} userId={connection.userId._id} company={connection.company} email={connection.userId.email} />
           ))}
         </div>
 

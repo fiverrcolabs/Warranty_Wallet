@@ -148,10 +148,8 @@ function Request() {
         <h3 className='mt-5'>Requests</h3>
 
         <div className='friendsContainer ' >
-
-
           {connections.map((connection) => (
-            <AddRequest reject={reject} accept={accept} userId={connection._id} key={connection._id} company={filterCname(connection)} />
+            <AddRequest reject={reject} accept={accept} userId={connection._id} key={connection._id} company={filterCname(connection)} email={connection.email} />
           ))}
         </div>
 
@@ -159,9 +157,8 @@ function Request() {
 
         <h3>Approved</h3>
         <div className='friendsContainer' >
-
           {friends.map((friend) => (
-            <Friend hide={true} available={() => { true }} id={friend._id} key={friend._id} userId={friend._id} company={friend.email} />
+            <Friend hide={true} available={() => { true }} id={friend._id} key={friend._id} userId={friend._id} email={friend.email} />
           ))}
         </div>
       </div>
