@@ -181,7 +181,6 @@ const assignSelf = async (req, res) => {
 
 export {
   getWarrantyById,
-  queryWarranty,
   getAllWarranties,
   createWarranty,
   getWarrantyByItemId,
