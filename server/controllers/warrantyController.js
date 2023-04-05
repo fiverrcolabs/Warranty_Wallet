@@ -73,7 +73,7 @@ const getAllWarranties = async (req, res) => {
       select: 'productId',
       populate: {
         path: 'productId',
-        select: 'warrentyPeriod',
+        select: 'warrentyPeriod productName',
       },
     })
   } else if (req.user.role === 'RETAILER') {
@@ -82,7 +82,7 @@ const getAllWarranties = async (req, res) => {
       select: 'productId',
       populate: {
         path: 'productId',
-        select: 'warrentyPeriod',
+        select: 'warrentyPeriod productName',
       },
     })
   } else if (req.user.role === 'MANUFACTURER') {

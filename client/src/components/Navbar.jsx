@@ -14,14 +14,14 @@ function Navbar() {
   const navigate = useNavigate()
   const location = useLocation()
   const { user } = useAppContext()
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 600);
+  // const [isMobile, setIsMobile] = useState(window.innerWidth < 600);
 
-  useEffect(() => {
-    window.addEventListener("resize", () => {
-        const ismobile = window.innerWidth < 600;
-        if (ismobile !== isMobile) setIsMobile(ismobile);
-    }, false);
-}, [isMobile]);
+//   useEffect(() => {
+//     window.addEventListener("resize", () => {
+//         const ismobile = window.innerWidth < 600;
+//         if (ismobile !== isMobile) setIsMobile(ismobile);
+//     }, false);
+// }, [isMobile]);
 
   // const user = {
   //   email: "test@gmail.com",
@@ -50,7 +50,7 @@ function Navbar() {
 
 
       <nav className='navbarNav'>
-        {console.log(isMobile)}
+        {/* {console.log(isMobile)} */}
 
         <ul className='navbarListItems'>
 

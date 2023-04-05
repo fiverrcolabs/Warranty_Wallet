@@ -41,8 +41,9 @@ export default function App() {
     return (
         <Router>
             
-            <Navbar/>
+            
             <ToastContainer />
+            <Navbar/>
 
             <Routes>
 

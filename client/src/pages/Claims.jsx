@@ -17,7 +17,7 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 
 function Claims() {
   const navigate = useNavigate()
-  const { axiosFetch } = useAppContext()
+  const { axiosFetch, user } = useAppContext()
   const [claims, setClaims] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [sr, serSr] = useState(true)
@@ -140,6 +140,8 @@ function Claims() {
             <thead>
               <tr>
                 <th scope="col">ClaimId</th>
+                {user.role !== 'CONSUMER' && <th scope="col">ProductName</th>}
+                {user.role === 'CONSUMER' && <th scope="col">NickName</th>}
                 <th scope="col">Assignee</th>
                 <th scope="col">TaskTime</th>
                 <th scope="col">Status</th>
@@ -150,6 +152,8 @@ function Claims() {
 
                 <tr key={claim._id} className="clickable" onClick={() => navigate(`/claims/${claim._id}`)}>
                   <th scope="row">{claim._id}</th>
+                  {user.role !== 'CONSUMER' && <td>{claim.warrantyId?claim.warrantyId.itemId.productId.productName:""}</td>}
+                  {user.role === 'CONSUMER' &&  <td>{claim.warrantyId?claim.warrantyId[0].nickname:""}</td>}
                   <td>{claim.assignee}</td>
                   <td>{claim.createdAt ? moment(claim.createdAt).diff(Date.now(), 'days') : ""}</td>
                   <td>{claim.status}</td>

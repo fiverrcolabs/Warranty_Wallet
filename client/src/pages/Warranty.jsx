@@ -15,7 +15,7 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 
 function Warranty() {
   const navigate = useNavigate()
-  const { axiosFetch, addWarrantyStatus } = useAppContext()
+  const { axiosFetch, addWarrantyStatus,user } = useAppContext()
   const [warranties, setWarranties] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 
@@ -133,6 +133,8 @@ function Warranty() {
               <tr>
                 <th scope="col">WarrantyId</th>
                 <th scope="col">CustomerId</th>
+                {user.role !== 'CONSUMER' && <th scope="col">ProductName</th>}
+                {user.role === 'CONSUMER' && <th scope="col">NickName</th>}
                 <th scope="col">Purchase date</th>
                 <th scope="col">Status</th>
               </tr>
@@ -143,6 +145,8 @@ function Warranty() {
                 <tr key={warranty._id} className="clickable" onClick={() => navigate(`/warranty/${warranty._id}`)}>
                   <th scope="row">{warranty._id}</th>
                   <td>{warranty.customerId}</td>
+                  {user.role !== 'CONSUMER' && <td>{warranty.itemId?warranty.itemId.productId.productName:""}</td>}
+                  {user.role === 'CONSUMER' &&  <td>{warranty.nickname}</td>}
                   <td>{moment(warranty.purchaseDate).format('YYYY-MM-DD')}</td>
                   <td>{warranty.state}</td>
                 </tr>
