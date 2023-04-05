@@ -36,25 +36,48 @@ function Warranty() {
     fetchData();
   }, [])
 
-  const sortByName = (value, warranties, setClaims) => {
+  const sortByName = (value, warranties, setWarranties) => {
     const ar = [...warranties];
     const sortedProducts = ar.sort(
       (a, b) => {
         // move objects with name "aa" to the beginning of the array
-        if (a.status === value) {
+        if (a.state === value) {
           return -1;
-        } else if (b.status === value) {
+        } else if (b.state === value) {
           return 1;
         }
         return 0;
       }
     );
-    setClaims(sortedProducts);
+    setWarranties(sortedProducts);
+  };
+
+  const sortByTaskTime = (value, warranties, setWarranties) => {
+    const ar = [...warranties];
+    const sortedProducts = ar.sort(
+      (a, b) => {
+        // move objects with name "aa" to the beginning of the array
+        const timeA = new Date(a.purchaseDate);
+        const timeB = new Date(b.purchaseDate);
+        if (value === 'asc') {
+          return timeA - timeB;
+        } else if (value === 'desc') {
+          return timeB - timeA;
+        }
+        return 0;
+      }
+    );
+    setWarranties(sortedProducts);
   };
 
   const handleClick = (e) => {
     console.log(e.target.id);
     sortByName(e.target.id, warranties, setWarranties);
+  };
+
+  const handleClick2 = (e) => {
+    console.log(e.target.id);
+    sortByTaskTime(e.target.id, warranties, setWarranties);
   };
 
 
@@ -85,11 +108,24 @@ function Warranty() {
 
         <div className='secondPageProducts container' >
 
-        <DropdownButton id="dropdown-basic-button" className="my-2" title="Sort Using Status">
-            <Dropdown.Item id="ACTIVE" onClick={handleClick}>ACTIVE</Dropdown.Item>
-            <Dropdown.Item id="INACTIVE" onClick={handleClick}>INACTIVE</Dropdown.Item>
-            <Dropdown.Item id ="EXPIRED" onClick={handleClick}>EXPIRED</Dropdown.Item>
-          </DropdownButton>
+          <div className="row">
+
+            <DropdownButton id="dropdown-basic-button" className="col-2 my-2" title="Sort Using Status">
+              <Dropdown.Item id="ACTIVE" onClick={handleClick}>ACTIVE</Dropdown.Item>
+              <Dropdown.Item id="INACTIVE" onClick={handleClick}>INACTIVE</Dropdown.Item>
+              <Dropdown.Item id="EXPIRED" onClick={handleClick}>EXPIRED</Dropdown.Item>
+            </DropdownButton>
+
+            <DropdownButton id="dropdown-basic-button" className="col-2 my-2" title="Sort Using date">
+              <Dropdown.Item id="asc" onClick={handleClick2}>Ascending</Dropdown.Item>
+              <Dropdown.Item id="desc" onClick={handleClick2}>Descending</Dropdown.Item>
+
+            </DropdownButton>
+
+
+          </div>
+
+
 
 
           <table className="table table-bordered table-hover shadow ">
