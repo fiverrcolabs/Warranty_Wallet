@@ -5,9 +5,13 @@ import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/appContext'
 import Loader from '../components/Loader'
 import Product from '../components/Product'
+import moment from 'moment'
 
 import { toast } from 'react-toastify'
 import { GrAddCircle } from 'react-icons/gr'
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+
 
 
 
@@ -16,6 +20,7 @@ function Claims() {
   const { axiosFetch } = useAppContext()
   const [claims, setClaims] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [sr, serSr] = useState(true)
 
   useEffect(() => {
     async function fetchData() {
@@ -33,12 +38,35 @@ function Claims() {
     fetchData();
   }, [])
 
+
+
+  const sortByName = (value, claims, setClaims) => {
+    const ar = [...claims];
+    const sortedProducts = ar.sort(
+      (a, b) => {
+        // move objects with name "aa" to the beginning of the array
+        if (a.status === value) {
+          return -1;
+        } else if (b.status === value) {
+          return 1;
+        }
+        return 0;
+      }
+    );
+    setClaims(sortedProducts);
+  };
+
+  const handleClick = (e) => {
+    console.log(e.target.id);
+    sortByName(e.target.id, claims, setClaims);
+  };
+
+
   if (isLoading) {
     return (
       <Loader />
     )
   }
-
 
 
   return (
@@ -65,6 +93,14 @@ function Claims() {
         </div>
 
         <div className='secondPageProducts container' >
+
+          <DropdownButton id="dropdown-basic-button" className="my-2" title="Sort Using Status">
+            <Dropdown.Item id="NEW" onClick={handleClick}>NEW</Dropdown.Item>
+            <Dropdown.Item id="IN_PROGRESS" onClick={handleClick}>IN PROGRESS</Dropdown.Item>
+            <Dropdown.Item id ="COMPLETED" onClick={handleClick}>COMPLETED</Dropdown.Item>
+            <Dropdown.Item id ="REJECTED" onClick={handleClick}>REJECTED</Dropdown.Item>
+          </DropdownButton>
+
           <table className="table table-bordered table-hover shadow ">
             <thead>
               <tr>
@@ -76,15 +112,15 @@ function Claims() {
             </thead>
             <tbody>
               {claims.map((claim) => (
-               
+
                 <tr key={claim._id} className="clickable" onClick={() => navigate(`/claims/${claim._id}`)}>
-                <th scope="row">{claim._id}</th>
-                <td>{claim.assignee}</td>
-                <td>{claim.taskTime}</td>
-                <td>{claim.status}</td>
-              </tr>
+                  <th scope="row">{claim._id}</th>
+                  <td>{claim.assignee}</td>
+                  <td>{claim.createdAt?moment(claim.createdAt).diff(Date.now(),'days'):""}</td>
+                  <td>{claim.status}</td>
+                </tr>
               ))}
-             
+
             </tbody>
           </table>
         </div>

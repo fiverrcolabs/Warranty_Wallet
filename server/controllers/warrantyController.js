@@ -15,7 +15,7 @@ const getWarrantyById = async (req, res) => {
     path: 'itemId',
     select: 'productId',
     populate: {
-      path:'productId'
+      path: 'productId'
     }
   }).lean()
 
@@ -23,7 +23,7 @@ const getWarrantyById = async (req, res) => {
     throw new BadRequestError(`warranty with ${warrantyId} does not exist`)
   }
 
-  const manufacturer = await Manufacturer.findOne({ products: { $in: [warrantyExist.itemId.productId] }})
+  const manufacturer = await Manufacturer.findOne({ products: { $in: [warrantyExist.itemId.productId] } })
 
   warrantyExist.manufacturer = manufacturer.userId
 
@@ -36,7 +36,7 @@ const getWarrantyByItemId = async (req, res) => {
     throw new BadRequestError('please provide itemId')
   }
 
-  const warranty = await Warranty.findOne({ itemId }).populate({ path: 'itemId', select: 'productId', populate: { path: 'productId', select: 'polices' }})
+  const warranty = await Warranty.findOne({ itemId }).populate({ path: 'itemId', select: 'productId', populate: { path: 'productId', select: 'polices' } })
 
   if (req.user.role === 'CONSUMER') {
     if (warranty) {
@@ -85,7 +85,57 @@ const getAllWarranties = async (req, res) => {
         select: 'warrentyPeriod',
       },
     })
+  } else if (req.user.role === 'MANUFACTURER') {
+    const manufacturer = await Manufacturer.findOne({ userId: req.user.userId })
+    const manufacturerProducts = manufacturer.products
+    warranties = await Warranty.aggregate([
+      {
+        $lookup: {
+          from: 'items',
+          localField: 'itemId',
+          foreignField: '_id',
+          as: 'itemId',
+        },
+      },
+      {
+        $addFields: {
+          itemId: { $arrayElemAt: ["$itemId", 0] }
+        }
+      },
+      {
+        $lookup: {
+          from: 'products',
+          localField: 'itemId.productId',
+          foreignField: '_id',
+          as: 'productId',
+        },
+      },
+      {
+        $addFields: {
+          productId: { $arrayElemAt: ["$productId", 0] }
+        }
+      },
+      {
+        $match: {
+          'productId._id': {
+            $in: manufacturerProducts,
+          },
+        },
+      },
+      {
+        $project: {
+          'itemId.qr': 0,
+          'productId.imageData': 0
+        },
+      },
+    ])
+
+    warranties.forEach((warranty) => {
+      warranty.itemId.productId = warranty.productId
+      delete warranty.productId
+    })
   }
+
   warranties.forEach((warranty) => {
     const expirationDate = moment(warranty.purchaseDate).add(warranty.itemId.productId.warrentyPeriod, 'months').toDate();
     const currentDate = new Date();
@@ -123,11 +173,11 @@ const createWarranty = async (req, res) => {
 const assignSelf = async (req, res) => {
   const { warrantyId, nickname } = req.body
   const warranty = await Warranty.findOne({ _id: warrantyId })
- 
-  if (!warranty ) {
+
+  if (!warranty) {
     throw new BadRequestError(`${warrantyId} has no warranty`)
   }
-  if (!nickname ) {
+  if (!nickname) {
     throw new BadRequestError(`${nickname} is required`)
   }
   if (warranty.customerId) {

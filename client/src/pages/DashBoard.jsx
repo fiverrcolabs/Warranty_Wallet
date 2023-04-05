@@ -118,10 +118,11 @@ function DashBoard() {
           labels: [
             'NEW',
             'COMPLETED',
+            'IN PROGRESS'
           ],
           datasets: [{
-            label: 'Claims And Completion Rate',
-            data: [getClaimsAndCompletionRate().NEW ? getClaimsAndCompletionRate().NEW : 0, getClaimsAndCompletionRate().COMPLETED ? getClaimsAndCompletionRate().COMPLETED : 0],
+            label: '',
+            data: [getClaimsAndCompletionRate().NEW ? getClaimsAndCompletionRate().NEW : 0, getClaimsAndCompletionRate().COMPLETED ? getClaimsAndCompletionRate().COMPLETED : 0, getClaimsAndCompletionRate().IN_PROGRESS ? getClaimsAndCompletionRate().IN_PROGRESS : 0],
             backgroundColor: [
               'rgb(255, 99, 132)',
               'rgb(54, 162, 235)',
@@ -148,17 +149,17 @@ function DashBoard() {
         };
 
         const linechartdata = {
-          labels: customerWarrantyRegistrationCountByMonthBackN().labels,
+          labels: customerWarrantyRegistrationCountByMonthBackN(6).labels,
           datasets: [
             {
-              label: " customer Warranty Registration",
+              label: "",
               backgroundColor: [
                 'rgb(255, 99, 132)',
                 'rgb(54, 162, 235)',
                 'rgb(255, 205, 86)'
               ],
               borderColor: "rgb(255, 99, 132)",
-              data: customerWarrantyRegistrationCountByMonthBackN().data,
+              data: customerWarrantyRegistrationCountByMonthBackN(6).data,
             },
           ],
         };
@@ -173,7 +174,7 @@ function DashBoard() {
       }
     }
     fetchData()
-  }, [claims, friends, sentRequests, receivedRequests,warranties])
+  }, [claims, friends, sentRequests, receivedRequests, warranties])
 
   const getHighestClaimProducts = () => {
     const productIdCounts = {};
@@ -224,7 +225,7 @@ function DashBoard() {
     for (let i = 0; i < n; i += interval) {
       const startDate = new Date(now.getFullYear(), now.getMonth() - i, 1);
       const endDate = new Date(now.getFullYear(), now.getMonth() - i + interval, 0);
-      warrantyRegistrationCount[startDate.toISOString()] = warranties.filter((warranty) => {
+      warrantyRegistrationCount[startDate.toISOString().split('T')[0]] = warranties.filter((warranty) => {
         const purchaseDate = new Date(warranty.purchaseDate);
         return purchaseDate >= startDate && purchaseDate <= endDate && warranty.issuerId;
       }).length;
@@ -268,24 +269,60 @@ function DashBoard() {
           <div className='row pb-3 chartBox'>
 
             <div className='col-md-7 col-sm-12 shadow' >
-              <Line options={{ responsive: true, maintainAspectRatio: false }} data={data4} />
+              <Line options={{
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                  title: {
+                    display: true,
+                    text: 'Customer Warranty Registration Chart'
+                  },
+                  legend: {
+                    display: false
+                  }
+                },
+                scales: {
+                  y: {
+                    ticks: {
+                      stepSize: 10,
+                      beginAtZero: true,
+                    },
+                  },
+                }
+              }} data={data4} />
             </div>
 
             <div className='col-md-4 col-sm-12 ms-auto p-3 chartBox shadow '>
-              <Doughnut options={{ responsive: true, maintainAspectRatio: false }} data={data1} />
+              <Doughnut options={{
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                  title: {
+                    display: true,
+                    text: 'Claims Status Overview'
+                  }
+                }
+              }} data={data1} />
             </div>
 
           </div>
           <div className='row mt-3 chartBox'>
 
             <div className='col-md-5 col-sm-12 p-3 shadow chartBox'>
-              <Pie options={{ responsive: true, maintainAspectRatio: false }} data={data3} />
+              <Pie options={{
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                  title: {
+                    display: true,
+                    text: 'Highest Claim Products'
+                  }
+                }
+              }} data={data3} />
             </div>
 
             <div className='col-md-6 col-sm-12 p-3 ms-auto shadow' >
-              <div className="input-group mt-5 mb-3">
+              <h6 className="mt-4">Connection Status</h6>
+              <div className="input-group mt-3 mb-3">
                 <div className="input-group-prepend">
-                  <span className="input-group-text" id="basic-addon1">All friends   :</span>
+                  <span className="input-group-text" id="basic-addon1">Approved    :</span>
                 </div>
                 <input disabled type="text" className="form-control border border-info" placeholder={frienddata.friendsCount} aria-label="Username" aria-describedby="basic-addon1" />
 
