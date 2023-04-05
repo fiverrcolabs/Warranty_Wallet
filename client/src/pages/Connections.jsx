@@ -30,13 +30,17 @@ function Products() {
       try {
         var fetchedConnections;
         var fetchedRequests;
+        var fetchedReceivedRequests;
         if (user.role === USER.MANUFACTURER) {
           fetchedConnections = await axiosFetch.get('/manufacturer/nonRetailerFriends')
           fetchedRequests = await axiosFetch.get('/manufacturer/getManufacturerSentRequests')
+          fetchedReceivedRequests = await axiosFetch.get('/manufacturer/retailerRequests')
         }
         if (user.role === USER.RETAILER) {
           fetchedConnections = await axiosFetch.get('/retailer/nonManufacturerFriends')
           fetchedRequests = await axiosFetch.get('/retailer/getRetailerSentRequests')
+          fetchedReceivedRequests = await axiosFetch.get('/retailer/manufacturerRequests')
+
         }
 
         console.log(fetchedConnections.data)
@@ -48,6 +52,9 @@ function Products() {
 
         var ar = [];
         fetchedRequests.data.forEach((request) => {
+          ar.push(request._id)
+        })
+        fetchedReceivedRequests.data.forEach((request) => {
           ar.push(request._id)
         })
         setArrayIds(ar)

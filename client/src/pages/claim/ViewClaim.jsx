@@ -6,6 +6,8 @@ import Loader from '../../components/Loader'
 
 import { toast } from 'react-toastify'
 import { MdOutlineCancel } from "react-icons/md";
+import { BiChat } from "react-icons/bi";
+
 import moment from 'moment'
 
 import Button from 'react-bootstrap/Button';
@@ -150,6 +152,11 @@ function ClaimItem() {
                     </div>
                     <div className='col topBar'>
                         <div className='topBarIcon'>
+                            <BiChat onClick={() => navigate('/chat')} className='clickable cursor-pointer' size={50} />
+                        </div>
+                    </div>
+                    <div className='col topBar'>
+                        <div className='topBarIcon'>
                             <MdOutlineCancel onClick={() => navigate('/claims')} className='clickable cursor-pointer' size={40} />
                         </div>
                     </div>
@@ -161,7 +168,7 @@ function ClaimItem() {
                     <div className='col-md-12 col-lg-6 col-xl-6 mx-auto'>
                         <div>
                             <div className="mb-4 mt-4 d-flex justify-content-center">
-                            <img src={formData.warrantyId ? formData.warrantyId.itemId.productId.imageData : "https://mdbootstrap.com/img/Photos/Others/placeholder.jpg"}
+                                <img src={formData.warrantyId ? formData.warrantyId.itemId.productId.imageData : "https://mdbootstrap.com/img/Photos/Others/placeholder.jpg"}
                                     alt="example placeholder" className='rounded' style={{ width: "280px" }} />
                             </div>
 
@@ -210,20 +217,20 @@ function ClaimItem() {
                             aria-label='.form-control-lg example'
 
                         />
-                        <input required 
+                        <input required
                             disabled
                             className='form-control form-control-lg border border-info mt-2'
                             type='number'
                             name='taskTime'
                             // value={!editable ? "" : newData.taskTime}
-                            placeholder={formData.createdAt?moment(formData.createdAt).diff(Date.now(),'days'):""}
+                            placeholder={formData.createdAt ? moment(formData.createdAt).diff(Date.now(), 'days') : ""}
                             min={1}
                             aria-label='.form-control-lg example'
 
                         />
                         {user.role !== "CONSUMER" && <textarea
                             required onChange={handleChange}
-                              disabled={!editable}
+                            disabled={!editable}
                             className='form-control border border-info mt-2'
                             id='exampleFormControlTextarea1'
                             rows='1'
