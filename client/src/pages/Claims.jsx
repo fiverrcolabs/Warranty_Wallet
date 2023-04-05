@@ -55,10 +55,33 @@ function Claims() {
     );
     setClaims(sortedProducts);
   };
+  const sortByTaskTime = (value, claims, setClaims) => {
+    const ar = [...claims];
+    const sortedProducts = ar.sort(
+
+      (a, b) => {
+        const timeA = new Date(a.createdAt);
+        const timeB = new Date(b.createdAt);
+        // move objects with name "aa" to the beginning of the array
+        if (value === 'asc') {
+          return timeA - timeB;
+        } else if (value === 'desc') {
+          return timeB - timeA;
+        }
+        return 0;
+      }
+    );
+    setClaims(sortedProducts);
+  };
+
 
   const handleClick = (e) => {
     console.log(e.target.id);
     sortByName(e.target.id, claims, setClaims);
+  };
+  const handleClick2 = (e) => {
+    console.log(e.target.id);
+    sortByTaskTime(e.target.id, claims, setClaims);
   };
 
 
@@ -93,13 +116,25 @@ function Claims() {
         </div>
 
         <div className='secondPageProducts container' >
+          <div className='row'>
 
-          <DropdownButton id="dropdown-basic-button" className="my-2" title="Sort Using Status">
-            <Dropdown.Item id="NEW" onClick={handleClick}>NEW</Dropdown.Item>
-            <Dropdown.Item id="IN_PROGRESS" onClick={handleClick}>IN PROGRESS</Dropdown.Item>
-            <Dropdown.Item id ="COMPLETED" onClick={handleClick}>COMPLETED</Dropdown.Item>
-            <Dropdown.Item id ="REJECTED" onClick={handleClick}>REJECTED</Dropdown.Item>
-          </DropdownButton>
+
+
+            <DropdownButton id="dropdown-basic-button" className="col-2 my-2" title="Sort Using Status">
+              <Dropdown.Item id="NEW" onClick={handleClick}>NEW</Dropdown.Item>
+              <Dropdown.Item id="IN_PROGRESS" onClick={handleClick}>IN PROGRESS</Dropdown.Item>
+              <Dropdown.Item id="COMPLETED" onClick={handleClick}>COMPLETED</Dropdown.Item>
+              <Dropdown.Item id="REJECTED" onClick={handleClick}>REJECTED</Dropdown.Item>
+            </DropdownButton>
+
+            <DropdownButton id="dropdown-basic-button" className="col-2 my-2" title="Sort Using TaskTime">
+              <Dropdown.Item id="asc" onClick={handleClick2}>Ascending</Dropdown.Item>
+              <Dropdown.Item id="desc" onClick={handleClick2}>Descending</Dropdown.Item>
+
+            </DropdownButton>
+
+          </div>
+
 
           <table className="table table-bordered table-hover shadow ">
             <thead>
@@ -116,7 +151,7 @@ function Claims() {
                 <tr key={claim._id} className="clickable" onClick={() => navigate(`/claims/${claim._id}`)}>
                   <th scope="row">{claim._id}</th>
                   <td>{claim.assignee}</td>
-                  <td>{claim.createdAt?moment(claim.createdAt).diff(Date.now(),'days'):""}</td>
+                  <td>{claim.createdAt ? moment(claim.createdAt).diff(Date.now(), 'days') : ""}</td>
                   <td>{claim.status}</td>
                 </tr>
               ))}
