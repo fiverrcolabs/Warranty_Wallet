@@ -282,6 +282,7 @@ function DashBoard() {
                 },
                 scales: {
                   y: {
+                    min: 0,
                     ticks: {
                       stepSize: 10,
                       beginAtZero: true,
