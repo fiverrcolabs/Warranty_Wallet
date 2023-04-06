@@ -5,12 +5,45 @@ import User from '../models/User.js'
 import { BadRequestError } from '../errors/index.js'
 
 const getRetailerFriends = async (req, res) => {
-  const retailerFriends = await Manufacturer.findOne({
+  const retailerFriends = (await Manufacturer.findOne({
     userId: req.user.userId,
   })
     .populate('retailerFriends')
-    .select('retailerFriends')
-  res.status(StatusCodes.OK).json(retailerFriends)
+    .select('retailerFriends')).retailerFriends
+  const retailers = await User.aggregate([
+    {
+      $match: {
+        _id: { $in: retailerFriends.map(user => user._id) }
+      }
+    },
+    {
+      $lookup: {
+        from: 'retailers',
+        localField: '_id',
+        foreignField: 'userId',
+        as: 'retailer'
+      }
+    },
+    {
+      $addFields: {
+        retailer: { $arrayElemAt: ["$retailer", 0] },
+      }
+    }, 
+    {
+      $unwind: '$retailer'
+    },
+    {
+      $project: {
+        email: 1,
+        _id: '$retailer._id',
+        userId: '$retailer.userId',
+        company: '$retailer.company',
+        website: '$retailer.website',
+        __v: '$retailer.__v'
+      }
+    },
+  ])
+  res.status(StatusCodes.OK).json(retailers)
 }
 
 const getRetailerRequests = async (req, res) => {
