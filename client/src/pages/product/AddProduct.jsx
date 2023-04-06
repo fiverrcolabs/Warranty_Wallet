@@ -44,6 +44,7 @@ function AddProduct() {
       })
       console.log(createdProduct);
       toast.success("Product Created Successfully")
+      navigate('/products')
 
     } catch (error) {
       console.log(error.response.data.msg)

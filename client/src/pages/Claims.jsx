@@ -155,7 +155,7 @@ function Claims() {
                   {user.role !== 'CONSUMER' && <td>{claim.warrantyId?claim.warrantyId.itemId.productId.productName:""}</td>}
                   {user.role === 'CONSUMER' &&  <td>{claim.warrantyId?claim.warrantyId[0].nickname:""}</td>}
                   <td>{claim.assignee}</td>
-                  <td>{claim.createdAt ? Date.now().diff(moment(claim.createdAt), 'days') : ""}</td>
+                  <td>{claim.createdAt ? moment(claim.createdAt).diff(Date.now(), 'days')*(-1) : ""}</td>
                   <td>{claim.status}</td>
                 </tr>
               ))}
