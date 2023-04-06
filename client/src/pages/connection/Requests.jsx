@@ -8,8 +8,6 @@ import Friend from '../../components/Friend';
 import Loader from '../../components/Loader'
 
 
-
-
 function Request() {
   var navigate = useNavigate();
   const { axiosFetch, user } = useAppContext()
@@ -17,7 +15,6 @@ function Request() {
   const [friends, setFriends] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [refresh, setRefresh] = useState(true)
-
 
   const USER = {
     MANUFACTURER: "MANUFACTURER",
@@ -33,6 +30,7 @@ function Request() {
         if (user.role === USER.MANUFACTURER) {
           fetchedConnections = await axiosFetch.get('/manufacturer/retailerRequests')
           fetchFriends = await axiosFetch.get('/manufacturer/retailerFriends')
+          console.log("-- retailerFriends--", fetchFriends.data.retailerFriends)
           setFriends(fetchFriends.data.retailerFriends)
 
         }
@@ -40,6 +38,7 @@ function Request() {
           fetchedConnections = await axiosFetch.get('/retailer/manufacturerRequests')
           console.log("=====", fetchedConnections.data)
           fetchFriends = await axiosFetch.get('/retailer/manufacturerFriends')
+          console.log("-- retailerFriends--", fetchFriends.data.manufacturerFriends)
           setFriends(fetchFriends.data.manufacturerFriends)
 
         }
@@ -47,7 +46,7 @@ function Request() {
         setConnections(fetchedConnections.data)
 
         console.log(fetchedConnections.data)
-        console.log("friends", fetchFriends.data)
+        // console.log("--friends--", fetchFriends.data)
         setIsLoading(false)
 
 
@@ -158,7 +157,7 @@ function Request() {
         <h3>Approved</h3>
         <div className='friendsContainer' >
           {friends.map((friend) => (
-            <Friend hide={true} available={() => { true }} id={friend._id} key={friend._id} userId={friend._id} email={friend.email} />
+            <Friend hide={true} available={() => { true }} id={friend._id} key={friend._id} company={"toDo"} userId={friend._id} email={friend.email} />
           ))}
         </div>
       </div>
