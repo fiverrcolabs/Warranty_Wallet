@@ -137,11 +137,11 @@ const removeManufacturerRequest = async (req, res) => {
     throw new BadRequestError('user not found')
   }
 
-  const removeManufacturerRequest = await Manufacturer.findOneAndUpdate(
+  const removeManufacturerRequest = await Retailer.findOneAndUpdate(
     {
-      userId: userId,
+      userId: req.user.userId,
     },
-    { $pull: { retailerRequests: req.user.userId } },
+    { $pull: { manufacturerRequests: userId } },
     { new: true }
   )
   res.status(StatusCodes.OK).json(removeManufacturerRequest)

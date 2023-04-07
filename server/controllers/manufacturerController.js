@@ -140,12 +140,11 @@ const removeRetailerRequest = async (req, res) => {
     throw new BadRequestError('user not found')
   }
 
-  // console.log(req.user.userId)
-  const removeRetailerRequest = await Retailer.findOneAndUpdate(
+  const removeRetailerRequest = await Manufacturer.findOneAndUpdate(
     {
-      userId: userId,
+      userId: req.user.userId,
     },
-    { $pull: { manufacturerRequests: req.user.userId } },
+    { $pull: { retailerRequests: userId } },
     { new: true }
   )
   res.status(StatusCodes.OK).json(removeRetailerRequest)
