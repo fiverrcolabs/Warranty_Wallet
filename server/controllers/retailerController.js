@@ -99,11 +99,20 @@ const sendManufacturerRequest = async (req, res) => {
   }
 
   const manufacturerSentRequest = await Retailer.count({
-    _id: req.user.userId,
+    userId: req.user.userId,
     manufacturerRequests: userId,
   })
   if (manufacturerSentRequest > 0) {
     throw new BadRequestError('manufacturer has already sent a request')
+  }
+
+  const manufacturerIsAlreadyFriend = await Retailer.count({
+    userId: req.user.userId,
+    manufacturerFriends: userId,
+  })
+  
+  if (manufacturerIsAlreadyFriend > 0) {
+    throw new BadRequestError('manufacturer is already a friend')
   }
 
   const addManufacturerRequest = await Manufacturer.findOneAndUpdate(

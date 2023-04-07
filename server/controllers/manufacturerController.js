@@ -99,14 +99,24 @@ const sendRetailerRequest = async (req, res) => {
   }
 
   const retailerHasSentRequest = await Manufacturer.count({
-    _id: req.user.userId,
+    userId: req.user.userId,
     retailerRequests: userId,
   })
+
   if (retailerHasSentRequest > 0) {
     throw new BadRequestError('retailer has already sent a request')
   }
-  console.log('retailerExists', retailerExists)
-  console.log('retailerHasSentRequest', retailerHasSentRequest)
+
+  const retailerIsAlreadyFriend = await Manufacturer.count({
+    userId: req.user.userId,
+    retailerFriends: userId,
+  })
+  
+  if (retailerIsAlreadyFriend > 0) {
+    throw new BadRequestError('retailer is already a friend')
+  }
+  // console.log('retailerExists', retailerExists)
+  // console.log('retailerHasSentRequest', retailerHasSentRequest)
 
   const addRetailerRequest = await Retailer.findOneAndUpdate(
     {
@@ -130,6 +140,7 @@ const removeRetailerRequest = async (req, res) => {
     throw new BadRequestError('user not found')
   }
 
+  // console.log(req.user.userId)
   const removeRetailerRequest = await Retailer.findOneAndUpdate(
     {
       userId: userId,
