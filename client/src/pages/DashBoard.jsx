@@ -253,9 +253,9 @@ function DashBoard() {
 
 
           <div className='col topBar'>
-            <div className='topBarIcon'>
+            {/* <div className='topBarIcon'>
               <FaUserCircle onClick={() => navigate('/profile')} className='clickable cursor-pointer' size={40} />
-            </div>
+            </div> */}
 
           </div>
 

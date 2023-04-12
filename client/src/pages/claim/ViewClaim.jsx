@@ -223,7 +223,7 @@ function ClaimItem() {
                             type='number'
                             name='taskTime'
                             // value={!editable ? "" : newData.taskTime}
-                            placeholder={formData.createdAt ? moment(formData.createdAt).diff(Date.now(), 'days') : ""}
+                            placeholder={formData.createdAt ? moment(formData.createdAt).diff(Date.now(), 'days')*-1 : ""}
                             min={1}
                             aria-label='.form-control-lg example'
 

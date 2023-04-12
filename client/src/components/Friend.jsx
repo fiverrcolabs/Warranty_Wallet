@@ -14,7 +14,7 @@ export default function Friend({sendRequest,company,userId,id,available,hide,ema
                         <div className="card-body">
                             <h6 className="card-title"><strong>Email: </strong>{email}</h6>
                             <h6 className="card-title"><strong>Company: </strong>{company}</h6>
-                            <button hidden={hide} disabled={available? !available(id):false} id={userId} href="#" onClick={sendRequest} className="btn btn-primary btn-sm">Send request</button>
+                            <button hidden={hide} disabled={available? !available(userId):false} id={userId} href="#" onClick={sendRequest} className="btn btn-primary btn-sm">Send request</button>
                         </div>
                     </div>
                 </div>

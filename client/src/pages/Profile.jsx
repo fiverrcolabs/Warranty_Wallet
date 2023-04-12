@@ -85,12 +85,12 @@ function AddProduct() {
                          
                         </div>
                     </div>
-                    <div className='col topBar'>
+                    {/* <div className='col topBar'>
                         <div className='topBarIcon'>
                             <MdLogout onClick={() => logOut()} className='clickable cursor-pointer' color={'red'} size={50} />
                          
                         </div>
-                    </div>
+                    </div> */}
                  
 
                 </div>
@@ -146,9 +146,7 @@ function AddProduct() {
                                 name='productId'
                                 placeholder={formData.company}
                                 aria-label='.form-control-lg example'
-
                             />
-
                             <div id="emailHelp" className="form-text mt-5">Website</div>
                             <input
                                 disabled
@@ -157,23 +155,20 @@ function AddProduct() {
                                 name='productName'
                                 placeholder={formData.website}
                                 aria-label='.form-control-lg example'
-
                             />
-
 
                         </div>}
 
-
                 </div>
 
-                {/* <div className='row p-3 px-3 '>
+                <div className='row p-3 px-3 '>
 
 
-                    <button type="submit" className='btn btn-danger btn-lg mt-4 mx-3 text-white'>
+                    <button type="submit" onClick={() => logOut()} className='btn btn-danger btn-lg mt-4 mx-auto text-white'>
                         Logout
                     </button>
                 </div>
- */}
+
 
 
             </div>

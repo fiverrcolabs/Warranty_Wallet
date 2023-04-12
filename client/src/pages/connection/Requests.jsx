@@ -8,8 +8,6 @@ import Friend from '../../components/Friend';
 import Loader from '../../components/Loader'
 
 
-
-
 function Request() {
   var navigate = useNavigate();
   const { axiosFetch, user } = useAppContext()
@@ -17,7 +15,6 @@ function Request() {
   const [friends, setFriends] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [refresh, setRefresh] = useState(true)
-
 
   const USER = {
     MANUFACTURER: "MANUFACTURER",
@@ -33,21 +30,23 @@ function Request() {
         if (user.role === USER.MANUFACTURER) {
           fetchedConnections = await axiosFetch.get('/manufacturer/retailerRequests')
           fetchFriends = await axiosFetch.get('/manufacturer/retailerFriends')
-          setFriends(fetchFriends.data.retailerFriends)
+          console.log("-- retailerFriends--", fetchFriends.data)
+          setFriends(fetchFriends.data)
 
         }
         if (user.role === USER.RETAILER) {
           fetchedConnections = await axiosFetch.get('/retailer/manufacturerRequests')
           console.log("=====", fetchedConnections.data)
           fetchFriends = await axiosFetch.get('/retailer/manufacturerFriends')
-          setFriends(fetchFriends.data.manufacturerFriends)
+          console.log("-- retailerFriends--", fetchFriends.data)
+          setFriends(fetchFriends.data)
 
         }
 
         setConnections(fetchedConnections.data)
 
         console.log(fetchedConnections.data)
-        console.log("friends", fetchFriends.data)
+        console.log("--friends--", fetchFriends.data)
         setIsLoading(false)
 
 
@@ -94,7 +93,7 @@ function Request() {
       if (user.role === USER.RETAILER) {
         res = await axiosFetch.get(`/retailer/removeManufacturerRequest?userId=${event.currentTarget.parentNode.id}`)
       }
-      console.log(res)
+      console.log("++", res)
       setRefresh(!refresh)
       toast.info("rejected")
 
@@ -148,6 +147,7 @@ function Request() {
         <h3 className='mt-5'>Requests</h3>
 
         <div className='friendsContainer ' >
+          {console.log("++++", connections)}
           {connections.map((connection) => (
             <AddRequest reject={reject} accept={accept} userId={connection._id} key={connection._id} company={filterCname(connection)} email={connection.email} />
           ))}
@@ -158,7 +158,7 @@ function Request() {
         <h3>Approved</h3>
         <div className='friendsContainer' >
           {friends.map((friend) => (
-            <Friend hide={true} available={() => { true }} id={friend._id} key={friend._id} userId={friend._id} email={friend.email} />
+            <Friend hide={true} available={() => { true }} id={friend._id} key={friend._id} company={friend.company} userId={friend.userId} email={friend.email} />
           ))}
         </div>
       </div>

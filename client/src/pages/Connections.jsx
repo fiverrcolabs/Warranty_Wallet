@@ -44,7 +44,8 @@ function Products() {
         }
 
         console.log(fetchedConnections.data)
-        console.log("-----", fetchedRequests.data)
+        console.log("--sent requests--", fetchedRequests.data)
+        console.log("--receive requests--", fetchedReceivedRequests.data)
         console.log(user.role)
 
         setConnections(fetchedConnections.data)
@@ -52,7 +53,7 @@ function Products() {
 
         var ar = [];
         fetchedRequests.data.forEach((request) => {
-          ar.push(request._id)
+          ar.push(request.userId)
         })
         fetchedReceivedRequests.data.forEach((request) => {
           ar.push(request._id)

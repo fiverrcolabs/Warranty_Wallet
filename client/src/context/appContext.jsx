@@ -1,4 +1,4 @@
-import React, { useReducer, useContext  } from 'react'
+import React, { useReducer, useContext } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import moment from 'moment'
@@ -36,6 +36,18 @@ const AppProvider = ({ children }) => {
       return Promise.reject(error)
     }
   )
+
+  // response
+  axiosFetch.interceptors.response.use(
+    (response) => {
+    return response
+  }, (error) => {
+    // console.log(error.response)
+    if (error.response.status === 401) {
+      logoutUser()
+    }
+    return Promise.reject(error)
+  })
 
   // ----------------login-------------
 
@@ -99,7 +111,7 @@ const AppProvider = ({ children }) => {
         token,
       })
 
-     
+
 
     } catch (error) {
       console.log(error.response.data.msg)

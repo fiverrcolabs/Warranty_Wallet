@@ -5,12 +5,45 @@ import User from '../models/User.js'
 import { BadRequestError } from '../errors/index.js'
 
 const getRetailerFriends = async (req, res) => {
-  const retailerFriends = await Manufacturer.findOne({
+  const retailerFriends = (await Manufacturer.findOne({
     userId: req.user.userId,
   })
     .populate('retailerFriends')
-    .select('retailerFriends')
-  res.status(StatusCodes.OK).json(retailerFriends)
+    .select('retailerFriends')).retailerFriends
+  const retailers = await User.aggregate([
+    {
+      $match: {
+        _id: { $in: retailerFriends.map(user => user._id) }
+      }
+    },
+    {
+      $lookup: {
+        from: 'retailers',
+        localField: '_id',
+        foreignField: 'userId',
+        as: 'retailer'
+      }
+    },
+    {
+      $addFields: {
+        retailer: { $arrayElemAt: ["$retailer", 0] },
+      }
+    }, 
+    {
+      $unwind: '$retailer'
+    },
+    {
+      $project: {
+        email: 1,
+        _id: '$retailer._id',
+        userId: '$retailer.userId',
+        company: '$retailer.company',
+        website: '$retailer.website',
+        __v: '$retailer.__v'
+      }
+    },
+  ])
+  res.status(StatusCodes.OK).json(retailers)
 }
 
 const getRetailerRequests = async (req, res) => {
@@ -66,12 +99,24 @@ const sendRetailerRequest = async (req, res) => {
   }
 
   const retailerHasSentRequest = await Manufacturer.count({
-    _id: req.user.userId,
+    userId: req.user.userId,
     retailerRequests: userId,
   })
+
   if (retailerHasSentRequest > 0) {
     throw new BadRequestError('retailer has already sent a request')
   }
+
+  const retailerIsAlreadyFriend = await Manufacturer.count({
+    userId: req.user.userId,
+    retailerFriends: userId,
+  })
+  
+  if (retailerIsAlreadyFriend > 0) {
+    throw new BadRequestError('retailer is already a friend')
+  }
+  // console.log('retailerExists', retailerExists)
+  // console.log('retailerHasSentRequest', retailerHasSentRequest)
 
   const addRetailerRequest = await Retailer.findOneAndUpdate(
     {
@@ -95,11 +140,11 @@ const removeRetailerRequest = async (req, res) => {
     throw new BadRequestError('user not found')
   }
 
-  const removeRetailerRequest = await Retailer.findOneAndUpdate(
+  const removeRetailerRequest = await Manufacturer.findOneAndUpdate(
     {
-      userId: userId,
+      userId: req.user.userId,
     },
-    { $pull: { manufacturerRequests: req.user.userId } },
+    { $pull: { retailerRequests: userId } },
     { new: true }
   )
   res.status(StatusCodes.OK).json(removeRetailerRequest)
