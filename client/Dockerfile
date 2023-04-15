@@ -13,12 +13,6 @@ RUN npm install --force
 # Copy the rest of the app to /app
 COPY . .
 
-# Set environment variables
-ENV NODE_ENV production
-
-# Build the app
-RUN npm run build
-
 
 
 # Run the app
