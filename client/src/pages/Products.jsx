@@ -1,56 +1,64 @@
-import Product from '../components/Product';
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
+
+import { useAppContext } from '../context/appContext'
+import Loader from '../components/Loader'
+import Product from '../components/Product'
+
+import { toast } from 'react-toastify'
+import { GrAddCircle } from 'react-icons/gr'
 
 
 function Products() {
+  const navigate = useNavigate();
+  const { axiosFetch } = useAppContext()
+  const [products, setProducts] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const fetchedProducts = await axiosFetch.get('/product/allProducts')
+        setProducts(fetchedProducts.data)
+        setIsLoading(false)
+      } catch (error) {
+        console.log(error.response.data.msg)
+        toast.error(error.response.data.msg)
+      }
+
+    }
+    fetchData();
+  }, [])
+
+  if (isLoading) {
+    return (
+        <Loader />
+    )
+}
+
 
   return (
-    <div className=" mainContainer">
+    <div className=' mainContainer container'>
       <div className='firstPageProducts container'>
-
-        <h1 className='px-3'>Products</h1>
-
-        <div className='productContainer' >
-          <Product />
-          <Product />
-          <Product />
-          <Product />
-        </div>
-      </div>
-      <div className='secondPageProducts container' style={{ top: "125px" }}>
-
-        <h1 className='px-3'>Add product</h1>
-        
-        <div class="row p-3 px-3">
-          <div class="col-6"><Product /></div>
-          <div class="col-6">
-            <input class="form-control form-control-lg border border-info mt-3" type="text" placeholder=".form-control-lg" aria-label=".form-control-lg example" />
-            <input class="form-control form-control-lg border border-info mt-3" type="text" placeholder=".form-control-lg" aria-label=".form-control-lg example" />
-            <input class="form-control form-control-lg border border-info mt-3" type="text" placeholder=".form-control-lg" aria-label=".form-control-lg example" />
-
+        <div className='row'>
+          <div className='col-8'>
+            <h1 className='px-3'>Products</h1>
           </div>
 
-        </div>
-
-
-        <div class="row  p-3 ">
-          <div class="mb-3">
-            <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
-            <textarea class="form-control border border-info mt-3" id="exampleFormControlTextarea1" rows="3"></textarea>
+          <div className='col topBar'>
+            <div className='topBarIcon'>
+              <GrAddCircle onClick={() => navigate('/products/addproduct')} className='clickable cursor-pointer' size={40} />
+            </div>
           </div>
-
-
-          <button type="button" class="btn btn-primary btn-lg">Large button</button>
-
         </div>
 
-
-
+        <div className='productContainer'>
+          {products.map((product) => (
+            <Product key={product._id} {...product} />
+          ))}
+        </div>
       </div>
-
-
-
     </div>
-
   )
 }
 

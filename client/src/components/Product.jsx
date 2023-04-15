@@ -1,20 +1,14 @@
 import React from 'react';
-import {
-  MDBCard,
-  MDBCardBody,
-  MDBCardTitle,
-  MDBCardText,
-  MDBCardImage,
-  MDBBtn
-} from 'mdb-react-ui-kit';
+import { useNavigate } from 'react-router-dom';
 
-export default function App() {
+export default function Product({imageData, _id, productName, warrentyPeriod}) {
+  const navigate=useNavigate()
   return (
-    <div className="card">
-    <img src="https://mdbcdn.b-cdn.net/img/new/standard/nature/184.webp" className="card-img-top" alt="Fissure in Sandstone"/>
+    <div className="card productcard ">
+    <img src={imageData?imageData: "https://mdbootstrap.com/img/Photos/Others/placeholder.jpg"} className="card-img-top fixCard" alt="Fissure in Sandstone"/>
     <div className="card-body">
         
-        <a className='h5' href="#!" >Name of the product</a>
+        <a className='h5 cardName clickable'  onClick={() => navigate(`/products/${_id}`)}>{productName}</a>
     </div>
 </div>
   );

@@ -1,8 +1,14 @@
 import express from 'express'
 const app = express()
 
+app.use(express.json({ limit: '5mb' }));
+app.use(express.urlencoded({ extended: true, limit: '5mb' }));
+
 import dotenv from 'dotenv'
 dotenv.config()
+
+import cors from 'cors'
+app.use(cors())
 
 import morgan from 'morgan'
 import 'express-async-errors'
@@ -17,6 +23,14 @@ import connectDB from './db/connect.js'
 
 // routers
 import authRouter from './routes/authRoute.js'
+import qrCodeRouter from './routes/qrCodeRoute.js'
+import productRoute from './routes/productRoute.js'
+import itemRoute from './routes/itemRoute.js'
+import warrantyRoute from './routes/warrantyRoute.js'
+import manufacturerRoute from './routes/manufacturerRoute.js'
+import retailerRoute from './routes/retailerRoute.js'
+import claimRoute from './routes/claimRoute.js'
+import chatRoute from './routes/chatRoute.js'
 
 // middleware
 import notFoundMiddleware from './middleware/not-found.js'
@@ -34,6 +48,15 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/v1/auth', authRouter)
+app.use('/api/v1/qr', qrCodeRouter)
+app.use('/api/v1/product', authenticateUser, productRoute)
+app.use('/api/v1/item', itemRoute)
+app.use('/api/v1/warranty', authenticateUser, warrantyRoute)
+app.use('/api/v1/manufacturer', authenticateUser, manufacturerRoute)
+app.use('/api/v1/retailer', authenticateUser, retailerRoute)
+app.use('/api/v1/claim', authenticateUser, claimRoute)
+app.use('/api/v1/chat',authenticateUser,chatRoute)
+
 
 app.use(notFoundMiddleware)
 app.use(errorHandlerMiddeware)
