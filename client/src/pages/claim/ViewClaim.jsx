@@ -25,7 +25,7 @@ function ClaimItem() {
     const [formData, setFormData] = useState({});
     const [isLoading, setIsLoading] = useState(true)
     const [editable, setEditable] = useState(false)
-    const [show, setShow] = useState(false);
+    const [refresh, setRefresh] = useState(true)
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -64,7 +64,7 @@ function ClaimItem() {
 
         }
         fetchData();
-    }, [])
+    }, [refresh])
 
 
     const handleChange = (event) => {
@@ -86,6 +86,8 @@ function ClaimItem() {
             const fetchedProducts = await axiosFetch.get(`/claim/${claimId}`)
             console.log(fetchedProducts.data);
             setFormData(fetchedProducts.data[0])
+            setRefresh(!refresh)
+            setEditable(!editable)
             toast.success("Claim updated Successfully")
 
         } catch (error) {
@@ -189,7 +191,7 @@ function ClaimItem() {
                             disabled
                             className='form-control form-control-lg border border-info mt-3'
                             type='text'
-                            name='assignee'
+                            name='productname'
                             value={formData.warrantyId
                                 ? (formData.warrantyId.itemId.productId.productName) : "product name"}
                             // placeholder={!editable ? (formData.assignee) : "add asignee"}
@@ -203,7 +205,7 @@ function ClaimItem() {
                             type='text'
                             name='assignee'
                             value={formData.warrantyId
-                                ? (formData.warrantyId.nickname) : "add asignee"}
+                                ? (formData.warrantyId.nickname) : "add assignee"}
                             // placeholder={!editable ? (formData.assignee) : "add asignee"}
                             aria-label='.form-control-lg example'
 
@@ -220,7 +222,7 @@ function ClaimItem() {
                             type='text'
                             name='assignee'
                             value={!editable ? "" : newData.assignee}
-                            placeholder={!editable ? (formData.assignee) : "add asignee"}
+                            placeholder={!editable ? (formData.assignee) : "add assignee"}
                             aria-label='.form-control-lg example'
 
                         />}

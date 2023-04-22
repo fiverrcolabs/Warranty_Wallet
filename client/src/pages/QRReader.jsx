@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { MdOutlineCancel } from "react-icons/md";
 import { QrReader } from 'react-qr-reader'
 import { useNavigate } from 'react-router-dom'
+import jsQR from "jsqr";
+
 
 
 function QRscanner() {
@@ -20,9 +22,36 @@ function QRscanner() {
         window.location.reload()
     };
 
+    function handleFileUpload(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = () => {
+            const image = new Image();
+            image.onload = () => {
+                const canvas = document.createElement("canvas");
+                canvas.width = image.width;
+                canvas.height = image.height;
+                const context = canvas.getContext("2d");
+                context.drawImage(image, 0, 0, image.width, image.height);
+                const imageData = context.getImageData(0, 0, image.width, image.height);
+                const code = jsQR(imageData.data, imageData.width, imageData.height);
+                if (code) {
+                    console.log("QR code detected:", code.data);
+                    setQrscan(code.data);
+                } else {
+                    console.log("No QR code detected.");
+                }
+            };
+            image.src = reader.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
     return (
 
+
         <div className="popup container">
+
             <div className='firstPageProducts container'>
                 <div className='row'>
 
@@ -58,12 +87,20 @@ function QRscanner() {
                                     }
                                 }}
                                 style={{ width: "200px" }}
-                                constraints={ {facingMode: 'environment'} }
+                                constraints={{ facingMode: 'environment' }}
 
                             />
                         </div>
 
+                        <div className='mx-auto text-center'>
+                            <h4>or</h4>
+                            <input className="form-control" type="file" id="formFile" onChange={handleFileUpload} />
+
+                        </div>
+
                     </div>
+
+
 
                     <div class="input-group mb-3 mt-3">
                         <input disabled type="text" class="form-control form-control-lg border border-info " placeholder={qrscan} aria-label="Recipient's username" aria-describedby="basic-addon2" />

@@ -155,7 +155,7 @@ function Claims() {
                                         <label className="form-check-label" htmlFor="exampleCheck1">I agree on terms and conditions</label>
                                     </div>} */}
                                     <button disabled={!retailerButton} onClick={onClickRetailer} type="submit" className='btn btn-info btn-lg mt-4 mx-auto text-white'>
-                                        {retailerButton ? 'Register warrenty' : 'Already registered'}
+                                        {retailerButton ? 'Register warranty' : 'Already registered'}
                                     </button>
                                 </form>
 
@@ -200,7 +200,7 @@ function Claims() {
                                         <label className="form-check-label" htmlFor="exampleCheck1">I agree on terms and conditions</label>
                                     </div>
                                     <button disabled={!retailerButton || !retailerAvailable} onClick={onClickConsumer} type="submit" className='btn btn-info btn-lg mt-4 mx-auto text-white'>
-                                        {data.customerId ? 'Already started' : 'Start warrenty'}
+                                        {data.customerId ? 'Already started' : 'Start warranty'}
                                     </button>
                                 </form>
 
