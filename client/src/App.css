@@ -188,6 +188,7 @@
     grid-template-columns: auto auto auto auto auto;
 
     padding: 20px;
+    padding-bottom: 100px;
 }
 
 .firstPageProducts {
@@ -295,7 +296,7 @@ textarea {
 
         grid-template-columns: auto auto auto;
 
-        padding: 5px;
+        padding: 50px;
     }
 
     .productContainer {
@@ -344,6 +345,7 @@ textarea {
 
         grid-template-columns: auto auto;
         padding: 5px;
+       
     }
     .productcard {
    

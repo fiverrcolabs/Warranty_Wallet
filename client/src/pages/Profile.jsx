@@ -7,6 +7,7 @@ import Loader from '../components/Loader'
 import { toast } from 'react-toastify'
 import { MdLogout } from "react-icons/md";
 import { BiChat } from "react-icons/bi";
+import mainProfileIcon from '../assets/main-profile-icon.avif';
 
 
 function AddProduct() {
@@ -99,7 +100,7 @@ function AddProduct() {
                 <div className='row  p-3 '>
                     <div className=''>
                         <div className="mb-4  d-flex justify-content-center">
-                            <img src={ "https://img.freepik.com/premium-vector/profile-flat-blue-simple-icon-with-long-shadowxa_159242-10066.jpg"}
+                            <img src={mainProfileIcon}
                                 alt="example placeholder" className='rounded-circle' style={{ width: "280px" }} />
                         </div>
 
