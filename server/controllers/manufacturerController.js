@@ -67,11 +67,23 @@ const getRetailerRequests = async (req, res) => {
       }
     },
     {
+      $addFields: {
+        retailer: { $arrayElemAt: ["$retailer", 0] },
+      }
+    }, 
+    {
+      $unwind: '$retailer'
+    },
+    {
       $project: {
         email: 1,
-        retailer: 1
+        _id: '$retailer._id',
+        userId: '$retailer.userId',
+        company: '$retailer.company',
+        website: '$retailer.website',
+        __v: '$retailer.__v'
       }
-    }
+    },
   ])
   res.status(StatusCodes.OK).json(retailers)
 }
@@ -81,9 +93,39 @@ const getNonRetailerFriends = async (req, res) => {
     userId: req.user.userId,
   }).select('retailerFriends')
   const retailerFriendIds = queryManufacturer.retailerFriends
-  const retailerFriends = await Retailer.find({
-    userId: { $nin: retailerFriendIds },
-  }).populate('userId')
+  const retailerFriends = await Retailer.aggregate([
+    {
+      $match: {
+        userId: { $nin: retailerFriendIds },
+      }
+    },
+    {
+      $lookup: {
+        from: 'users',
+        localField: 'userId',
+        foreignField: '_id',
+        as: 'user'
+      }
+    },
+    {
+      $addFields: {
+        user: { $arrayElemAt: ["$user", 0] },
+      }
+    }, 
+    {
+      $unwind: '$user'
+    },
+    {
+      $project: {
+        email: '$user.email',
+        _id: 1,
+        userId: '$user._id',
+        company: 1,
+        website: 1,
+        __v: 1
+      }
+    },
+  ])
   res.status(StatusCodes.OK).json(retailerFriends)
 }
 
