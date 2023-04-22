@@ -47,12 +47,7 @@ if (process.env.NODE_ENV !== 'Production') {
 
 // only when production
 app.use(express.static(path.resolve(__dirname, '../client/dist')))
-app.use(helmet.contentSecurityPolicy({
-    directives: {
-      defaultSrc: ["'self'"],
-      connectSrc: ["'self'", 'http://localhost:4001'],
-    },
-  }))
+app.use(helmet())
 app.use(xss())
 app.use(mongoSanitize())
 
