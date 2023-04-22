@@ -58,7 +58,7 @@ function QRscanner() {
                                     }
                                 }}
                                 style={{ width: "200px" }}
-                                facingMode={"environment"}
+                                constraints={ {facingMode: 'environment'} }
 
                             />
                         </div>
