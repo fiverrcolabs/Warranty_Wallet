@@ -222,6 +222,16 @@ const approveRetailerRequest = async (req, res) => {
     },
     { new: true }
   )
+
+  const addManufacturerToRetailerFriends = await Retailer.findOneAndUpdate(
+    {
+      userId: userId,
+    },
+    {
+      $addToSet: { manufacturerFriends: req.user.userId },
+    },
+    { new: true }
+  )
   res.status(StatusCodes.OK).json(approveRetailerRequest)
 }
 
