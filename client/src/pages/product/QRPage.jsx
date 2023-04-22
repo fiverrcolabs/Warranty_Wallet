@@ -82,7 +82,7 @@ function QRPage() {
         <div className='row'>
 
           <div className='col-8' >
-            <h1 className='px-3'>QR Scanner</h1>
+            <h1 className='px-3'>QR Codes</h1>
           </div>
 
           <div className='col topBar'>

@@ -107,7 +107,7 @@ function ClaimItem() {
                 <div className='row'>
 
                     <div className='col-8' >
-                        <h1 className='px-3'>View warranty</h1>
+                        <h1 className='px-3'>Warranty Overview</h1>
                     </div>
                     <div className='col topBar'>
                         <div className='topBarIcon'>

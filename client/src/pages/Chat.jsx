@@ -110,7 +110,7 @@ export default function App() {
         </div>
         <div className='col topBar'>
           <div className='topBarIcon'>
-            <FaUserCircle onClick={() => navigate('/profile')} className='clickable cursor-pointer'  size={50} />
+            {/* <FaUserCircle onClick={() => navigate('/profile')} className='clickable cursor-pointer'  size={50} /> */}
           </div>
         </div>
 
@@ -149,7 +149,7 @@ export default function App() {
                 <label className="form-label" htmlFor="textAreaExample2">Message</label>
               </div>
             </li>
-            <button onClick={sendMsg} type="button" className="btn btn-info btn-rounded float-end">Send</button>
+            <button disabled={!formData.claimId!=''} onClick={sendMsg} type="button" className="btn btn-info btn-rounded float-end">Send</button>
           </ul>
 
         </div>

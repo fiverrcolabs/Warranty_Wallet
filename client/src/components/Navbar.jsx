@@ -92,7 +92,7 @@ function Navbar() {
           }>
             <h4 className='navbarListItemName'>
               <span className='mx-2'><RiUserAddLine /></span>
-              {user.role === "MANUFACTURER" ? 'Retailers' : 'Manufactures'}
+              {user.role === "MANUFACTURER" ? 'Retailers' : 'Manufacturers'}
             </h4>
           </li>
           }

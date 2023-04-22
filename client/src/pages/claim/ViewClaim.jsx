@@ -47,7 +47,14 @@ function ClaimItem() {
                 const fetchedProducts = await axiosFetch.get(`/claim/${claimId}`)
                 console.log(fetchedProducts.data);
                 setFormData(fetchedProducts.data[0])
+                setNewData({
+                    ...newData,
+                    status: fetchedProducts.data[0].status,
+                    assignee: fetchedProducts.data[0].assignee,
+                    internalNotes:fetchedProducts.data[0].internalNotes
+                })
                 setIsLoading(false)
+
 
             } catch (error) {
                 console.log(error.response.data.msg)
@@ -147,7 +154,7 @@ function ClaimItem() {
             <div className='secondPageProducts container'>
                 <div className='row'>
 
-                    <div className='col-8' >
+                    <div className='col-8 col-xl-10' >
                         <h2 className='px-3'>Claim: <span>{claimId}</span> </h2>
                     </div>
                     <div className='col topBar'>
@@ -184,8 +191,8 @@ function ClaimItem() {
                             type='text'
                             name='assignee'
                             value={formData.warrantyId
-                                ? (formData.warrantyId.itemId.productId.productName) : "add asigneer"}
-                            // placeholder={!editable ? (formData.assignee) : "add asigneer"}
+                                ? (formData.warrantyId.itemId.productId.productName) : "product name"}
+                            // placeholder={!editable ? (formData.assignee) : "add asignee"}
                             aria-label='.form-control-lg example'
 
                         />
@@ -196,8 +203,8 @@ function ClaimItem() {
                             type='text'
                             name='assignee'
                             value={formData.warrantyId
-                                ? (formData.warrantyId.nickname) : "add asigneer"}
-                            // placeholder={!editable ? (formData.assignee) : "add asigneer"}
+                                ? (formData.warrantyId.nickname) : "add asignee"}
+                            // placeholder={!editable ? (formData.assignee) : "add asignee"}
                             aria-label='.form-control-lg example'
 
                         />
@@ -207,23 +214,23 @@ function ClaimItem() {
                             <option value="COMPLETED">Completed</option>
                             <option value="REJECTED">Rejected</option>
                         </select>
-                        <input required onChange={handleChange}
+                        {user.role !== "CONSUMER" && <input required onChange={handleChange}
                             disabled={!editable}
                             className='form-control form-control-lg border border-info mt-2'
                             type='text'
                             name='assignee'
                             value={!editable ? "" : newData.assignee}
-                            placeholder={!editable ? (formData.assignee) : "add asigneer"}
+                            placeholder={!editable ? (formData.assignee) : "add asignee"}
                             aria-label='.form-control-lg example'
 
-                        />
+                        />}
                         <input required
                             disabled
                             className='form-control form-control-lg border border-info mt-2'
                             type='number'
                             name='taskTime'
                             // value={!editable ? "" : newData.taskTime}
-                            placeholder={formData.createdAt ? moment(formData.createdAt).diff(Date.now(), 'days')*-1 : ""}
+                            placeholder={formData.createdAt ? moment(formData.createdAt).diff(Date.now(), 'days') * -1 : ""}
                             min={1}
                             aria-label='.form-control-lg example'
 
@@ -237,7 +244,7 @@ function ClaimItem() {
                             type='text'
                             name='internalNotes'
                             value={!editable ? "" : newData.internalNotes}
-                            placeholder={!editable ? (formData.internalNotes) : "add tasktime"}
+                            placeholder={!editable ? (formData.internalNotes) : "add internal notes"}
                         // placeholder={formData.description}
 
                         ></textarea>}

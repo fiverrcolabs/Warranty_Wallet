@@ -129,7 +129,7 @@ function Products() {
         <div className='row'>
 
           <div className='col-8' >
-            <h1 className='px-3'>{(user.role === USER.MANUFACTURER) ? 'Retailers' : 'Manufactures'}</h1>
+            <h1 className='px-3'>{(user.role === USER.MANUFACTURER) ? 'Retailers' : 'Manufacturers'}</h1>
           </div>
           <div className='col topBar'>
             <div className='topBarIcon'>
