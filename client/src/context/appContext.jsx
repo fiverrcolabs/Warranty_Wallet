@@ -90,7 +90,7 @@ const AppProvider = ({ children }) => {
 
     try {
       const { data } = await axios.post(
-        'http://localhost:4001/api/v1/auth/login',
+        `${import.meta.env.VITE_SERVER_URL}/auth/login`,
         currentUser
       )
 
@@ -138,7 +138,7 @@ const AppProvider = ({ children }) => {
 
     try {
       const { data } = await axios.post(
-        'http://localhost:4001/api/v1/auth/register',
+        `${import.meta.env.VITE_SERVER_URL}/auth/register`,
         registerData
       )
 

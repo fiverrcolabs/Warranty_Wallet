@@ -44,7 +44,6 @@ UserSchema.methods.verify = async function() {
     throw new Error('no contract found')
   }
   const result = await useContract(this.contractAddress, this.purchaseDate.toISOString())
-  console.log(result)
   if (!result) {
     throw new Error('error in contract method')
   }

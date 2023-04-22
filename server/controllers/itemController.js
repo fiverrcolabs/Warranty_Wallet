@@ -31,7 +31,6 @@ const queryItemsCountByProductId = async (req, res) => {
   }
 
   const count = (await Item.find({ productId })).length
-  console.log(count)
   res.status(StatusCodes.OK).json({ count })
 }
 

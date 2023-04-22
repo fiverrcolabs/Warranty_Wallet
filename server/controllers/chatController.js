@@ -12,7 +12,6 @@ import { BadRequestError } from '../errors/index.js'
 const getChatByClaimId = async (req, res) => {
 
     const { claimId } = req.query
-    console.log(claimId)
 
     if (!claimId) {
         throw new BadRequestError('please provide claim id')
@@ -25,7 +24,6 @@ const getChatByClaimId = async (req, res) => {
 const saveChat = async (req, res) => {
 
     const { claimId, userId, msg } = req.body
-    console.log(claimId, userId, msg)
     if (!claimId || !userId || !msg) {
         throw new BadRequestError('please provide all values')
     }
@@ -38,7 +36,6 @@ const saveChat = async (req, res) => {
     let chat = await Chat.findOne({ claimId: claimId })
 
     if (!chat) {
-        console.log(user)
 
         const addChatArray = await Chat.create(
 
@@ -53,7 +50,6 @@ const saveChat = async (req, res) => {
 
             })
     } else {
-        console.log(" fond")
         const addChatArray = await Chat.findOneAndUpdate(
             {
                 claimId: claimId,

@@ -39,7 +39,6 @@ const getWarrantyByItemId = async (req, res) => {
   const warranty = await Warranty.findOne({ itemId }).populate({ path: 'itemId', select: 'productId', populate: { path: 'productId', select: 'polices' } })
 
   if (req.user.role === 'CONSUMER') {
-    console.log(itemId, warranty)
     if (warranty) {
       res.status(StatusCodes.OK).json(warranty)
     } else {
@@ -49,22 +48,10 @@ const getWarrantyByItemId = async (req, res) => {
     if (warranty) {
       throw new BadRequestError('provided itemId already has a warranty')
     } else {
-      const item = await Item.findOne({ _id: itemId }, { productId: 1 }).populate({ path: 'productId', select: 'polices' })
-      console.log(item)
+      const item = await Item.findOne({ _id: itemId }, {productId: 1}).populate({ path: 'productId', select: 'polices'})
       res.status(StatusCodes.OK).json(item)
     }
   }
-}
-
-const queryWarranty = async (req, res) => {
-  const { itemId, customerId, purchaseDate, issuerId } = req.query
-  const warrenties = await Warranty.find({
-    itemId,
-    customerId,
-    issuerId,
-    purchaseDate,
-  })
-  res.status(StatusCodes.OK).json(warrenties)
 }
 
 const getAllWarranties = async (req, res) => {
@@ -194,7 +181,6 @@ const assignSelf = async (req, res) => {
 
 export {
   getWarrantyById,
-  queryWarranty,
   getAllWarranties,
   createWarranty,
   getWarrantyByItemId,

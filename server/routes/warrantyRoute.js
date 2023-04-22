@@ -5,7 +5,6 @@ const router = express.Router()
 
 import {
   getWarrantyById,
-  queryWarranty,
   getAllWarranties,
   createWarranty,
   getWarrantyByItemId,
@@ -16,7 +15,6 @@ import {
 router.route('/createWarranty').post(isRetailer, createWarranty)
 router.route('/getAllWarranties').get(getAllWarranties)
 router.route('/getWarrantyByItemId').get(getWarrantyByItemId)
-router.route('/queryWarranty').get(queryWarranty)
 router.route('/assignSelf').patch(isConsumer, assignSelf)
 router.route('/:warrantyId').get(getWarrantyById)
 

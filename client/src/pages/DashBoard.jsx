@@ -82,9 +82,7 @@ function DashBoard() {
   useEffect(() => {
     async function fetchData() {
       try {
-       
 
-        // setData1(getClaimsAndCompletionRate(warrantyData.data))
         if (user.role === USER.RETAILER) {
           const manufacturerFriendsData = await axiosFetch.get('/retailer/manufacturerFriends')
           setFriends(manufacturerFriendsData.data)
@@ -242,10 +240,9 @@ function DashBoard() {
       const endDate = new Date(now.getFullYear(), now.getMonth() - i + interval, 0);
       warrantyRegistrationCount[startDate.toISOString().split('T')[0]] = warranties.filter((warranty) => {
         const purchaseDate = new Date(warranty.purchaseDate);
-        return purchaseDate >= startDate && purchaseDate <= endDate && warranty.issuerId;
+        return purchaseDate >= startDate && purchaseDate <= endDate && warranty.customerId;
       }).length;
     }
-    // return warrantyRegistrationCount;
 
     return {
       //get kesy inside object
@@ -259,8 +256,10 @@ function DashBoard() {
 
   return (
     <div className=" mainContainer container">
+
       {/* {console.log("linechartdata: ", friendsSummary())} */}
       {/* {console.log("from data new", getClaimsAndCompletionRate())} */}
+
       <div className='firstPageProducts container'>
         <div className='row'>
 
@@ -299,6 +298,7 @@ function DashBoard() {
                 },
                 scales: {
                   y: {
+                    min: 0,
                     ticks: {
                       stepSize: 10,
                       beginAtZero: true,
