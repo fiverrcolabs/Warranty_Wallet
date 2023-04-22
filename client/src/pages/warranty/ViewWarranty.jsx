@@ -164,7 +164,7 @@ function ClaimItem() {
                             className='form-control form-control-lg border border-info mt-3'
                             type='number'
                             name='warrentyPeriod'
-                            placeholder={formData.itemId ? formData.purchaseDate : ""}
+                            placeholder={ `months: ${formData.itemId ? formData.itemId.productId.warrentyPeriod : ""} `}
                             aria-label='.form-control-lg example'
 
                         />

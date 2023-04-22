@@ -113,7 +113,7 @@ function AddProduct() {
                 type='number'
                 min={0}
                 name='warrentyPeriod'
-                placeholder='Warranty Period'
+                placeholder='Warranty Period (months)'
                 aria-label='.form-control-lg example'
                 onChange={handleChange}
               />

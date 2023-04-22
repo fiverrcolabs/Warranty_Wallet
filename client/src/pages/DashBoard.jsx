@@ -82,27 +82,31 @@ function DashBoard() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const claimsData = await axiosFetch.get('/claim/getAllClaims')
-        setClaims(claimsData.data)
-        const warrantyData = await axiosFetch.get('/warranty/getAllWarranties')
-        setWarranties(warrantyData.data)
+       
 
         // setData1(getClaimsAndCompletionRate(warrantyData.data))
         if (user.role === USER.RETAILER) {
           const manufacturerFriendsData = await axiosFetch.get('/retailer/manufacturerFriends')
-          setFriends(manufacturerFriendsData.data.manufacturerFriends)
+          setFriends(manufacturerFriendsData.data)
           const manufacturerRequestsData = await axiosFetch.get('/retailer/manufacturerRequests')
           setReceivedRequests(manufacturerRequestsData.data)
           const retailerSentRequestsData = await axiosFetch.get('/retailer/getRetailerSentRequests')
           setSentRequests(retailerSentRequestsData.data)
         } else if (user.role === USER.MANUFACTURER) {
           const retailerFriendsData = await axiosFetch.get('/manufacturer/retailerFriends')
-          setFriends(retailerFriendsData.data.retailerFriends)
+          setFriends(retailerFriendsData.data)
           const retailerRequestsData = await axiosFetch.get('/manufacturer/retailerRequests')
           setReceivedRequests(retailerRequestsData.data)
           const manufacturerSentRequestsData = await axiosFetch.get('/manufacturer/getManufacturerSentRequests')
           setSentRequests(manufacturerSentRequestsData.data)
         }
+
+        const claimsData = await axiosFetch.get('/claim/getAllClaims')
+        setClaims(claimsData.data)
+        const warrantyData = await axiosFetch.get('/warranty/getAllWarranties')
+        setWarranties(warrantyData.data)
+
+        console.log("approved", manufacturerFriendsData)
 
 
 
