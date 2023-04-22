@@ -124,6 +124,7 @@ const forwardClaim = async (req, res) => {
     const manufacturer = await Manufacturer.findOne({ products: { $elemMatch: { $eq: productId } } })
 
     claimExists.warrantyServiceProvider = { userId: manufacturer.userId, role: 'MANUFACTURER' }
+    claimExists.assignee = ''
     const claim = await claimExists.save()
 
     res.status(StatusCodes.OK).json(claim)

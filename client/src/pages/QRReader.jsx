@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 function QRscanner() {
     const navigate = useNavigate();
     const [qrscan, setQrscan] = useState('No result');
+    const [selected, setSelected] = useState("environment");
     const [startScan, setStartScan] = useState(false);
 
     const closeCam = async () => {
@@ -42,6 +43,10 @@ function QRscanner() {
 
                     <div >
                         <div className='mx-auto rounded' style={{ width: 300 }}>
+                            {/* <select onChange={(e) => setSelected(e.target.value)}>
+                                <option value={"environment"}>Back Camera</option>
+                                <option value={"user"}>Front Camera</option>
+                            </select> */}
                             <QrReader
                                 onResult={(result, error) => {
                                     if (!!result) {
@@ -53,6 +58,7 @@ function QRscanner() {
                                     }
                                 }}
                                 style={{ width: "200px" }}
+                                facingMode={"environment"}
 
                             />
                         </div>
@@ -62,7 +68,7 @@ function QRscanner() {
                     <div class="input-group mb-3 mt-3">
                         <input disabled type="text" class="form-control form-control-lg border border-info " placeholder={qrscan} aria-label="Recipient's username" aria-describedby="basic-addon2" />
                         {/* <button onClick={() => navigate({ qrscan })} class="btn btn-outline-info clickable" id="basic-addon2">Add</button> */}
-                      
+
                         <a
                             class="btn btn-outline-info clickable"
                             id="basic-addon2"

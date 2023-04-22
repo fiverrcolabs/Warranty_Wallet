@@ -25,6 +25,7 @@ const generateQRCodes = async (req, res) => {
     )
     
     item.qr = codeBase64
+    item.createdDate=Date.now()
     item = await item.save()
     items.push(item)
   }

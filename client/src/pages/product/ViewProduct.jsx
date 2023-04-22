@@ -142,7 +142,7 @@ function ViewProduct() {
                             className='form-control form-control-lg border border-info mt-3'
                             type='number'
                             name='warrentyPeriod'
-                            placeholder={formData.warrentyPeriod}
+                            placeholder={`months: ${formData.warrentyPeriod}`}
                             aria-label='.form-control-lg example'
 
                         />

@@ -120,7 +120,7 @@ function Claims() {
                 <div className='row'>
 
                     <div className='col-8' >
-                        <h1 className='px-3'>Warranty Start Page</h1>
+                        <h1 className='px-3'>Warranty registrations</h1>
                     </div>
                     <div className='col topBar'>
                         <div className='topBarIcon'>
@@ -150,12 +150,12 @@ function Claims() {
 
                                     </div>
 
-                                    <div className="mb-3 mt-2 form-check">
+                                   {/* {!retailerAvailable && <div className="mb-3 mt-2 form-check">
                                         <input onClick={()=>{setRetailerAvailable(!retailerAvailable)}} type="checkbox" className="form-check-input border border-info " id="exampleCheck1" />
                                         <label className="form-check-label" htmlFor="exampleCheck1">I agree on terms and conditions</label>
-                                    </div>
-                                    <button disabled={!retailerButton || !retailerAvailable} onClick={onClickRetailer} type="submit" className='btn btn-info btn-lg mt-4 mx-auto text-white'>
-                                        {retailerButton ? 'Create warrenty' : 'Already started'}
+                                    </div>} */}
+                                    <button disabled={!retailerButton} onClick={onClickRetailer} type="submit" className='btn btn-info btn-lg mt-4 mx-auto text-white'>
+                                        {retailerButton ? 'Register warrenty' : 'Already registered'}
                                     </button>
                                 </form>
 

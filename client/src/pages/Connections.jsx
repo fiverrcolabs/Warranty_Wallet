@@ -56,7 +56,7 @@ function Products() {
           ar.push(request.userId)
         })
         fetchedReceivedRequests.data.forEach((request) => {
-          ar.push(request._id)
+          ar.push(request.userId)
         })
         setArrayIds(ar)
         setIsLoading(false)
@@ -129,7 +129,7 @@ function Products() {
         <div className='row'>
 
           <div className='col-8' >
-            <h1 className='px-3'>{(user.role === USER.MANUFACTURER) ? 'Retailers' : 'Manufactures'}</h1>
+            <h1 className='px-3'>{(user.role === USER.MANUFACTURER) ? 'Retailers' : 'Manufacturers'}</h1>
           </div>
           <div className='col topBar'>
             <div className='topBarIcon'>
@@ -142,7 +142,7 @@ function Products() {
 
         <div className='friendsContainer' >
           {connections.map((connection) => (
-            <Friend sendRequest={sendRequest} id={connection.userId._id} available={available} key={connection._id} userId={connection.userId._id} company={connection.company} email={connection.userId.email} />
+            <Friend sendRequest={sendRequest} id={connection.userId} available={available} key={connection._id} userId={connection.userId} company={connection.company} email={connection.email} />
           ))}
         </div>
 

@@ -149,7 +149,7 @@ function Request() {
         <div className='friendsContainer ' >
           {console.log("++++", connections)}
           {connections.map((connection) => (
-            <AddRequest reject={reject} accept={accept} userId={connection._id} key={connection._id} company={filterCname(connection)} email={connection.email} />
+            <AddRequest reject={reject} accept={accept} userId={connection.userId} key={connection.userId} company={connection.company} email={connection.email} />
           ))}
         </div>
 
@@ -158,7 +158,7 @@ function Request() {
         <h3>Approved</h3>
         <div className='friendsContainer' >
           {friends.map((friend) => (
-            <Friend hide={true} available={() => { true }} id={friend._id} key={friend._id} company={friend.company} userId={friend.userId} email={friend.email} />
+            <Friend hide={true} available={() => { true }} id={friend.userId} key={friend.userId} company={friend.company} userId={friend.userId} email={friend.email} />
           ))}
         </div>
       </div>

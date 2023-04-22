@@ -7,6 +7,9 @@ const UserSchema = new mongoose.Schema({
   qr: {
     type: String,
   },
+  createdDate: {
+    type: Date,
+  }
 })
 
 export default mongoose.model('Item', UserSchema)

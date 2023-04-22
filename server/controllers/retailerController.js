@@ -67,10 +67,22 @@ const getManufacturerRequests = async (req, res) => {
       },
     },
     {
+      $addFields: {
+        retailer: { $arrayElemAt: ["$manufacturer", 0] },
+      }
+    }, 
+    {
+      $unwind: '$manufacturer'
+    },
+    {
       $project: {
         email: 1,
-        manufacturer: 1,
-      },
+        _id: '$manufacturer._id',
+        userId: '$manufacturer.userId',
+        company: '$manufacturer.company',
+        website: '$manufacturer.website',
+        __v: '$manufacturer.__v'
+      }
     },
   ])
   res.status(StatusCodes.OK).json(manufacturers)
@@ -81,9 +93,39 @@ const getNonManufacturerFriends = async (req, res) => {
     userId: req.user.userId,
   }).select('manufacturerFriends')
   const manufacturerFriendIds = queryRetailer.manufacturerFriends
-  const manufacturerFriends = await Manufacturer.find({
-    userId: { $nin: manufacturerFriendIds },
-  }).populate('userId')
+  const manufacturerFriends = await Manufacturer.aggregate([
+    {
+      $match: {
+        userId: { $nin: manufacturerFriendIds },
+      }
+    },
+    {
+      $lookup: {
+        from: 'users',
+        localField: 'userId',
+        foreignField: '_id',
+        as: 'user'
+      }
+    },
+    {
+      $addFields: {
+        user: { $arrayElemAt: ["$user", 0] },
+      }
+    }, 
+    {
+      $unwind: '$user'
+    },
+    {
+      $project: {
+        email: '$user.email',
+        _id: 1,
+        userId: '$user._id',
+        company: 1,
+        website: 1,
+        __v: 1
+      }
+    },
+  ])
   res.status(StatusCodes.OK).json(manufacturerFriends)
 }
 
@@ -175,6 +217,16 @@ const approveManufacturerRequest = async (req, res) => {
     {
       $pull: { manufacturerRequests: userId },
       $addToSet: { manufacturerFriends: userId },
+    },
+    { new: true }
+  )
+
+  const addRetailerToManufacturerFriends = await Manufacturer.findOneAndUpdate(
+    {
+      userId: userId,
+    },
+    {
+      $addToSet: { retailerFriends: req.user.userId },
     },
     { new: true }
   )
