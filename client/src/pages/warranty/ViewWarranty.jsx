@@ -150,7 +150,7 @@ function ClaimItem() {
                             aria-label='.form-control-lg example'
 
                         />
-                        <input
+                        {user.role === USER.CONSUMER && <input
                             disabled
                             className='form-control form-control-lg border border-info mt-3'
                             type='text'
@@ -158,7 +158,7 @@ function ClaimItem() {
                             placeholder={formData.itemId ? formData.nickname : ""}
                             aria-label='.form-control-lg example'
 
-                        />
+                        />}
                         <input
                             disabled
                             className='form-control form-control-lg border border-info mt-3'

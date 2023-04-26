@@ -17,7 +17,7 @@ export default function Product({me,id,msg,userId}) {
                     </div>
                     <div className="card-body">
                         <p className="mb-0">
-                            ss{msg}
+                            {msg}
                         </p>
                     </div>
                 </div>

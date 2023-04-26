@@ -199,7 +199,7 @@ function ClaimItem() {
 
                         />
 
-                        <input required onChange={handleChange}
+                        {user.role === "CONSUMER" && <input required onChange={handleChange}
                             disabled
                             className='form-control form-control-lg border border-info mt-3'
                             type='text'
@@ -209,7 +209,7 @@ function ClaimItem() {
                             // placeholder={!editable ? (formData.assignee) : "add asignee"}
                             aria-label='.form-control-lg example'
 
-                        />
+                        />}
                         <select required onChange={handleChange} name='status' defaultValue={formData.status} disabled={!editable} className='form-control form-control-lg border border-info mt-2' aria-label="Default select example">
                             <option value={formData.status} disabled>{formData.status} </option>
                             <option value="IN_PROGRESS">InProgress</option>
