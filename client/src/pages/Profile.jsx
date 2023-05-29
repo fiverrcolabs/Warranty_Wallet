@@ -97,7 +97,7 @@ function AddProduct() {
                 </div>
 
 
-                <div className='row  p-3 '>
+                <div className='row  pt-0 '>
                     <div className=''>
                         <div className="mb-4  d-flex justify-content-center">
                             <img src={mainProfileIcon}
@@ -110,9 +110,9 @@ function AddProduct() {
                 </div>
 
 
-                <div className='row p-3 px-3 '>
+                <div className='row  px-3 '>
                     <div className={ user.role !== 'CONSUMER'? 'col-md-12 col-lg-6 col-xl-6':'col-md-12 p-5'}>
-                        <div id="emailHelp" className="form-text mt-5">email</div>
+                        <div id="emailHelp" className="form-text mt-1">email</div>
                         <input
                             disabled
                             className='form-control form-control-lg border border-info mt-0'
@@ -139,7 +139,7 @@ function AddProduct() {
 
                     {user.role !== 'CONSUMER' &&
                         <div className='col-md-12 col-lg-6 col-xl-6'>
-                            <div id="emailHelp" className="form-text mt-5">Company</div>
+                            <div id="emailHelp" className="form-text mt-1">Company</div>
                             <input
                                 disabled
                                 className='form-control form-control-lg border border-info mt-0'

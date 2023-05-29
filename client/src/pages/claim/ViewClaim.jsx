@@ -240,7 +240,7 @@ function ClaimItem() {
                         {user.role !== "CONSUMER" && <textarea
                             required onChange={handleChange}
                             disabled={!editable}
-                            className='form-control border border-info mt-2'
+                            className='form-control border border-info mt-2 h-25'
                             id='exampleFormControlTextarea1'
                             rows='1'
                             type='text'
@@ -265,7 +265,7 @@ function ClaimItem() {
 
                 </div>
 
-                <div className='row  p-3 mt-3'>
+                <div className='row  p-3 mt-0'>
                     <div className='mb-3'>
                         <label
                             htmlFor='exampleFormControlTextarea1'
